@@ -1,13 +1,15 @@
 import React from "react";
-// import { StyleSheet, Text, View, Pressable } from "@react-native";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet } from "react-native";
 import NFTAbi from "./src/contracts/NFT.json";
 import NFTAddress from "./src/contracts/NFT-address.json";
 import { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ethers } from 'ethers';
 
 import Onboarding from "./screens/Onboarding.js";
+import Connection from "./screens/Connection.js";
+import Home from "./screens/Home";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +18,7 @@ function App() {
   const [account, setAccount] = useState(null);
   const [nft, setNFT] = useState({});
 
-  const web3Handler = async () => {
+  async function web3Handler() {
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
@@ -43,14 +45,41 @@ function App() {
     setLoading(false);
   };
 
-  return (
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen name="Onboarding" component={Onboarding} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-    <Onboarding/>
-  );
+  if(loading === true){
+    return(
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName="Onboarding"
+          screenOptions={{
+            headerShown: false,
+            header: () => null,
+            contentStyle: { backgroundColor: 'black' },
+          }}>
+          <Stack.Screen name="Onboarding" component={Onboarding}/>
+          <Stack.Screen
+            name="Connection"
+            component={Connection}
+            initialParams={{ onWeb3Handler: web3Handler }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>    
+    );
+  }else{
+    return(
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName="Home"
+          screenOptions={{
+            headerShown: false,
+            header: () => null,
+            contentStyle: { backgroundColor: 'black' },
+          }}>
+          <Stack.Screen name="Home" component={Home}/>
+        </Stack.Navigator>
+      </NavigationContainer>    
+    );
+  }
+    
 }
 
 const styles = StyleSheet.create({
