@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import Logo from "../public/logo.png"
 import Ticket from "../public/ticket.png"
 import Arrow from "../public/arrow-icon.png"
-
+import Navbar from './components/Navbar';
+import { NavigationContainer } from '@react-navigation/native';
 const Onboarding = ({ navigation }) => {
   const [showFirstPage, setShowFirstPage] = useState(true);
 
@@ -24,12 +25,20 @@ const Onboarding = ({ navigation }) => {
     );
   } else {
     return (
+
+      <>
       <View style={styles.container}>
         <Image source={Ticket} style={[styles.image, styles.shadow]} />
         <Text style={[styles.title, styles.textCenter, styles.mt]}>The easiest way to access your <Text style={[styles.title, styles.green]}>NFT Tickets</Text></Text>
         <Text style={[styles.subtitle, styles.textCenter, styles.mt]}>Connect your favorite wallet and make use of your NFTs</Text>
         <Pressable style={[styles.nextButton, styles.mt, styles.shadow]} onPress={() => navigation.navigate('Connection')}><Image style={[styles.arrow]} source={Arrow}/></Pressable>
+      
+       
       </View>
+       
+       <Navbar />
+       
+       </>
     );
   }
 };
