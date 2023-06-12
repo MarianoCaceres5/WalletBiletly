@@ -5,14 +5,16 @@ import Logo from "../public/logo.png";
 const Home = ({ navigation }) => {
 
   return (
-    <View style={styles.container}>
-        <Text>Hello man, this is the home</Text>
+    <View>
+        <Text style={{backgroundColor:'red'}}>Hello man, this is home</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  
+  container:{
+    backgroundColor: 'red',
+  }
 });
 
 export default Home;
