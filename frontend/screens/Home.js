@@ -12,44 +12,7 @@ const Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    backgroundColor: "#282828",
-  },
-  image: {
-    width: 220,
-    height: 220,
-    resizeMode: "contain",
-  },
-  textCenter: {
-    textAlign: "center",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "white",
-  },
-  button: {
-    backgroundColor: "#0EDB88",
-    width: 347,
-    height: 55,
-    borderRadius: 15,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  mt: {
-    marginTop: 20,
-  },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
+  
 });
 
 export default Home;
