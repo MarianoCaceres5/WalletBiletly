@@ -22,7 +22,6 @@ function App() {
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    console.log(accounts);
     setAccount(accounts[0]);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -74,7 +73,7 @@ function App() {
             header: () => null,
             contentStyle: { backgroundColor: 'black' },
           }}>
-          <Stack.Screen name="Home" component={Home}/>
+          <Stack.Screen name="Home" component={Home} initialParams={{ nft: nft }}/>
         </Stack.Navigator>
       </NavigationContainer>    
     );
