@@ -1,84 +1,111 @@
-import React, { useState } from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../Home.js';
-import Settings from '../Settings.js';
-import ScanQr from '../ScanQr.js';
+import React, { useState } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "../Home.js";
+import Settings from "../Settings.js";
+import ScanQr from "../ScanQr.js";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import qr from '../../public/icons/qr.png'
-import settingsgris from '../../public/icons/settingsgris.png'
-import settingsverde from '../../public/icons/settingsverde.png'
-import walletgris from '../../public/icons/walletgris.png'
-import walletverde from '../../public/icons/walletverde.png'
+import qr from "../../public/icons/qr.png";
+import settingsgris from "../../public/icons/settingsgris.png";
+import settingsverde from "../../public/icons/settingsverde.png";
+import walletgris from "../../public/icons/walletgris.png";
+import walletverde from "../../public/icons/walletverde.png";
 const Tab = createBottomTabNavigator();
 
-
 export default function Navbar() {
-
   const [homeSeleccionada, setIconoHome] = useState(true);
   const [settingsSeleccionada, setIconoSettings] = useState(false);
 
-  function setIcons(){
+  function setIcons() {
     if (homeSeleccionada) {
-      setIconoHome(false)
-      setIconoSettings(true)
-      console.log("home" + homeSeleccionada)
-      
-      console.log("sett" + settingsSeleccionada)
-    }else{
-      setIconoHome(true)
-      setIconoSettings(false)
-      console.log("home" + homeSeleccionada)
-      
-      console.log("sett" + settingsSeleccionada)
+      setIconoHome(false);
+      setIconoSettings(true);
+      console.log("home" + homeSeleccionada);
+
+      console.log("sett" + settingsSeleccionada);
+    } else {
+      setIconoHome(true);
+      setIconoSettings(false);
+      console.log("home" + homeSeleccionada);
+
+      console.log("sett" + settingsSeleccionada);
     }
   }
 
   if (homeSeleccionada) {
-    var iconoW = walletverde
-    var iconoSetting = settingsgris
-  }else{
-    var iconoW = walletgris
-    var iconoSetting = settingsverde
+    var iconoW = walletverde;
+    var iconoSetting = settingsgris;
+  } else {
+    var iconoW = walletgris;
+    var iconoSetting = settingsverde;
   }
 
- 
-
   return (
-    <Tab.Navigator screenOptions={{
-      headerShown: false, tabBarStyle: {
-        backgroundColor: '#fff',
-        height: 80,
-      }
-    }}>
-      <Tab.Screen name="Home" component={Home} style={styles.back}
+    <Tab.Navigator
+      screenOptions={{
+        showLabel: false,
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "#282828",
+          height: 80,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        style={styles.back}
         options={{
+          showLabel: true,
           tabBarIcon: () => (
-            <Image source={{ uri: iconoW}} style={{ width: 50, height: 50 }} />
+            <Image source={{ uri: iconoW }} style={{ width: 50, height: 50 }} />
           ),
-          onPress:() => setIcons()
+        }}
+        listeners={{
+          tabPress: (e) => {
+            setIconoHome(!homeSeleccionada),
+              setIconoSettings(!settingsSeleccionada);
+          },
         }}
       />
-      <Tab.Screen name="ScanQr" component={ScanQr} style={styles.back} options={{
-        tabBarIcon: () => (
-          <Image source={{ uri: qr }} style={{ width: 50, height: 50 }} />
-        )
-      }} />
-      <Tab.Screen name="Settings" component={Settings} style={styles.back} options={{
-        tabBarIcon: () => (
-          <Image source={{ uri: iconoSetting}} style={{ width: 50, height: 50 }} />
-        ),
-        
-          onPress:() => setIcons()
-      }} />
+      <Tab.Screen
+        name="ScanQR"
+        component={ScanQr}
+        style={styles.back}
+        options={{
+          showLabel: true,
+          tabBarIcon: () => (
+            <Image source={{ uri: qr }} style={{ width: 50, height: 50 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        style={styles.back}
+        options={{
+          showLabel: false,
+          tabBarIcon: () => (
+            <Image
+              source={{ uri: iconoSetting }}
+              style={{ width: 50, height: 50 }}
+            />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            setIconoHome(!homeSeleccionada),
+              setIconoSettings(!settingsSeleccionada);
+          },
+        }}
+      />
     </Tab.Navigator>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   back: {
-    backgroundColor: 'red',
-    borderTopColor: 'transparent',
-    fontSize: 40
+    backgroundColor: "red",
+    borderTopColor: "transparent",
+    fontSize: 40,
   },
-
 });

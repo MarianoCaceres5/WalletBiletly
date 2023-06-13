@@ -10,6 +10,7 @@ import { ethers } from 'ethers';
 import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
 import Home from "./screens/Home";
+import Rutas from "./screens/Rutas";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,23 +20,24 @@ function App() {
   const [nft, setNFT] = useState({});
 
   async function web3Handler() {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    setAccount(accounts[0]);
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    // const accounts = await window.ethereum.request({
+    //   method: "eth_requestAccounts",
+    // });
+    // setAccount(accounts[0]);
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
 
-    window.ethereum.on("chainChanged", (chainId) => {
-      window.location.reload();
-    });
+    // window.ethereum.on("chainChanged", (chainId) => {
+    //   window.location.reload();
+    // });
 
-    window.ethereum.on("accountsChanged", async function (accounts) {
-      setAccount(accounts[0]);
-      await web3Handler();
-    });
+    // window.ethereum.on("accountsChanged", async function (accounts) {
+    //   setAccount(accounts[0]);
+    //   await web3Handler();
+    // });
 
-    loadContracts(signer);
+    // loadContracts(signer);
+    setLoading(false);
   };
 
   const loadContracts = async (signer) => {
@@ -73,7 +75,7 @@ function App() {
             header: () => null,
             contentStyle: { backgroundColor: 'black' },
           }}>
-          <Stack.Screen name="Home" component={Home} initialParams={{ nft: nft }}/>
+          <Stack.Screen name="Rutas" component={Rutas} initialParams={{ nft: nft }}/>
         </Stack.Navigator>
       </NavigationContainer>    
     );

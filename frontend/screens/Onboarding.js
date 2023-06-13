@@ -36,7 +36,7 @@ const Onboarding = ({ navigation }) => {
        
       </View>
        
-       <Navbar />
+       
        
        </>
     );
