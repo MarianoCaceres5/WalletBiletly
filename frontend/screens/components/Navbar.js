@@ -41,6 +41,7 @@ export default function Navbar() {
 
   return (
     <Tab.Navigator
+      
       screenOptions={{
         showLabel: false,
         headerShown: false,
@@ -48,6 +49,8 @@ export default function Navbar() {
           backgroundColor: "#282828",
           height: 80,
         },
+        tabBarInactiveTintColor: "#282828",
+        tabBarActiveTintColor: "#282828",
       }}
     >
       <Tab.Screen
@@ -55,7 +58,6 @@ export default function Navbar() {
         component={Home}
         style={styles.back}
         options={{
-          showLabel: true,
           tabBarIcon: () => (
             <Image source={{ uri: iconoW }} style={{ width: 50, height: 50 }} />
           ),
@@ -72,9 +74,10 @@ export default function Navbar() {
         component={ScanQr}
         style={styles.back}
         options={{
-          showLabel: true,
           tabBarIcon: () => (
-            <Image source={{ uri: qr }} style={{ width: 50, height: 50 }} />
+            <Pressable style={[styles.scanQR, styles.shadow]}>
+              <Image source={{ uri: qr }} style={{ width: 25, height: 25 }} />
+            </Pressable>            
           ),
         }}
       />
@@ -83,7 +86,6 @@ export default function Navbar() {
         component={Settings}
         style={styles.back}
         options={{
-          showLabel: false,
           tabBarIcon: () => (
             <Image
               source={{ uri: iconoSetting }}
@@ -104,8 +106,25 @@ export default function Navbar() {
 
 const styles = StyleSheet.create({
   back: {
-    backgroundColor: "red",
+    color: "red",
     borderTopColor: "transparent",
     fontSize: 40,
   },
+  scanQR: {
+    width:68,
+    height:68,
+    backgroundColor: "#0EDB88",
+    borderRadius: 50,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 25
+  },
+  shadow: {
+    shadowColor: 'black',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  }
 });
