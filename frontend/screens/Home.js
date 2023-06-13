@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import Logo from "../public/logo.png";
 import { ethers } from "ethers";
-
+import Encabezado from "./components/Encabezado";
+import FiltersSection from "./components/FiltersSection";
 const Home = ({ navigation, route }) => {
 
   const [ticketCount, setTicketCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState([]);
 
   const loadContract = async () => {
@@ -56,11 +57,16 @@ const Home = ({ navigation, route }) => {
   )
 
   return (
+    <>
+    <Encabezado />
+    <FiltersSection />
     <View style={styles.container}>
         {tickets.map(ticket => (
           <Text style={styles.title}>{ticket.name}</Text>
         ))}
-    </View>
+    </View> 
+
+    </>
   );
 };
 
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor:'#282828'
+    backgroundColor:'#181818'
   },
   arrow: {
     width: 35,
