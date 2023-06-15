@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ethers } from 'ethers';
+import ScanQr from "./screens/ScanQr";
 
 import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
@@ -75,7 +76,9 @@ function App() {
             header: () => null,
             contentStyle: { backgroundColor: 'black' },
           }}>
-          <Stack.Screen name="Rutas" component={Rutas} initialParams={{ nft: nft }}/>
+          <Stack.Screen name="Home" component={Rutas} initialParams={{ nft: nft }}/>
+          <Stack.Screen name="Settings" component={Rutas} initialParams={{ nft: nft }}/>
+          <Stack.Screen name="ScanQr" component={ScanQr} initialParams={{ nft: nft }}/>
         </Stack.Navigator>
       </NavigationContainer>    
     );
