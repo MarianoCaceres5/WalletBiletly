@@ -9,9 +9,10 @@ import settingsgris from "../../public/icons/settingsgris.png";
 import settingsverde from "../../public/icons/settingsverde.png";
 import walletgris from "../../public/icons/walletgris.png";
 import walletverde from "../../public/icons/walletverde.png";
+
 const Tab = createBottomTabNavigator();
 
-export default function Navbar() {
+export default function Navbar({navigation}) {
   const [homeSeleccionada, setIconoHome] = useState(true);
   const [settingsSeleccionada, setIconoSettings] = useState(false);
 
@@ -39,24 +40,24 @@ export default function Navbar() {
     var iconoSetting = settingsverde;
   }
 
+  let options = {
+    showLabel: false,
+    headerShown: false,
+    tabBarStyle: {
+      backgroundColor: "#282828",
+      height: 80,
+      border: "none",
+      borderRadius: 15,
+    },
+    tabBarInactiveTintColor: "#282828",
+    tabBarActiveTintColor: "#282828",
+  };
+
   return (
-    <Tab.Navigator
-      
-      screenOptions={{
-        showLabel: false,
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: "#282828",
-          height: 80,
-        },
-        tabBarInactiveTintColor: "#282828",
-        tabBarActiveTintColor: "#282828",
-      }}
-    >
+    <Tab.Navigator screenOptions={options}>
       <Tab.Screen
         name="Home"
         component={Home}
-        style={styles.back}
         options={{
           tabBarIcon: () => (
             <Image source={{ uri: iconoW }} style={{ width: 50, height: 50 }} />
@@ -64,23 +65,33 @@ export default function Navbar() {
         }}
         listeners={{
           tabPress: (e) => {
-            setIconoHome(!homeSeleccionada),
+            if (!homeSeleccionada) {
+              setIconoHome(!homeSeleccionada);
               setIconoSettings(!settingsSeleccionada);
+            }
           },
         }}
       />
+
       <Tab.Screen
         name="ScanQR"
         component={ScanQr}
-        style={styles.back}
         options={{
           tabBarIcon: () => (
-            <Pressable style={[styles.scanQR, styles.shadow]}>
-              <Image source={{ uri: qr }} style={{ width: 25, height: 25 }} />
-            </Pressable>            
+            <Image
+              source={{ uri: qr }}
+              style={{ width: 70, height: 70, marginBottom: 23 }}
+            />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            setIconoHome(false);
+            setIconoSettings(false);
+          },
+        }}
       />
+
       <Tab.Screen
         name="Settings"
         component={Settings}
@@ -95,8 +106,10 @@ export default function Navbar() {
         }}
         listeners={{
           tabPress: (e) => {
-            setIconoHome(!homeSeleccionada),
+            if (!settingsSeleccionada) {
+              setIconoHome(!homeSeleccionada);
               setIconoSettings(!settingsSeleccionada);
+            }
           },
         }}
       />
@@ -111,20 +124,14 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
   scanQR: {
-    width:68,
-    height:68,
-    backgroundColor: "#0EDB88",
-    borderRadius: 50,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 25
+    width: 68,
+    height: 68,
+    marginBottom: 30,
   },
   shadow: {
-    shadowColor: 'black',
-    shadowOffset: {width: -2, height: 4},
+    shadowColor: "black",
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-  }
+  },
 });
