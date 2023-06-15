@@ -6,7 +6,7 @@ export default function Encabezado() {
   return (
         <>
         <View style={styles.container}>
-        <Image source={{ uri: logo }}  style={{ width: 50, height: 50 }}/>
+        <Image source={{ uri: logo }}  style={{ width: 75, height: 75 }}/>
         <Text style={styles.titulo}>Biletly</Text>
         
         </View>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
       fontSize: 30,
     },
     container:{
-        height:100,
+        height:150,
         flexDirection:'row',
         alignContent:'center',
         justifyContent:'center',
