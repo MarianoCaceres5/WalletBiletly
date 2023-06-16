@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
     backgroundColor: "#282828",
   },
   image: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#0EDB88",
-    width: 347,
+    width: "100%",
     height: 55,
     borderRadius: 15,
     display: "flex",
