@@ -7,7 +7,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ethers } from 'ethers';
 import ScanQr from "./screens/ScanQr";
-
 import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
 import Home from "./screens/Home";

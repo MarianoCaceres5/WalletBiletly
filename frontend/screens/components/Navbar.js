@@ -47,7 +47,10 @@ export default function Navbar({navigation}) {
       backgroundColor: "#282828",
       height: 80,
       border: "none",
-      borderRadius: 15,
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 15,
+      display: "flex",
+      justifyContent: "center"
     },
     tabBarInactiveTintColor: "#282828",
     tabBarActiveTintColor: "#282828",
@@ -59,8 +62,9 @@ export default function Navbar({navigation}) {
         name="Home"
         component={Home}
         options={{
+          // tabBarBadge: 2
           tabBarIcon: () => (
-            <Image source={{ uri: iconoW }} style={{ width: 50, height: 50 }} />
+            <Image source={{ uri: iconoW }} style={{ width: 50, height: 50, marginLeft: 30 }} />
           ),
         }}
         listeners={{
@@ -80,16 +84,15 @@ export default function Navbar({navigation}) {
           tabBarIcon: () => (
             <Image
               source={{ uri: qr }}
-              style={{ width: 70, height: 70, marginBottom: 23 }}
+              style={[{ width: 70, height: 70, marginBottom: 23, border: 10, borderColor: 'black' }, styles.shadow]}
             />
           ),
-        }}
+        }}    
         listeners={{
           tabPress: (e) => {
-            setIconoHome(false);
-            setIconoSettings(false);
+            // navigation.navigate('ScanQr');
           },
-        }}
+        }}    
       />
 
       <Tab.Screen
@@ -100,7 +103,7 @@ export default function Navbar({navigation}) {
           tabBarIcon: () => (
             <Image
               source={{ uri: iconoSetting }}
-              style={{ width: 50, height: 50 }}
+              style={{ width: 50, height: 50, marginRight: 30}}
             />
           ),
         }}
@@ -118,11 +121,6 @@ export default function Navbar({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  back: {
-    color: "red",
-    borderTopColor: "transparent",
-    fontSize: 40,
-  },
   scanQR: {
     width: 68,
     height: 68,

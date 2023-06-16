@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 
 const Rutas = ({ navigation, route }) => {
   return (
-    <Navbar />
+    <Navbar navigation={navigation} />
   );
 };
 
