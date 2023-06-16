@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../public/icons/arrow-back.png";
 
 
-export default function ScanQr() {
+export default function ScanQr({nft, account}) {
   const navigation = useNavigation();
 
   return (

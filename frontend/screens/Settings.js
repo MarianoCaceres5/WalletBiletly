@@ -9,7 +9,8 @@ import about from "../public/icons/about.png"
 import signout from "../public/icons/signout.png"
 
 
-export default function Settings() {
+export default function Settings({nft, account}) {
+  console.log(account)
   return (
     <>
       <Encabezado />
@@ -20,7 +21,7 @@ export default function Settings() {
 
         <Text style={styles.subtitle}> Address </Text>
         <div style={styles.flexContainer}>
-          <Text style={styles.address}> 960a94ea9a16df253da3bb4f5545eef8 </Text>
+          <Text style={styles.address}> 0012212233 </Text>
           <Image source={{ uri: copy }} style={{ width: 29, height: 29 }} />
         </div>
 
