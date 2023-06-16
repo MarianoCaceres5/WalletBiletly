@@ -1,13 +1,12 @@
 import sql from "mssql";
-import config from "../../dbconfig.js";
+import config from "../../dbconfig.mjs";
 
 export default class TicketService {
   getEntradas = async () => {
     let resultado = null;
-
     try {
       let pool = await sql.connect(config);
-      let result = await pool.request().query("SELECT * FROM Evento");
+      let result = await pool.request().query("SELECT * FROM Entrada");
 
       resultado = result.recordsets[0];
     } catch (error) {
@@ -33,7 +32,7 @@ export default class TicketService {
     return resultado;
   };
 
-  getEentradaxId = async (id) => {
+  getEntradaxId = async (id) => {
     let resultado = null;
 
     try {
@@ -50,7 +49,7 @@ export default class TicketService {
     return resultado;
   };
 
-  UpdateEntrada = async (id) => {
+  updateEntrada = async (id) => {
     let resultado = null;
     try {
       let pool = await sql.connect(config);
@@ -58,27 +57,6 @@ export default class TicketService {
         .request()
         .input("pId", sql.Int, id)
         .query("exec UpdateEntrada @pId");
-      resultado = result.rowsAffected;
-    } catch (error) {
-      EscribirError(error);
-    }
-    return resultado;
-  };
-
-  InsertarDatos = async (adress, idNFT, idEntrada) => {
-    let resultado = null;
-    console.log("hola");
-    try {
-      let pool = await sql.connect(config);
-      let result = await pool
-        .request()
-        .input("pAdress", sql.VarChar, adress ?? "")
-        .input("pIdNFT", sql.Int, idNFT ?? "")
-        .input("pIdEntrada", sql.Int, idEntrada ?? "")
-        .query("INSERT INTO Usuario(adress) VALUES (@pAdress)")
-        .query(
-          "INSERT INTO EntradaxNFT(idEntrada,idNFT) VALUES (@pIdEntrada,@pIdNFT)"
-        );
       resultado = result.rowsAffected;
     } catch (error) {
       console.log(error);
