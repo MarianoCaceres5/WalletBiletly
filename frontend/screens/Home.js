@@ -7,15 +7,14 @@ import FiltersSection from "./components/FiltersSection";
 import 'typeface-inter';
 
 
-const Home = ({ navigation, route, nft, account }) => {
+const Home = ({ navigation, route}) => {
 
   const [ticketCount, setTicketCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState([]);
 
   const loadContract = async () => {
-        setTicketCount(ethers.utils.formatEther(await route.params.nft.tokenCount()))
-  
+    setTicketCount(ethers.utils.formatEther(await route.params.nft.tokenCount()))  
     let items = []
     for (let i = 1; i <= ticketCount; i++) {
         const ticket = await nft.entradas(i);                

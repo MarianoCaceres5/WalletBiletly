@@ -47,7 +47,7 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(account);
+    // console.log(account);
   }, [loading]);
 
   if (loading === true) {

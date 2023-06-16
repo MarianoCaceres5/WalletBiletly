@@ -9,8 +9,7 @@ import about from "../public/icons/about.png"
 import signout from "../public/icons/signout.png"
 
 
-export default function Settings({nft, account}) {
-  console.log(account)
+export default function Settings({route}) {
   return (
     <>
       <Encabezado />
@@ -19,40 +18,43 @@ export default function Settings({nft, account}) {
 
         <View style={styles.line} />
 
-        <Text style={styles.subtitle}> Address </Text>
-        <div style={styles.flexContainer}>
-          <Text style={styles.address}> 0012212233 </Text>
-          <Image source={{ uri: copy }} style={{ width: 29, height: 29 }} />
-        </div>
+        <View>
+          <Text style={styles.subtitle}>Address</Text>
+          <View style={styles.addressContainer}>          
+            <Text style={[styles.address, styles.w75]}> {route.params.account} </Text>
+            <Image source={{ uri: copy }} style={{ width: 29, height: 29, marginLeft:20 }} />
+          </View>
+        </View>
+        
 
         <View style={styles.line} />
 
         <View style={styles.flexColumnContainer}>
 
-          <div style={styles.flexContainer}>
+          <View style={styles.flexContainer}>
             <Image source={{ uri: home }} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> Home </Text>
-          </div>
+          </View>
 
-          <div style={styles.flexContainer}>
+          <View style={styles.flexContainer}>
             <Image source={{ uri: help }} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> Looking for help </Text>
-          </div>
+          </View>
 
-          <div style={styles.flexContainer}>
+          <View style={styles.flexContainer}>
             <Image source={{ uri: about }} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> About Biletly </Text>
-          </div>
+          </View>
 
         </View>
 
         <View style={styles.line} />
 
         <View style={styles.flexColumnContainer}>
-          <div style={styles.flexContainer}>
+          <View style={styles.flexContainer}>
             <Image source={{ uri: signout }} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> Sign Out </Text>
-          </div>
+          </View>
         </View>
 
       </View>
@@ -74,15 +76,13 @@ const styles = StyleSheet.create({
     margin: 30,
   },
   subtitle: {
-    fontSize: 22,
-    fontWeight: "semibold",
+    fontSize: 24,
+    fontWeight: "bold",
     color: "white",
-    alignSelf: "baseline",
-    paddingHorizontal: 40,
+    marginLeft: 70,
     marginTop: 30,
   },
   address: {
-    marginTop: 10,
     fontSize: 16,
     fontWeight: "medium",
     color: "white",
@@ -94,8 +94,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#282828"
   },
   flexContainer: {
+    backgroundColor: 'yelllow',
     display: "flex",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: "center",
     marginBottom: 30,
   },
   flexColumnContainer: {
@@ -107,10 +110,26 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "semibold",
     color: "white",
     alignSelf: "flex-start",
     paddingHorizontal: 15,
+  },
+  addressContainer: {
+    width: '100%',
+    display: "flex",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 50,
+    paddingTop: 0,
+    marginBottom: 25
+
+    
+  },
+  w75: {
+    width: '75%'
   }
 })

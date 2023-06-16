@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-
 import Home from "../Home.js";
 import Settings from "../Settings.js";
 import ScanQr from "../ScanQr.js";
@@ -15,7 +14,8 @@ import walletverde from "../../public/icons/walletverde.png";
 
 const Tab = createBottomTabNavigator();
 
-export default function Navbar() {
+export default function Navbar({route}) {
+  // console.log(route.params.account)
   const [homeSeleccionada, setIconoHome] = useState(true);
   const [settingsSeleccionada, setIconoSettings] = useState(false);
 
@@ -37,6 +37,7 @@ export default function Navbar() {
       borderTopRightRadius: 15,
       border: "none",
       display: "flex",
+      position: "relative",
       justifyContent: "center"
     },
     tabBarInactiveTintColor: "#282828",
@@ -47,7 +48,7 @@ export default function Navbar() {
     <Tab.Navigator screenOptions={options}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        children={()=><Home route={route}/>}
         options={{
           // tabBarBadge: 2
           tabBarIcon: () => (
@@ -66,23 +67,31 @@ export default function Navbar() {
 
       <Tab.Screen
         name="ScanQR"
-        component={ScanQr}
+        children={()=><ScanQr route={route}/>}
         options={{
           tabBarIcon: () => (
             <Image
               source={{ uri: qr }}
-              style={[{ width: 70, height: 70, marginBottom: 23, border: 10, borderColor: 'black' }, styles.shadow]}
-            />
+              style={[{ width: 70, height: 70, marginBottom: 23, border: 50, borderColor: 'white' }, styles.shadow]}
+            />            
           ),
           tabBarStyle: {
             display: "none", 
           }, 
         }}
+        listeners={{
+          tabPress: (e) => {
+            if (!homeSeleccionada) {
+              setIconoHome(!homeSeleccionada);
+              setIconoSettings(!settingsSeleccionada);
+            }
+          },
+        }}
       />
 
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        children={()=><Settings route={route}/>}
         style={styles.back}
         options={{
           tabBarIcon: () => (
@@ -112,9 +121,9 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   shadow: {
-    shadowColor: "black",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowColor: "#0EDB88",
+    shadowOffset: { width: 0, height: 0, },
+    shadowOpacity: 0.4,
+    shadowRadius: 7,
   },
 });

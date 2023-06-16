@@ -5,8 +5,9 @@ import { ethers } from "ethers";
 import Navbar from "./components/Navbar";
 
 const Rutas = ({ navigation, route }) => {
+  // console.log(route.params.account)
   return (
-    <Navbar navigation={navigation}  />
+    <Navbar navigation={navigation} route={route}/>
   );
 };
 
