@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable,ScrollView } from "react-native";
 import Logo from "../public/logo.png";
 import { ethers } from "ethers";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
+import 'typeface-inter';
+
+
 const Home = ({ navigation, route }) => {
 
   const [ticketCount, setTicketCount] = useState(0);
@@ -60,11 +63,44 @@ const Home = ({ navigation, route }) => {
     <>
     <Encabezado />
     <FiltersSection />
-    <View style={styles.container}>
+   
+
+    <View style={styles.container2}>
+      <ScrollView contentContainerStyle = {styles.scrollContainer} vertical={true}>
+
+         {/* <View style={styles.NFTContainer}>
         {tickets.map(ticket => (
           <Text style={styles.title}>{ticket.name}</Text>
+          <Text style={[styles.NFTText, styles.fuente]}>{ticket.fecha}</Text>
         ))}
-    </View> 
+    </View>  */}
+
+        <View style={styles.NFTContainer}>
+         <Image source = {{uri:"https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg"}} style={styles.ImageNFT}></Image>
+        <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
+        <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>
+       
+        </View> 
+
+        <View style={styles.NFTContainer}>
+         <Image source = {{uri:"https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg"}} style={styles.ImageNFT}></Image>
+        <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
+        <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>
+        </View> 
+
+        <View style={styles.NFTContainer}>
+         <Image source = {{uri:"https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg"}} style={styles.ImageNFT}></Image>
+        <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
+        <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>
+        </View> 
+
+
+      </ScrollView>
+      
+      </View>
+
+     
+  
 
     </>
   );
@@ -121,6 +157,44 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.2,
     shadowRadius: 3,
-  }
+  },
+  container2:{
+    height:'100%',
+    width:'100%',
+    backgroundColor:'#181818',
+  },
+  NFTContainer:{
+    marginBottom:20,
+    backgroundColor:'#0EDB88',
+    height:355,
+    borderRadius:20,
+    alignContent:'center',
+    width:'75%',
+    alignItems:'center',
+  },
+  scrollContainer:{
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center',
+    padding:40
+  },
+  ImageNFT:{
+    objectFit: 'contain',
+    width:'85%',
+    height:'70%',
+    marginTop:20,
+    borderRadius:10
+  },
+  NFTName:{
+    marginTop:10,
+    fontSize:20
+  }, 
+  NFTDate:{
+    marginTop:10,
+    fontSize:15
+  },
+  fuente:{
+    fontFamily:"Inter"
+  },  
 });
 export default Home;
