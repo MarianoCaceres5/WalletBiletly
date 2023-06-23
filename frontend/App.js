@@ -11,6 +11,7 @@ import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
 import Home from "./screens/Home";
 import Rutas from "./screens/Rutas";
+import NFTDetail from './screens/NFTDetail'
 
 const Stack = createNativeStackNavigator();
 
@@ -86,11 +87,11 @@ function App() {
             component={Rutas}
             initialParams={{ nft: nft, account: account }}
           />
-          {/* <Stack.Screen
-            name="Settings"
-            component={Rutas}
-            initialParams={{ nft: nft, account: account }}
+          <Stack.Screen
+            name="NFTDetail"
+            component={NFTDetail}
           />
+          {/*
           <Stack.Screen
             name="ScanQr"
             component={ScanQr}

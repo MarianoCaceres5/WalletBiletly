@@ -14,7 +14,7 @@ import walletverde from "../../public/icons/walletverde.png";
 
 const Tab = createBottomTabNavigator();
 
-export default function Navbar({route}) {
+export default function Navbar({navigation, route}) {
   // console.log(route.params.account)
   const [homeSeleccionada, setIconoHome] = useState(true);
   const [settingsSeleccionada, setIconoSettings] = useState(false);
@@ -48,7 +48,7 @@ export default function Navbar({route}) {
     <Tab.Navigator screenOptions={options}>
       <Tab.Screen
         name="Home"
-        children={()=><Home route={route}/>}
+        children={()=><Home navigation={navigation} route={route}/>}
         options={{
           // tabBarBadge: 2
           tabBarIcon: () => (
