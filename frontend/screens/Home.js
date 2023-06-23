@@ -7,6 +7,8 @@ import FiltersSection from "./components/FiltersSection";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { VirtualizedList } from "react-native-web";
+import axios from "axios";
+import client , {subdomain} from '../config/Infura.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,43 +18,72 @@ const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState([]);
 
-
   const loadContract = async () => {
-    setTicketCount(ethers.utils.formatEther(await route.params.nft.tokenCount()))
-    let items = []
-    for (let i = 1; i <= ticketCount; i++) {
-      const ticket = await nft.entradas(i);
-      // if (!(await nft.ticketSold(i))) {
-      const uri = await nft.tokenURI(i);
-      const response = await fetch(uri);
-      const metadata = await response.json()
-      items.push({
-        itemId: ticket.idEntrada,
-        owner: nft.getOwner(ticket.idEntrada),
-        name: metadata.name,
-        description: metadata.description,
-        image: metadata.image
-      });
-      // }
-    }
-    setLoading(false);
-    setTickets(items);
-
-    ////
-
-    items.push({
-      itemId: 1,
-      owner: "0x1b6CDbBdc13C607416cE3C535D4A04e6C0a5be7b",
-      name: "Ticket Prueba",
-      description: "Descripcion de ticket de prueba",
-      image: Logo
+    axios
+    .get("http://localhost:912/api/Tickets/TicketxUsuario/" + route.params?.account)
+    .then((result) => {   
+      let tickets = result.data;      
+      tickets.map(ticket =>{
+        if(!ticket.tieneNFT){
+          let foto = uploadToIPFS(ticket);
+          axios
+          .get("http://localhost:912/api/Tickets/EventoxEntrada/" + ticket.idEntrada)
+          .then((result) => {  
+            let evento = result.data;
+            let nftTicket = {
+              address: route.params?.account,
+              name: evento.nombre,
+              date: evento.fecha,
+              image: foto,
+              number: ticket.numAsiento,              
+              description: "EVENT: " + evento.nombre + " - NUMBER: " + ticket.numAsiento + " - DATE: " + evento.fecha
+            }
+            createNFT(nftTicket, evento);
+          })
+          .catch(error =>{
+            console.log(error);
+          })                   
+        }
+      })
+      
+    })
+    .catch((error) => {
+      console.log(error);
     });
-    setTickets(items);
+  }  
 
-  }
+  const uploadToIPFS = async (ticket) => {
+    let file = ticket.imagen;
+    if (typeof file != undefined && typeof file != null) {
+      try {
+        const result = await client.add(file);
+        return (`${subdomain}/ipfs/${result.path}`);
+      } catch (error) {
+        console.log("ipfs image upload error: ", error);
+      }
+    }
+  };
+
+  const createNFT = async (nftTicket, evento) => {
+    try {      
+      console.log();
+        const result = await client.add(
+          JSON.stringify({ nftTicket })
+        );
+        console.log(result);
+        mintThenList(result, nftTicket, evento);      
+    } catch (error) {
+      console.log("ipfs uri upload error: ", error);
+    }
+  };
+
+  const mintThenList = async (result, nftTicket, evento) => {
+    const uri = `${subdomain}/ipfs/${result.path}`;
+    await (await nft.mint(nftTicket.address, uri, nftTicket.description, evento)).wait();
+  };
+
 
   useEffect(() => {
-    console.log(route.params?.nft)
     loadContract()
   }, [])
 
@@ -65,36 +96,18 @@ const Home = ({ navigation, route }) => {
     <>
       <Encabezado />
       <FiltersSection />
-
-
+      
       <View style={styles.container2}>
         <ScrollView contentContainerStyle={styles.scrollContainer} vertical={true}>
 
-          {/* <View style={styles.NFTContainer}>
-        {tickets.map(ticket => (
-          <Text style={styles.title}>{ticket.name}</Text>
-          <Text style={[styles.NFTText, styles.fuente]}>{ticket.fecha}</Text>
-        ))}
-    </View>  */}
-
-          <TouchableOpacity style={styles.NFTContainer} onPress={() => navigation.navigate('NFTDetail', 'Emilia')}>
-            <Image source={{ uri: "https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg" }} style={styles.ImageNFT}></Image>
-            <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
-            <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>            
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.NFTContainer}>
-            <Image source={{ uri: "https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg" }} style={styles.ImageNFT}></Image>
-            <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
-            <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.NFTContainer}>
-            <Image source={{ uri: "https://viapais.com.ar/resizer/8Y5cvKSM5upWUNZalRBN2DN09mo=/1023x1377/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/WBXAJ37TV5HDDFH3DCKJ6TW5CQ.jpg" }} style={styles.ImageNFT}></Image>
-            <Text style={[styles.NFTName, styles.fuente]}>Emilia</Text>
-            <Text style={[styles.NFTDate, styles.fuente]}>7/6/2023</Text>
-          </TouchableOpacity>
-
+          {tickets.map(ticket =>
+            <TouchableOpacity style={styles.NFTContainer} onPress={() => navigation.navigate('NFTDetail', 'Emilia')}>
+              <Image source={{ uri: ticket.image}} style={styles.ImageNFT}></Image>
+              <Text style={[styles.NFTName, styles.fuente]}>{ticket.name}</Text>
+              <Text style={[styles.NFTDate, styles.fuente]}>{ticket.description}</Text>            
+            </TouchableOpacity>
+          )}         
+        
         </ScrollView>
 
       </View>

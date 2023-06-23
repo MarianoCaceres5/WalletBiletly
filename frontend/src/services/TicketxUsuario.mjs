@@ -61,7 +61,7 @@ export default class TicketxUsuarioService {
       let result = await pool
         .request()
         .input("pAddress", sql.VarChar, address)        
-        .query(`SELECT Entrada.numAsiento as numAsiento, Entrada.imagen as imagen, Entrada.tieneNFT as tieneNFT, Entrada.descripcion as descripcion, Entrada.idEvento as idEvento from EntradaxUsuario 
+        .query(`SELECT Entrada.idEntrada as idEntrada, Entrada.numAsiento as numAsiento, Entrada.imagen as imagen, Entrada.tieneNFT as tieneNFT, Entrada.descripcion as descripcion, Entrada.idEvento as idEvento from EntradaxUsuario 
                 inner join Usuario on Usuario.idUsuario = EntradaxUsuario.idUsuario
                 inner join Entrada on Entrada.idEntrada = EntradaxUsuario.idEntrada
                 WHERE Usuario.address = @pAddress`);

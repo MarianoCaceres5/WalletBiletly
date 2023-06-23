@@ -39,44 +39,10 @@ contract NFT is ERC721URIStorage, Ownable, ReentrancyGuard, RoyaltiesV2Impl{
     constructor(uint96 _porcentajeReventa) ERC721("NFTicket", "TICKET"){
         porcentajeReventa = _porcentajeReventa;
         cuentaMaestra = payable(msg.sender);
-    }    
+    }        
 
-    /*function mint(string memory _tokenURI, string memory _descripcion, uint _precio, Evento memory _evento) external nonReentrant onlyOwner() returns (uint){ // NO SE SI PONERLE ONLYOWNER
-
-        tokenCount++;
-        // require(_precio > 0, "ERC721: Price must be greater than zero");
-        require(!_exists(tokenCount), "ERC721: Ticket already exists");
-        _safeMint(msg.sender, tokenCount);
-        _setTokenURI(tokenCount, _tokenURI);
-        
-        Entrada memory attributes;
-        attributes.idEntrada = tokenCount;
-        attributes.descripcion = _descripcion;
-        attributes.precio = _precio;        
-        entradas[tokenCount] = attributes;        
-
-        Evento memory evento;
-        evento.idEvento = _evento.idEvento;
-        evento.fecha = _evento.fecha;
-        evento.nombre = _evento.nombre;
-        evento.descripcion = _evento.descripcion;
-        entradasEventos[tokenCount] = evento;
-
-        _entradaVendida[tokenCount] = false;
-        _entradaUtilizada[tokenCount] = false;
-        _propietarioEntrada[tokenCount] = msg.sender;
-
-        emit Offered(
-            tokenCount,
-            _precio,
-            payable(msg.sender)
-        );
-
-        return tokenCount;
-    } */
-
-    //Manda address por param, no manda precio
-    function mint(address _address, string memory _tokenURI, string memory _descripcion, Evento memory _evento) external nonReentrant onlyOwner() returns (uint){ // NO SE SI PONERLE ONLYOWNER
+    //Manda address por param, no manda precio, no hay
+    function mint(address _address, string memory _tokenURI, string memory _descripcion, Evento memory _evento) external returns (uint){ // NO SE SI PONERLE ONLYOWNER
 
         tokenCount++;
         // require(_precio > 0, "ERC721: Price must be greater than zero");

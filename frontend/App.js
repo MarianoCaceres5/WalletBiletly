@@ -6,12 +6,10 @@ import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ethers } from "ethers";
-import ScanQr from "./screens/ScanQr";
 import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
-import Home from "./screens/Home";
 import Rutas from "./screens/Rutas";
-import NFTDetail from './screens/NFTDetail'
+import NFTDetail from "./screens/NFTDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +23,6 @@ function App() {
       method: "eth_requestAccounts",
     });
     setAccount(accounts[0]);
-    console.log(account);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
@@ -87,16 +84,7 @@ function App() {
             component={Rutas}
             initialParams={{ nft: nft, account: account }}
           />
-          <Stack.Screen
-            name="NFTDetail"
-            component={NFTDetail}
-          />
-          {/*
-          <Stack.Screen
-            name="ScanQr"
-            component={ScanQr}
-            initialParams={{ nft: nft, account: account }}
-          /> */}
+          <Stack.Screen name="NFTDetail" component={NFTDetail} />
         </Stack.Navigator>
       </NavigationContainer>
     );
