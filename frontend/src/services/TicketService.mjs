@@ -4,6 +4,7 @@ import config from "../../dbconfig.mjs";
 export default class TicketService {
   getEntradas = async () => {
     let resultado = null;
+    console.log('getEntradas')
     try {
       let pool = await sql.connect(config);
       let result = await pool.request().query("SELECT * FROM Entrada");
@@ -17,6 +18,7 @@ export default class TicketService {
 
   getEventoxIdEntrada = async (id) => {
     let resultado = null;
+    console.log('getEventoxIdEntrada')
 
     try {
       let pool = await sql.connect(config);
@@ -34,7 +36,7 @@ export default class TicketService {
 
   getEntradaxId = async (id) => {
     let resultado = null;
-
+    console.log('getEntradaxId')
     try {
       let pool = await sql.connect(config);
       let result = await pool
@@ -51,6 +53,7 @@ export default class TicketService {
 
   updateEntrada = async (id) => {
     let resultado = null;
+    console.log('updateEntrada')
     try {
       let pool = await sql.connect(config);
       let result = await pool
@@ -63,4 +66,5 @@ export default class TicketService {
     }
     return resultado;
   };
+
 }
