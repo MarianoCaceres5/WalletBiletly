@@ -1,10 +1,10 @@
 
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer/';
+import {REACT_APP_PROJECT_ID, REACT_APP_PROJECT_SECRET_KEY} from '@env'
 
 const projectId = process.env.REACT_APP_PROJECT_ID; 
 const projectSecretKey = process.env.REACT_APP_PROJECT_SECRET_KEY;
-// console.log(projectId);
 const auth = `Basic ${Buffer.from(`${projectId}:${projectSecretKey}`).toString(
     "base64"
 )}`

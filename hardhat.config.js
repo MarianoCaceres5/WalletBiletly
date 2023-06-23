@@ -25,7 +25,4 @@ module.exports = {
     // domains: ["<subdomain>.infura-ipfs.io", "infura-ipfs.io"]
     domains: ["infura-ipfs.io"]
   },
-  plugins:[
-    new Dotenv()
-  ]
 };
