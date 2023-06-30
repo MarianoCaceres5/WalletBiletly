@@ -1,9 +1,7 @@
 import React, { useState }  from 'react'
-import { Image,View,StyleSheet,TextInput,Text,TouchableHighlight,Modal,Button,ScrollView,SafeAreaView } from 'react-native-web'
-//import { TouchableHighlight } from 'react-native/types';
-// import 'typeface-inter';
-
+import { Image, View, StyleSheet, TextInput, Text, TouchableHighlight, Modal, Button } from 'react-native-web'
 import filterIcon from "../../public/icons/filter.png";
+
 export default function FiltersSection() {
 
   const [modalVisible, setModalVisible] = useState(false);

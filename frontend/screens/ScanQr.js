@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../public/icons/arrow-back.png";
 
-
 export default function ScanQr({route}) {
   const navigation = useNavigation();
 

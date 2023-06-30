@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "../Home.js";

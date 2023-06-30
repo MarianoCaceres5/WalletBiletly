@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import Logo from "../public/logo.png";
 import Ticket from "../public/ticket.png";
 import Arrow from "../public/arrow-icon.png";
-import Navbar from "./components/Navbar";
-import { NavigationContainer } from "@react-navigation/native";
+
 const Onboarding = ({ navigation }) => {
+  
   const [showFirstPage, setShowFirstPage] = useState(true);
 
   useEffect(() => {

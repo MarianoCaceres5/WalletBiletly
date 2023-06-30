@@ -4,18 +4,14 @@ import {
   Text,
   StyleSheet,
   Image,
-  Pressable,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { ethers } from "ethers";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axios from "axios";
 import client, { subdomain } from "../config/Infura.js";
 
-const Stack = createNativeStackNavigator();
 
 const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
@@ -67,7 +63,7 @@ const Home = ({ navigation, route }) => {
         console.log(error);
       });
 
-      loadHome()
+    loadHome()
   };
 
   const uploadToIPFS = async (ticket) => {
@@ -75,6 +71,7 @@ const Home = ({ navigation, route }) => {
     if (typeof file != undefined && typeof file != null) {
       try {
         const result = await client.add(file);
+        console.log(result)
         return `${subdomain}/ipfs/${result.path}`;
       } catch (error) {
         console.log("ipfs image upload error: ", error);
@@ -84,9 +81,7 @@ const Home = ({ navigation, route }) => {
 
   const createNFT = async (nftTicket, evento) => {
     try {
-      console.log();
       const result = await client.add(JSON.stringify({ nftTicket }));
-      console.log(result);
       mintThenList(result, nftTicket, evento);
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
@@ -94,27 +89,27 @@ const Home = ({ navigation, route }) => {
   };
 
   const mintThenList = async (result, nftTicket, evento) => {
-    const uri = `${subdomain}/ipfs/${result.path}`;
-    console.log(result);
-    console.log(nftTicket);
-    console.log(evento);
-    await route.params?.nft.mint(
-      nftTicket.address,
-      uri,
-      nftTicket.description,
-      evento
-    ).wait;
+    const uri = `${subdomain}/ipfs/${result.path}`;    
+    try{
+      await route.params?.nft.mint(
+        route.params?.account,
+        uri,
+        nftTicket.description,
+        evento
+      );
+    }catch{
 
-    // axios
-    //   .put("http://localhost:912/api/Tickets/" + nftTicket.id)
-    //   .then((result) => {
-    //     // console.log(result);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-      
-    console.log((await route.params?.nft.tokenCount()).toNumber())
+    }    
+
+    axios
+      .put("http://localhost:912/api/Tickets/" + nftTicket.id)
+      .then((result) => {
+        //console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
     // let body = {
     //   "tokenCount": (tokenCount.toNumber()),
     //   "idEntrada": nftTicket.id,
@@ -138,6 +133,7 @@ const Home = ({ navigation, route }) => {
       const uri = await route.params?.nft.tokenURI(i);
       const response = await fetch(uri);
       const metadata = await response.json();
+      console.log(await fetch(metadata.nftTicket.image))
       tickets.push({
         id: ticket.idEntrada,
         name: metadata.nftTicket.name,
@@ -154,7 +150,6 @@ const Home = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    console.log(nfts)
     setLoading(false);
   }, [nfts]);
 

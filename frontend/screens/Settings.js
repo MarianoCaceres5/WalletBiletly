@@ -1,7 +1,6 @@
 import React from 'react'
 import Encabezado from './components/Encabezado'
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-
+import { View, Text, StyleSheet, Image } from "react-native";
 import copy from "../public/icons/copy.png"
 import home from "../public/icons/home.png"
 import help from "../public/icons/help.png"

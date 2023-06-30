@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import Logo from "../public/logo.png";
-import { ethers } from "ethers";
+import React from "react";
+import { StyleSheet } from "react-native";
 import Navbar from "./components/Navbar";
 
 const Rutas = ({ navigation, route }) => {

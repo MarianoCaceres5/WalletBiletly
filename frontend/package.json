@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"expo start --web --tunnel\" \"node server.mjs\"",
+    "start": "concurrently \"expo-cli start --tunnel\" \"node server.mjs\"",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"
@@ -39,9 +39,7 @@
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-web": "~0.18.11",
-    "stack": "^0.1.0",
-    "typeface-inter": "^3.18.1"
+    "react-native-web": "~0.18.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.5",

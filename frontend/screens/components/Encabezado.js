@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Pressable, Header } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import logo from "../../public/logo.png";
 
 export default function Encabezado() {
