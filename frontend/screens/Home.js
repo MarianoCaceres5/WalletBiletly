@@ -61,34 +61,40 @@ const Home = ({ navigation, route }) => {
         console.log(error);
       });
 
-    loadHome()
+    loadHome();
   };
 
   const uploadToIPFS = async (ticket) => {
+    //console.log("link del drive: " + ticket.imagen)
+    let file = ticket.imagen;
 
-    let myImage;
-
-    fetch('https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg')
-      .then(res => res.blob()) // Gets the response and returns it as a blob
-      .then(blob => {
-        // Here's where you get access to the blob
-        // And you can use it for whatever you want
-        // Here, I use it to make an image appear on the page
-        let objectURL = URL.createObjectURL(blob);
-        myImage = new Image();
-        myImage.src = objectURL;
-    });
-
-    let file = 'https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg';
     if (typeof file != undefined && typeof file != null) {
       try {
         const result = await client.add(file);
-        console.log(result)
+        console.log(result);
         return `${subdomain}/ipfs/${result.path}`;
       } catch (error) {
         console.log("ipfs image upload error: ", error);
       }
     }
+  };
+
+  let ObtenerImagenNFT = async (img) => {
+
+    let resultado = '';
+
+    await axios
+      .get(img)
+      .then((result) => {
+        console.log("estoy en funcion");
+        console.log("lo que se obtiene del axios en funcion: " + result.data);
+        resultado  = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
+    return resultado;
   };
 
   const createNFT = async (nftTicket, evento) => {
@@ -101,17 +107,15 @@ const Home = ({ navigation, route }) => {
   };
 
   const mintThenList = async (result, nftTicket, evento) => {
-    const uri = `${subdomain}/ipfs/${result.path}`;    
-    try{
+    const uri = `${subdomain}/ipfs/${result.path}`;
+    try {
       await route.params?.nft.mint(
         route.params?.account,
         uri,
         nftTicket.description,
         evento
       );
-    }catch{
-
-    }    
+    } catch {}
 
     axios
       .put("http://localhost:912/api/Tickets/" + nftTicket.id)
@@ -121,20 +125,6 @@ const Home = ({ navigation, route }) => {
       .catch((error) => {
         console.log(error);
       });
-  
-    // let body = {
-    //   "tokenCount": (tokenCount.toNumber()),
-    //   "idEntrada": nftTicket.id,
-    // }
-    // axios    
-    // .post("http://localhost:912/api/Tickets/NFT/", body)
-    // .then((result) => {    
-    //     // console.log(result);
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    // });
-    
   };
 
   const loadHome = async () => {
@@ -145,21 +135,26 @@ const Home = ({ navigation, route }) => {
       const evento = await route.params?.nft.entradasEventos(i);
       let fecha = new Date(evento.fecha);
       fecha = fecha.toISOString().substring(0, 10);
-      console.log(evento.fecha)
       const uri = await route.params?.nft.tokenURI(i);
       const response = await fetch(uri);
       const metadata = await response.json();
+
+      console.log("ipfs: " + metadata.nftTicket.image);
+
+      let img = await ObtenerImagenNFT(metadata.nftTicket.image);
+
       tickets.push({
         id: ticket.idEntrada,
         name: metadata.nftTicket.name,
         number: metadata.nftTicket.number,
         description: metadata.nftTicket.description,
-        image: metadata.nftTicket.image,
-        date: fecha
+        image: img,
+        date: fecha,
       });
     }
+
     setNFTs(tickets);
-  }
+  };
 
   useEffect(() => {
     loadContract();
@@ -189,17 +184,16 @@ const Home = ({ navigation, route }) => {
             <TouchableOpacity
               key={i}
               style={styles.NFTContainer}
-              onPress={() => navigation.navigate("NFTDetail", "Emilia")}
+              onPress={() => navigation.navigate("NFTDetail", ticket)}
             >
               <View style={styles.NFTContainerGreen}></View>
               <Image
-                source={{ uri: 'https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg' }}
+                source={{ uri: ticket.image }}
                 style={styles.ImageNFT}
               ></Image>
               <Text style={[styles.NFTName, styles.fuente]}>{ticket.name}</Text>
-              <Text style={[styles.NFTDate, styles.fuente]}>
-                {ticket.date}
-              </Text>
+
+              <Text style={[styles.NFTDate, styles.fuente]}>{ticket.date}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -278,7 +272,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0EDB88",
     height: "45%",
     width: "100%",
-    position: 'absolute',
+    position: "absolute",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -298,12 +292,12 @@ const styles = StyleSheet.create({
   NFTName: {
     marginTop: 15,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   NFTDate: {
     marginTop: 5,
     fontSize: 15,
-    fontWeight: 'normal'
+    fontWeight: "normal",
   },
   fuente: {
     fontFamily: "Inter",
