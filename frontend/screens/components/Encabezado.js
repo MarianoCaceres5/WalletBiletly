@@ -7,7 +7,7 @@ export default function Encabezado() {
     <>
       <View style={styles.container}>
         <Image source={{ uri: logo }} style={{ width: 53, height: 53 }} />
-        <Text style={[styles.titulo, styles.fuente]}>Biletly</Text>
+        <Text style={[styles.titulo]}>Biletly</Text>
       </View>
     </>
   );
