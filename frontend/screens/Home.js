@@ -10,8 +10,7 @@ import {
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
 import axios from "axios";
-import client, { subdomain } from "../config/Infura.js";
-
+import client, { subdomain } from "../src/config/Infura.js";
 
 const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,6 @@ const Home = ({ navigation, route }) => {
         tickets.map(async (ticket) => {
           if (!ticket.tieneNFT) {
             let foto = await uploadToIPFS(ticket);
-            console.log(foto);
             axios
               .get(
                 "http://localhost:912/api/Tickets/EventoxEntrada/" +
@@ -67,7 +65,21 @@ const Home = ({ navigation, route }) => {
   };
 
   const uploadToIPFS = async (ticket) => {
-    let file = ticket.imagen;
+
+    let myImage;
+
+    fetch('https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg')
+      .then(res => res.blob()) // Gets the response and returns it as a blob
+      .then(blob => {
+        // Here's where you get access to the blob
+        // And you can use it for whatever you want
+        // Here, I use it to make an image appear on the page
+        let objectURL = URL.createObjectURL(blob);
+        myImage = new Image();
+        myImage.src = objectURL;
+    });
+
+    let file = 'https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg';
     if (typeof file != undefined && typeof file != null) {
       try {
         const result = await client.add(file);
@@ -130,16 +142,20 @@ const Home = ({ navigation, route }) => {
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
       const ticket = await route.params?.nft.entradas(i);
+      const evento = await route.params?.nft.entradasEventos(i);
+      let fecha = new Date(evento.fecha);
+      fecha = fecha.toISOString().substring(0, 10);
+      console.log(evento.fecha)
       const uri = await route.params?.nft.tokenURI(i);
       const response = await fetch(uri);
       const metadata = await response.json();
-      console.log(await fetch(metadata.nftTicket.image))
       tickets.push({
         id: ticket.idEntrada,
         name: metadata.nftTicket.name,
         number: metadata.nftTicket.number,
         description: metadata.nftTicket.description,
         image: metadata.nftTicket.image,
+        date: fecha
       });
     }
     setNFTs(tickets);
@@ -175,13 +191,14 @@ const Home = ({ navigation, route }) => {
               style={styles.NFTContainer}
               onPress={() => navigation.navigate("NFTDetail", "Emilia")}
             >
+              <View style={styles.NFTContainerGreen}></View>
               <Image
-                source={{ uri: ticket.image }}
+                source={{ uri: 'https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg' }}
                 style={styles.ImageNFT}
               ></Image>
               <Text style={[styles.NFTName, styles.fuente]}>{ticket.name}</Text>
               <Text style={[styles.NFTDate, styles.fuente]}>
-                {ticket.description}
+                {ticket.date}
               </Text>
             </TouchableOpacity>
           ))}
@@ -250,12 +267,20 @@ const styles = StyleSheet.create({
   },
   NFTContainer: {
     marginBottom: 20,
-    backgroundColor: "#0EDB88",
-    height: 355,
+    backgroundColor: "white",
+    height: 417,
     borderRadius: 20,
     alignContent: "center",
-    width: "75%",
+    width: "80%",
     alignItems: "center",
+  },
+  NFTContainerGreen: {
+    backgroundColor: "#0EDB88",
+    height: "45%",
+    width: "100%",
+    position: 'absolute',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   scrollContainer: {
     justifyContent: "center",
@@ -268,18 +293,21 @@ const styles = StyleSheet.create({
     width: "85%",
     height: "70%",
     marginTop: 20,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   NFTName: {
-    marginTop: 10,
+    marginTop: 15,
     fontSize: 20,
+    fontWeight: 'bold'
   },
   NFTDate: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 15,
+    fontWeight: 'normal'
   },
   fuente: {
     fontFamily: "Inter",
   },
 });
+
 export default Home;

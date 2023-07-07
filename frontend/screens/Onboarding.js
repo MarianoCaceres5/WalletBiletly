@@ -10,9 +10,8 @@ const Onboarding = ({ navigation }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowFirstPage(false);
-      // navigation.navigate('SecondScreen'); // Cambia 'SecondScreen' por el nombre de la segunda pantalla en tu aplicación
-    }, 1);
+      setShowFirstPage(false);      
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
