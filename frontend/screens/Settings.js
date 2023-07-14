@@ -1,6 +1,7 @@
 import React from "react";
 import Encabezado from "./components/Encabezado";
 import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from "react-native";
+import Clipboard from '@react-native-community/clipboard';
 import copy from "../public/icons/copy.png";
 import home from "../public/icons/home.png";
 import help from "../public/icons/help.png";
@@ -23,10 +24,14 @@ export default function Settings({ route }) {
             <Text style={[styles.address, styles.w75]}>
               {route.params.account}
             </Text>
-            <Image
-              source={copy}
-              style={{ width: 29, height: 29, marginLeft: 20 }}
-            />
+            <TouchableOpacity onPress={() => {
+              console.log(typeof Clipboard.setString)              
+            }}>
+              <Image
+                source={copy}
+                style={{ width: 29, height: 29, marginLeft: 20 }}
+              />
+            </TouchableOpacity>            
           </View>
         </View>
 

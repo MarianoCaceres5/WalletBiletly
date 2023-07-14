@@ -1,24 +1,58 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import React, {useEffect, useState} from "react";
+import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../public/icons/arrow-back.png";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 export default function ScanQr({route}) {
 
+  const [hasPermission, setHasPermission] = useState(false); 
+  const [scanData, setScanData] = useState();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    (async() => {
+      const {status} = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted")
+    })();
+  }, []);
+
+  if(!hasPermission){
+    return (
+      <>
+        <View style={styles.container}>
+          <Text>Please grant camera</Text>
+        </View>       
+      </>
+    );
+  }
+
+  const handleBarCodeScanned = ({type, data}) => {
+    setScanData(data)
+    console.log("Data: " + data)
+  }
 
   return (
     <>
       <View style={styles.container}>
+        <BarCodeScanner
+          style={StyleSheet.absoluteFillObject} 
+          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}          
+        />
+        {scanData && <Button title="Scan Again" onPress={() => setScanData(undefined)}></Button>}
+      </View>
+
+
+      {/* <View style={styles.container}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image source={arrowBack} style={styles.arrowBackIcon} />
         </Pressable>
-      </View>
+      </View> */}
 
-      <View style={styles.bottomRectangle}> 
+      {/* <View style={styles.bottomRectangle}> 
         <View style={styles.dragRectangle}></View>
         <Text style={styles.text}> Scan the QR </Text>
-      </View>
+      </View> */}
     </>
   );
 }

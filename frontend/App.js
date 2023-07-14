@@ -62,11 +62,11 @@ function App() {
     
   };
 
-  useEffect(() => {
-    if (isConnected) {
-      return provider?.disconnect();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     return provider?.disconnect();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (address !== null && address !== undefined && provider !== undefined) {
