@@ -1,5 +1,5 @@
 import React, { useState }  from 'react'
-import { Image, View, StyleSheet, TextInput, Text, TouchableHighlight, Modal, Button } from 'react-native-web'
+import { Image, View, StyleSheet, TextInput, Text, TouchableHighlight, Modal, Button } from 'react-native'
 import filterIcon from "../../public/icons/filter.png";
 
 export default function FiltersSection() {
@@ -17,7 +17,7 @@ export default function FiltersSection() {
     <View style= {styles.container}>
 
     <TouchableHighlight onPress={() => DisplayFilters()} activeOpacity={1}>
-    <Image source={{ uri: filterIcon }}  style={{ width: 50, height: 50 }}/>
+    <Image source={filterIcon}  style={{ width: 50, height: 50 }}/>
     </TouchableHighlight>
     
     <TextInput

@@ -10,7 +10,7 @@ import {
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
 import axios from "axios";
-import client, { subdomain } from "../src/config/Infura.js";
+// import client, { subdomain } from "../src/config/Infura.js";
 import NFTDetail from "./NFTDetail";
 
 const Home = ({ navigation, route }) => {
@@ -34,7 +34,7 @@ const Home = ({ navigation, route }) => {
                   ticket.idEntrada
               )
               .then((result) => {
-                let evento = result.data;                
+                let evento = result.data;
                 let fecha = new Date(evento.fecha);
                 fecha = fecha.toISOString().substring(0, 10);
                 evento.fecha = fecha;
@@ -85,20 +85,19 @@ const Home = ({ navigation, route }) => {
   };
 
   let ObtenerImagenNFT = async (img) => {
-
-    let resultado = '';
+    let resultado = "";
 
     await axios
       .get(img)
       .then((result) => {
         console.log("estoy en funcion");
         console.log("lo que se obtiene del axios en funcion: " + result.data);
-        resultado  = result.data;
+        resultado = result.data;
       })
       .catch((error) => {
         console.log(error);
       });
-      
+
     return resultado;
   };
 
@@ -130,7 +129,6 @@ const Home = ({ navigation, route }) => {
       .catch((error) => {
         console.log(error);
       });
-  
   };
 
   const loadHome = async () => {
@@ -155,7 +153,7 @@ const Home = ({ navigation, route }) => {
         description: metadata.nftTicket.description,
         image: metadata.nftTicket.image,
         date: fecha,
-        event: evento
+        event: evento,
       });
     }
 
@@ -190,20 +188,20 @@ const Home = ({ navigation, route }) => {
             <TouchableOpacity
               key={i}
               style={styles.NFTContainer}
-              onPress={() => navigation.navigate("NFTDetail", {
-                nft: {ticket},
-                navigation: {navigation}
-              })}
+              onPress={() =>
+                navigation.navigate("NFTDetail", {
+                  nft: { ticket },
+                  navigation: { navigation },
+                })
+              }
             >
               <View style={styles.NFTContainerGreen}></View>
               <Image
-                source={{ uri: ticket.image }}
+                source={ticket.image}
                 style={styles.ImageNFT}
               ></Image>
               <Text style={[styles.NFTName]}>{ticket.name}</Text>
-              <Text style={[styles.NFTDate]}>
-                {ticket.date}
-              </Text>
+              <Text style={[styles.NFTDate]}>{ticket.date}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -223,6 +221,9 @@ const styles = StyleSheet.create({
   arrow: {
     width: 35,
     height: 35,
+  },
+  white: {
+    color: "white",
   },
   image: {
     width: 200,
@@ -302,7 +303,7 @@ const styles = StyleSheet.create({
   NFTName: {
     marginTop: 15,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   NFTDate: {
     marginTop: 5,

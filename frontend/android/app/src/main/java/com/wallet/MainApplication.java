@@ -1,4 +1,4 @@
-package com.frontend;
+package com.wallet;
 
 import android.app.Application;
 import android.content.res.Configuration;

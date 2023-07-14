@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Touchable, TouchableOpacity } from "react-native";
 import Logo from "../public/logo.png";
 
 const Connection = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Image source={Logo} style={[styles.image, styles.shadow]} />
-      <Pressable
+      <TouchableOpacity
         style={[styles.button, styles.mt, styles.shadow]}
         onPress={() => route.params.onWeb3Handler()}
       >
         <Text style={[styles.title]}>Connect wallet</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };

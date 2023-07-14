@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
 import Logo from "../public/logo.png";
 import Ticket from "../public/ticket.png";
 import Arrow from "../public/arrow-icon.png";
@@ -34,12 +34,12 @@ const Onboarding = ({ navigation }) => {
           <Text style={[styles.subtitle, styles.textCenter, styles.mt]}>
             Connect your favorite wallet and make use of your NFTs
           </Text>
-          <Pressable
+          <TouchableOpacity
             style={[styles.nextButton, styles.mt, styles.shadow]}
             onPress={() => navigation.navigate("Connection")}
           >
             <Image style={[styles.arrow]} source={Arrow} />
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </>
     );

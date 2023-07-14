@@ -24,7 +24,7 @@ export default function NFTDetail({ route }) {
         <Pressable
           onPress={() => navigation.goBack()}>
           <Image 
-            source={{ uri : back}}
+            source={back}
             style={styles.arrowBack}            
           ></Image>
         </Pressable>        

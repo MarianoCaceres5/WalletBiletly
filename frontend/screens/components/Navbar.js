@@ -15,7 +15,7 @@ import walletverde from "../../public/icons/walletverde.png";
 const Tab = createBottomTabNavigator();
 
 export default function Navbar({navigation, route}) {
-  // console.log(route.params.account)
+  // console.log(route.params.address)
   const [homeSeleccionada, setIconoHome] = useState(true);
   const [settingsSeleccionada, setIconoSettings] = useState(false);
 
@@ -50,9 +50,8 @@ export default function Navbar({navigation, route}) {
         name="Home"
         children={()=><Home navigation={navigation} route={route}/>}
         options={{
-          // tabBarBadge: 2
           tabBarIcon: () => (
-            <Image source={{ uri: iconoW }} style={{ width: 50, height: 50, marginLeft: 30 }} />
+            <Image source={iconoW} style={{ width: 50, height: 50, marginLeft: 30 }} />
           ),
         }}
         listeners={{
@@ -71,7 +70,7 @@ export default function Navbar({navigation, route}) {
         options={{
           tabBarIcon: () => (
             <Image
-              source={{ uri: qr }}
+              source={qr}
               style={[{ width: 70, height: 70, marginBottom: 23, border: 50, borderColor: 'white' }, styles.shadow]}
             />            
           ),
@@ -96,7 +95,7 @@ export default function Navbar({navigation, route}) {
         options={{
           tabBarIcon: () => (
             <Image
-              source={{ uri: iconoSetting }}
+              source={iconoSetting}
               style={{ width: 50, height: 50, marginRight: 30 }}
             />
           ),

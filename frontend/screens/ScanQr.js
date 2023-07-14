@@ -4,13 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../public/icons/arrow-back.png";
 
 export default function ScanQr({route}) {
+
   const navigation = useNavigation();
 
   return (
     <>
       <View style={styles.container}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Image source={{ uri: arrowBack }} style={styles.arrowBackIcon} />
+          <Image source={arrowBack} style={styles.arrowBackIcon} />
         </Pressable>
       </View>
 
@@ -28,6 +29,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#282828"
+  },
+  white: {
+    color: "white",
   },
   backButton: {
     position: "absolute",
