@@ -10,14 +10,8 @@ export default function ScanQr({route}) {
 
   const [hasPermission, setHasPermission] = useState(false); 
   const [scanData, setScanData] = useState();
+  const [modalTop, setModalTop] = useState('0%');
   const navigation = useNavigation();
-  const [modal, setModal] = useState('mini');
-
-
-  const handleBarCodeScanned = ({type, data}) => {
-    setScanData(data)
-    console.log("Data: " + data)
-  }
 
   const mini = () => {
     return (
@@ -38,31 +32,22 @@ export default function ScanQr({route}) {
           <Text style={styles.text}> Scan the QR </Text>
           <Image source={qrScan} style={[styles.qr]} />
           <Text style={styles.textDetail}> Bring your camera closer and scan the code to access event </Text>
-        </View>  
-        
+        </View>          
       </>
     )
   }
 
-  let modalStyle = {
-    backgroundColor: 'white',
-    height: '100%'
+  const handleBarCodeScanned = ({type, data}) => {
+    setScanData(data)
+    console.log("Data: " + data)
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     (async() => {
       const {status} = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted")
     })();
   }, []);
-
-  useEffect(() => {
-    if(modal === 'full'){
-      modalStyle.height = '50%'
-    }else{
-      modalStyle.height = '100%'
-    }
-  }, [modal]);
 
   if(!hasPermission){
     return (
@@ -80,23 +65,23 @@ export default function ScanQr({route}) {
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image source={arrowBack} style={styles.arrowBackIcon} />
         </Pressable>
+        {/* {scanData && <Button title="Scan Again" style={{marginTop: 100}} onPress={() => setScanData(undefined)} />}    */}
         <BarCodeScanner
           style={[styles.camera]} 
-          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}          
+          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}                
         />
+        
 
         <SwipeUpDown        
-          swipeHeight={100} 
           itemMini={mini} // Pass props component when collapsed
           itemFull={full} // Pass props component when show full
-          onShowMini={() => setModal('mini')}
-          onShowFull={() => setModal('full')}
-          onMoveDown={() => console.log('down')}
-          onMoveUp={() => console.log('up')}
+          onShowMini={() => setModalTop('0%')}
+          onShowFull={() => setModalTop('110%')}
+          onMoveDown={() => setModalTop('0%')}
+          onMoveUp={() => setModalTop('110%')}
           disablePressToShow={false} // Press item mini to show full
-          style={modalStyle} // style for swipe
+          style={{ backgroundColor: 'white', height: '50%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
         />        
-
       </View>      
 
     </>
@@ -108,8 +93,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     color: "gray",
-    fontWeight: "Medium",
-    marginTop: 30,
+    fontWeight: "medium",
+    marginTop: 5,
     width: '80%'
   },
   qr: {
@@ -150,8 +135,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     color: "black",
-    fontWeight: "Medium",
-    marginTop: 30
+    fontWeight: "medium",
+    marginTop: 20,
+    marginBottom: 30,
   },
   dragRectangleGreen: {
     width: 37,
