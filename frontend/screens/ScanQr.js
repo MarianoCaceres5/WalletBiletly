@@ -46,7 +46,7 @@ export default function ScanQr({route}) {
 
   let modalStyle = {
     backgroundColor: 'white',
-    height: '50%'
+    height: '100%'
   }
 
   useEffect(() => {

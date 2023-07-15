@@ -5,49 +5,93 @@ import Logo from "../public/logo.png";
 const Connection = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
-      <Image source={Logo} style={[styles.image, styles.shadow]} />
+      <View style={[styles.greenRectangle]}>
+        <View style={[styles.logoContainer]}>
+          <Image source={Logo} style={[styles.image]} />
+        </View>  
+      </View>          
+      <Text style={[styles.title]}>Connect your Wallet to access all your NFTs</Text>
       <TouchableOpacity
-        style={[styles.button, styles.mt, styles.shadow]}
-        onPress={() => route.params.onWeb3Handler()}
+        style={[styles.button, styles.shadow]}
+        onPress={() => route.params.onWeb3Handler('WalletExplorer')}
       >
-        <Text style={[styles.title]}>Connect wallet</Text>
+        <Text style={[styles.whiteConnect]}>Connect wallet</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[]}
+        onPress={() => route.params.onWeb3Handler('Qrcode')}
+      >
+        <Text style={[styles.greenConnect]}>Scan QR</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  logoContainer: {
+    borderRadius: 100,
+    backgroundColor: '#000000',
+    width: 110,
+    height: 110,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: 'relative',
+    top: '85%',
+    borderWidth: 7,
+    borderColor: '#282828',
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  greenRectangle: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: '38%',
+    backgroundColor: '#219068',
+    display: "flex",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 40,
     backgroundColor: "#282828",
   },
   image: {
-    width: 220,
-    height: 220,
+    width: '80%',
+    height: '80%',
     resizeMode: "contain",
   },
-  textCenter: {
-    textAlign: "center",
-  },
   title: {
-    fontSize: 18,
+    marginTop: '105%',
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "white",
+    width: '75%',
+    textAlign: 'center'
+  },
+  greenConnect: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#0EDB88",
+  },
+  whiteConnect: {
+    fontSize: 16,
     fontWeight: "bold",
     color: "white",
   },
   button: {
+    marginTop: 50,
+    marginBottom: 25,
     backgroundColor: "#0EDB88",
-    width: "100%",
+    width: "85%",
     height: 55,
     borderRadius: 15,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  },
-  mt: {
-    marginTop: 20,
   },
   shadow: {
     shadowColor: "black",

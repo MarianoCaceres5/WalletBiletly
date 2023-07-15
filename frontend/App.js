@@ -52,10 +52,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [nft, setNFT] = useState({});
 
-  const handleConnection = async () => {
+  let options = {
+    route: ''
+  }
+
+  const handleConnection = async (route = 'ConnectWallet') => {
     console.log(isConnected)
     if (!isConnected) {
-      return open();
+      options.route = route;
+      return open(options);
     }else{
       return provider?.disconnect();
     }
