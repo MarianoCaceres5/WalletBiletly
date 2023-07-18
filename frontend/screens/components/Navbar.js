@@ -6,7 +6,7 @@ import Home from "../Home.js";
 import Settings from "../Settings.js";
 import ScanQr from "../ScanQr.js";
 
-import qr from "../../public/icons/qr.png";
+import qrIcon from "../../public/icons/qrIcon.png";
 import settingsgris from "../../public/icons/settingsgris.png";
 import settingsverde from "../../public/icons/settingsverde.png";
 import walletgris from "../../public/icons/walletgris.png";
@@ -69,10 +69,13 @@ export default function Navbar({navigation, route}) {
         children={()=><ScanQr route={route}/>}
         options={{
           tabBarIcon: () => (
-            <Image
-              source={qr}
-              style={[{ width: 70, height: 70, marginBottom: 23, border: 50, borderColor: 'white' }, styles.shadow]}
-            />            
+            // <Image
+            //   source={qr}
+            //   style={[styles.scanQR]}
+            // />    
+            <TouchableOpacity style={[styles.scanQR]} onPress={() => navigation.navigate("ScanQR")}>                                        
+              <Image source={qrIcon} style={[styles.imageQr]} />
+            </TouchableOpacity>   
           ),
           tabBarStyle: {
             display: "none", 
@@ -115,14 +118,29 @@ export default function Navbar({navigation, route}) {
 
 const styles = StyleSheet.create({
   scanQR: {
+    backgroundColor: "#0EDB88",
     width: 68,
     height: 68,
-    marginBottom: 30,
-  },
-  shadow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 45,    
+    borderRadius: 100,
+    borderColor: 'black',
+    borderWidth: 1,
+    
     shadowColor: "#0EDB88",
-    shadowOffset: { width: 0, height: 0, },
-    shadowOpacity: 0.4,
-    shadowRadius: 7,
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,    
+    elevation: 6,
+
   },
+  imageQr: {
+    width: '40%',
+    height: '40%',
+  }
 });

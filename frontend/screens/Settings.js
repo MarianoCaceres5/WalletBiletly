@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   text: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "semibold",
     color: "white",
     alignSelf: "flex-start",
