@@ -7,31 +7,45 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import axios from "axios";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
-import axios from "axios";
-// import client, { subdomain } from "../src/config/Infura.js";
-import NFTDetail from "./NFTDetail";
+import client, { subdomain } from "../src/config/Infura.js";
 
 const Home = ({ navigation, route }) => {
+
   const [loading, setLoading] = useState(false);
   const [nfts, setNFTs] = useState([]);
 
-  const loadContract = async () => {
-    axios
-      .get(
-        "http://localhost:912/api/Tickets/TicketxUsuario/" +
-          route.params?.account
-      )
+  let ObtenerImagenNFT = async (img) => {
+    let resultado = "";
+    await axios
+      .get(img)
       .then((result) => {
+        console.log("estoy en funcion");
+        console.log("lo que se obtiene del axios en funcion: " + result.data);
+        resultado = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return resultado;
+  };
+
+  const loadContract = async () => {
+    console.log("hola1")
+    axios.get("http://26.150.234.155:912/api/Tickets/TicketxUsuario/" + route.params?.account)
+      .then((result) => {        
+        console.log("estoy en funcion")
         let tickets = result.data;
         tickets.map(async (ticket) => {
           if (!ticket.tieneNFT) {
             let foto = await uploadToIPFS(ticket);
             axios
               .get(
-                "http://localhost:912/api/Tickets/EventoxEntrada/" +
-                  ticket.idEntrada
+                "http://26.150.234.155:912/api/Tickets/EventoxEntrada/" +
+                ticket.idEntrada
               )
               .then((result) => {
                 let evento = result.data;
@@ -62,7 +76,7 @@ const Home = ({ navigation, route }) => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("HUBO UN ERROR" + error);
       });
 
     loadHome();
@@ -82,23 +96,6 @@ const Home = ({ navigation, route }) => {
         console.log("ipfs image upload error: ", error);
       }
     }
-  };
-
-  let ObtenerImagenNFT = async (img) => {
-    let resultado = "";
-
-    await axios
-      .get(img)
-      .then((result) => {
-        console.log("estoy en funcion");
-        console.log("lo que se obtiene del axios en funcion: " + result.data);
-        resultado = result.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    return resultado;
   };
 
   const createNFT = async (nftTicket, evento) => {
@@ -122,7 +119,7 @@ const Home = ({ navigation, route }) => {
     } catch {}
 
     axios
-      .put("http://localhost:912/api/Tickets/" + nftTicket.id)
+      .put("http://192.168.0.12:912/api/Tickets/" + nftTicket.id)
       .then((result) => {
         //console.log(result);
       })
@@ -144,7 +141,7 @@ const Home = ({ navigation, route }) => {
 
       console.log("ipfs: " + metadata.nftTicket.image);
 
-      let img = await ObtenerImagenNFT(metadata.nftTicket.image);
+      // let img = await ObtenerImagenNFT(metadata.nftTicket.image);
 
       tickets.push({
         id: ticket.idEntrada,
@@ -165,7 +162,9 @@ const Home = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    setLoading(false);
+    if(nfts !== []){      
+      setLoading(false);
+    }
   }, [nfts]);
 
   if (loading)

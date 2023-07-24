@@ -52,26 +52,18 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [nft, setNFT] = useState({});
 
-  let options = {
-    route: ''
-  }
-
   const handleConnection = async (route = 'ConnectWallet') => {
-    console.log(isConnected)
-    if (!isConnected) {
+    console.log(typeof provider)
+    if(!isConnected){
+      let options = {
+        route: ''
+      }
       options.route = route;
       return open(options);
     }else{
-      return provider?.disconnect();
+      return provider?.disconnect();    
     }
-    
   };
-
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     return provider?.disconnect();
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (address !== null && address !== undefined && provider !== undefined) {
@@ -87,7 +79,7 @@ function App() {
     }
   }, [isConnected]);
 
-  if (!isConnected || address === null) {
+  if (!isConnected) {
     return (
       <>
         <NavigationContainer>

@@ -1,5 +1,8 @@
 require("@nomicfoundation/hardhat-toolbox");
 
+const fs = require('fs');
+const privateKey = fs.readFileSync(".secret").toString().trim();
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.4",
@@ -14,12 +17,12 @@ module.exports = {
     ganache: {
       url: "http://127.0.0.1:7545"
     },
-    // polygon: {
-    //   url: "https://rpc-mumbai.maticvigil.com/v1/99a99d15ac2ad3b526aa97401fdbe30ee724ba38",
-    //   accounts: [privateKey]
-    // },
-    // hardhat: {
-    // },
+    polygon: {
+      url: "https://rpc-mumbai.maticvigil.com/v1/a07219db75637edfe2d7579d52c3e2863e8a307c",
+      accounts: [privateKey]
+    },
+    hardhat: {
+    },
   },
   images:{
     // domains: ["<subdomain>.infura-ipfs.io", "infura-ipfs.io"]

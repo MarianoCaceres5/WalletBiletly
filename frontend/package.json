@@ -18,13 +18,16 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@walletconnect/modal-react-native": "^1.0.0-rc.6",
     "axios": "^1.4.0",
+    "cors": "^2.8.5",
     "ethers": "^5.7.2",
     "expo": "~48.0.18",
     "expo-barcode-scanner": "~12.3.2",
+    "expo-clipboard": "^4.3.0",
     "expo-crypto": "~12.2.1",
     "expo-router": "^1.5.0",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
+    "express": "^4.18.2",
     "ipfs-http-client": "^56.0.1",
     "mssql": "^9.1.1",
     "react": "18.2.0",
@@ -33,7 +36,9 @@
     "react-native-get-random-values": "~1.8.0",
     "react-native-modal": "^13.0.1",
     "react-native-svg": "13.4.0",
-    "react-native-swipe-up-down": "^1.2.0"
+    "react-native-swipe-up-down": "^1.2.0",
+    "react-native-url-polyfill": "^2.0.0",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

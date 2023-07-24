@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   qr: {
-    textAlign: "center",
     width:207,
     height:207
   },

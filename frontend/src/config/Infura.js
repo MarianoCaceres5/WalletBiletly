@@ -1,4 +1,6 @@
 
+import '../../globals.js';
+import 'react-native-url-polyfill/auto.js'
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer/';
 import {REACT_APP_PROJECT_ID, REACT_APP_PROJECT_SECRET_KEY} from '@env'
