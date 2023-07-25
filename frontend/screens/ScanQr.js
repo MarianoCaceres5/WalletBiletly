@@ -39,7 +39,7 @@ export default function ScanQr({route}) {
 
   const handleBarCodeScanned = ({type, data}) => {
     setScanData(data)
-    console.log("Data: " + data)
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   }
 
   useEffect(() => {    
@@ -48,6 +48,10 @@ export default function ScanQr({route}) {
       setHasPermission(status === "granted")
     })();
   }, []);
+
+  useEffect(() => {    
+    console.log(scanData)
+  }, [scanData]);
 
   if(!hasPermission){
     return (
@@ -65,12 +69,11 @@ export default function ScanQr({route}) {
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image source={arrowBack} style={styles.arrowBackIcon} />
         </Pressable>
-        {/* {scanData && <Button title="Scan Again" style={{marginTop: 100}} onPress={() => setScanData(undefined)} />}    */}
+        {/* {scanData && <Button title="Scan Again" style={{position: 'absolute', top: 300}} onPress={() => setScanData(undefined)} />} */}
         <BarCodeScanner
           style={[styles.camera]} 
           onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}                
-        />
-        
+        />        
 
         <SwipeUpDown        
           itemMini={mini} // Pass props component when collapsed
@@ -82,8 +85,7 @@ export default function ScanQr({route}) {
           disablePressToShow={false} // Press item mini to show full
           style={{ backgroundColor: 'white', height: '50%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
         />        
-      </View>      
-
+      </View>    
     </>
   );
 }

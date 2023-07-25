@@ -53,7 +53,6 @@ function App() {
   const [nft, setNFT] = useState({});
 
   const handleConnection = async (route = 'ConnectWallet') => {
-    console.log(typeof provider)
     if(!isConnected){
       let options = {
         route: ''
@@ -79,13 +78,14 @@ function App() {
     }
   }, [isConnected]);
 
-  if (!isConnected) {
+  if (!isConnected || provider === null || provider === undefined) {
     return (
       <>
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Onboarding"
             screenOptions={{
+              orientation: 'portrait',
               headerShown: false,
               header: () => null,
               contentStyle: { backgroundColor: "black" },
@@ -112,15 +112,16 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Rutas"
         screenOptions={{
+          orientation: 'portrait',
           headerShown: false,
           header: () => null,
           contentStyle: { backgroundColor: "black" },
         }}
       >
         <Stack.Screen
-          name="Home"
+          name="Rutas"
           component={Rutas}
           initialParams={{ nft: nft, account: address, handleConnection: handleConnection }}
         />

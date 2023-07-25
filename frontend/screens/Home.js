@@ -37,7 +37,7 @@ const Home = ({ navigation, route }) => {
     console.log("hola1")
     axios.get("http://26.150.234.155:912/api/Tickets/TicketxUsuario/" + route.params?.account)
       .then((result) => {        
-        console.log("estoy en funcion")
+        console.log("hola2")
         let tickets = result.data;
         tickets.map(async (ticket) => {
           if (!ticket.tieneNFT) {

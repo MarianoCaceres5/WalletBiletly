@@ -35,9 +35,10 @@ export default function Navbar({navigation, route}) {
       height: 80,
       borderTopLeftRadius: 15,
       borderTopRightRadius: 15,
-      border: "none",
+      borderTopWidth: 1,
+      borderTopColor: "#000000",
       display: "flex",
-      position: "relative",
+      position: "absolute",
       justifyContent: "center"
     },
     tabBarInactiveTintColor: "#282828",
@@ -69,10 +70,6 @@ export default function Navbar({navigation, route}) {
         children={()=><ScanQr route={route}/>}
         options={{
           tabBarIcon: () => (
-            // <Image
-            //   source={qr}
-            //   style={[styles.scanQR]}
-            // />    
             <TouchableOpacity style={[styles.scanQR]} onPress={() => navigation.navigate("ScanQR")}>                                        
               <Image source={qrIcon} style={[styles.imageQr]} />
             </TouchableOpacity>   
