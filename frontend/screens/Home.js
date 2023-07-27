@@ -158,7 +158,16 @@ const Home = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    loadContract();
+    // loadContract();
+    console.log("holi")
+    axios.get("http://26.150.234.155:912/api/Tickets/")
+      .then((result) => {    
+        console.log("holi2")    
+        console.log(result.data)
+      })
+      .catch((error) => {
+        console.log("HUBO UN ERROR: " + error);
+      });
   }, []);
 
   useEffect(() => {

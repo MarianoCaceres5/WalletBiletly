@@ -57,7 +57,7 @@ export default function ScanQr({route}) {
     return (
       <>
         <View style={styles.container}>
-          <Text>Please grant camera</Text>
+          <Text>Please grant camera access</Text>
         </View>       
       </>
     );

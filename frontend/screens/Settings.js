@@ -8,11 +8,10 @@ import help from "../public/icons/help.png";
 import about from "../public/icons/about.png";
 import signout from "../public/icons/signout.png";
 
-export default function Settings({ route }) {
+export default function Settings({ navigation, route }) {
 
   const copyToClipboard = (text) => {
-    Clipboard.setStringAsync(text)
-
+    Clipboard.setStringAsync(text);
   };  
 
   return (
@@ -41,20 +40,20 @@ export default function Settings({ route }) {
         <View style={styles.line} />
 
         <View style={styles.flexColumnContainer}>
-          <View style={styles.flexContainer}>
+          <TouchableOpacity style={styles.flexContainer} onPress={() => navigation.navigate('Home')}>
             <Image source={home } style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> Home </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.flexContainer}>
+          <TouchableOpacity style={styles.flexContainer}>
             <Image source={help} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> Looking for help </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.flexContainer}>
+          <TouchableOpacity style={styles.flexContainer}>
             <Image source={about} style={{ width: 30, height: 30 }} />
             <Text style={styles.text}> About Biletly </Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.line} />

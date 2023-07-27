@@ -3,7 +3,6 @@ import { StyleSheet, Text} from "react-native";
 import Navbar from "./components/Navbar";
 
 const Rutas = ({ navigation, route }) => {
-  // console.log(route.params.address)
   return (
     <Navbar navigation={navigation} route={route}/>
   );

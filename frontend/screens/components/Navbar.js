@@ -32,7 +32,7 @@ export default function Navbar({navigation, route}) {
     headerShown: false,
     tabBarStyle: {
       backgroundColor: "#282828",
-      height: 80,
+      height: 75,
       borderTopLeftRadius: 15,
       borderTopRightRadius: 15,
       borderTopWidth: 1,
@@ -51,17 +51,9 @@ export default function Navbar({navigation, route}) {
         name="Home"
         children={()=><Home navigation={navigation} route={route}/>}
         options={{
-          tabBarIcon: () => (
-            <Image source={iconoW} style={{ width: 50, height: 50, marginLeft: 30 }} />
+          tabBarIcon: ({focused}) => (
+            <Image source={focused ? walletverde : walletgris} style={{ width: 50, height: 50, marginLeft: 30, marginTop: 10 }} />          
           ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            if (!homeSeleccionada) {
-              setIconoHome(!homeSeleccionada);
-              setIconoSettings(!settingsSeleccionada);
-            }
-          },
         }}
       />
 
@@ -77,37 +69,21 @@ export default function Navbar({navigation, route}) {
           tabBarStyle: {
             display: "none", 
           }, 
-        }}
-        listeners={{
-          tabPress: (e) => {
-            if (!homeSeleccionada) {
-              setIconoHome(!homeSeleccionada);
-              setIconoSettings(!settingsSeleccionada);
-            }
-          },
-        }}
+        }}        
       />
 
       <Tab.Screen
         name="Settings"
-        children={()=><Settings route={route}/>}
+        children={()=><Settings navigation={navigation} route={route}/>}
         style={styles.back}
         options={{
-          tabBarIcon: () => (
+          tabBarIcon: ({focused}) => (
             <Image
-              source={iconoSetting}
-              style={{ width: 50, height: 50, marginRight: 30 }}
+              source={focused ? settingsverde : settingsgris}
+              style={{ width: 50, height: 50, marginRight: 30, marginTop: 10}}
             />
           ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            if (!settingsSeleccionada) {
-              setIconoHome(!homeSeleccionada);
-              setIconoSettings(!settingsSeleccionada);
-            }
-          },
-        }}
+        }}        
       />
     </Tab.Navigator>
   );
