@@ -7,11 +7,11 @@ const app = express();
 const port = 912;
 
 app.use(cors({
-    origin: '*',
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+    origin:'*',
+    // methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 }));
 app.use(express.json());
-app.use(express.static('public'));
+// app.use(express.static());
 
 app.use("/api/Tickets", ticketRouter)
 

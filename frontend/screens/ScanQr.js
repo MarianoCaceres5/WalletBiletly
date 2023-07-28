@@ -79,11 +79,11 @@ export default function ScanQr({route}) {
           itemMini={mini} // Pass props component when collapsed
           itemFull={full} // Pass props component when show full
           onShowMini={() => setModalTop('0%')}
-          onShowFull={() => setModalTop('120%')}
+          onShowFull={() => setModalTop('100%')}
           onMoveDown={() => setModalTop('0%')}
-          onMoveUp={() => setModalTop('120%')}
+          onMoveUp={() => setModalTop('100%')}
           disablePressToShow={false} // Press item mini to show full
-          style={{ backgroundColor: 'white', height: '50%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
+          style={{ backgroundColor: 'white', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
         />        
       </View>    
     </>
@@ -92,7 +92,7 @@ export default function ScanQr({route}) {
 
 const styles = StyleSheet.create({
   textDetail: {
-    fontSize: 15,
+    fontSize: 16,
     textAlign: "center",
     color: "gray",
     fontWeight: "medium",
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   qr: {
-    width:207,
-    height:207
+    width:220,
+    height:220
   },
   camera: {
     height: '100%',

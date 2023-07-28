@@ -10,42 +10,28 @@ import {
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
-import client, { subdomain } from "../src/config/Infura.js";
+import client, { subdomain } from "../src/config/Infura";
 
 const Home = ({ navigation, route }) => {
 
   const [loading, setLoading] = useState(false);
   const [nfts, setNFTs] = useState([]);
 
-  let ObtenerImagenNFT = async (img) => {
-    let resultado = "";
-    await axios
-      .get(img)
-      .then((result) => {
-        console.log("estoy en funcion");
-        console.log("lo que se obtiene del axios en funcion: " + result.data);
-        resultado = result.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    return resultado;
-  };
-
   const loadContract = async () => {
-    console.log("hola1")
-    axios.get("http://26.150.234.155:912/api/Tickets/TicketxUsuario/" + route.params?.account)
-      .then((result) => {        
-        console.log("hola2")
+    axios
+      .get(
+        "http://192.168.0.12:912/api/Tickets/TicketxUsuario/" +
+          route.params?.account
+      )
+      .then((result) => {
         let tickets = result.data;
         tickets.map(async (ticket) => {
           if (!ticket.tieneNFT) {
             let foto = await uploadToIPFS(ticket);
             axios
               .get(
-                "http://26.150.234.155:912/api/Tickets/EventoxEntrada/" +
-                ticket.idEntrada
+                "http://192.168.0.12:912/api/Tickets/EventoxEntrada/" +
+                  ticket.idEntrada
               )
               .then((result) => {
                 let evento = result.data;
@@ -84,13 +70,14 @@ const Home = ({ navigation, route }) => {
 
   const uploadToIPFS = async (ticket) => {
     //console.log("link del drive: " + ticket.imagen)
-    let file = ticket.imagen;
+    // let file = ticket.imagen;
 
-    //let file = 'https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg';
-    if (typeof file != undefined && typeof file != null) {
-      try {
-        const result = await client.add(file);
-        console.log(result);
+    let url = "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg";
+    // let file = logo;
+    if (typeof url !== undefined && typeof url !== null) {
+      try {        
+        const result = await client.add(url)
+        console.log(result)
         return `${subdomain}/ipfs/${result.path}`;
       } catch (error) {
         console.log("ipfs image upload error: ", error);
@@ -100,7 +87,8 @@ const Home = ({ navigation, route }) => {
 
   const createNFT = async (nftTicket, evento) => {
     try {
-      const result = await client.add(JSON.stringify({ nftTicket }));
+      console.log(typeof JSON.stringify(nftTicket))
+      const result = await client.add(JSON.stringify(nftTicket));
       mintThenList(result, nftTicket, evento);
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
@@ -158,20 +146,11 @@ const Home = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    // loadContract();
-    console.log("holi")
-    axios.get("http://26.150.234.155:912/api/Tickets/")
-      .then((result) => {    
-        console.log("holi2")    
-        console.log(result.data)
-      })
-      .catch((error) => {
-        console.log("HUBO UN ERROR: " + error);
-      });
+    loadContract();
   }, []);
 
   useEffect(() => {
-    if(nfts !== []){      
+    if (nfts !== []) {
       setLoading(false);
     }
   }, [nfts]);
@@ -204,10 +183,7 @@ const Home = ({ navigation, route }) => {
               }
             >
               <View style={styles.NFTContainerGreen}></View>
-              <Image
-                source={ticket.image}
-                style={styles.ImageNFT}
-              ></Image>
+              <Image source={ticket.image} style={styles.ImageNFT}></Image>
               <Text style={[styles.NFTName]}>{ticket.name}</Text>
               <Text style={[styles.NFTDate]}>{ticket.date}</Text>
             </TouchableOpacity>
