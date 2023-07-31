@@ -1,9 +1,9 @@
 {
   "expoServerPort": null,
-  "packagerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPort": 19000,
+  "expoServerNgrokUrl": "https://hnri_re.anonymous.frontend.exp.direct",
+  "packagerNgrokUrl": "https://hnri_re.anonymous.frontend.exp.direct",
+  "ngrokPid": 17148,
   "packagerPid": null,
   "webpackServerPort": null
 }
