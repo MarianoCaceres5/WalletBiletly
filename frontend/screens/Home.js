@@ -10,7 +10,9 @@ import {
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
-import client, { subdomain } from "../src/config/Infura";
+// import client, { subdomain } from "../src/config/Infura.js";
+
+const subdomain = "https://ipfs.io";
 
 const Home = ({ navigation, route }) => {
 
@@ -70,15 +72,26 @@ const Home = ({ navigation, route }) => {
 
   const uploadToIPFS = async (ticket) => {
     //console.log("link del drive: " + ticket.imagen)
-    // let file = ticket.imagen;
+    // let url = ticket.imagen;
 
     let url = "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg";
-    // let file = logo;
     if (typeof url !== undefined && typeof url !== null) {
       try {        
-        const result = await client.add(url)
-        console.log(result)
-        return `${subdomain}/ipfs/${result.path}`;
+
+        let body = {
+          "file": url
+        }
+
+        axios
+        .post("http://192.168.0.12:912/api/IPFS/", body)
+        .then((result) => {
+          console.log(result.data.path);
+          return `${subdomain}/ipfs/${result.data.path}`;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        
       } catch (error) {
         console.log("ipfs image upload error: ", error);
       }
@@ -87,26 +100,37 @@ const Home = ({ navigation, route }) => {
 
   const createNFT = async (nftTicket, evento) => {
     try {
-      console.log(typeof JSON.stringify(nftTicket))
-      const result = await client.add(JSON.stringify(nftTicket));
-      mintThenList(result, nftTicket, evento);
+      let body = {
+        "file": JSON.stringify(nftTicket)
+      }
+      axios
+        .post("http://192.168.0.12:912/api/IPFS/", body)
+        .then((result) => {
+          console.log(result.data.path);
+          mintThenList(result, nftTicket, evento);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
     }
   };
 
   const mintThenList = async (result, nftTicket, evento) => {
-    const uri = `${subdomain}/ipfs/${result.path}`;
+    const uri = `${subdomain}/ipfs/${result.data.path}`;
     try {
+      console.log("Minteando")
       await route.params?.nft.mint(
         route.params?.account,
         uri,
         nftTicket.description,
         evento
       );
-    } catch {}
 
-    axios
+      console.log("Actualizando tieneNFT")
+      axios
       .put("http://192.168.0.12:912/api/Tickets/" + nftTicket.id)
       .then((result) => {
         //console.log(result);
@@ -114,6 +138,10 @@ const Home = ({ navigation, route }) => {
       .catch((error) => {
         console.log(error);
       });
+    } catch (error){
+      console.log("Error man:")
+      console.log(error)
+    }
   };
 
   const loadHome = async () => {

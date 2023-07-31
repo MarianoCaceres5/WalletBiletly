@@ -78,7 +78,7 @@ function App() {
     }
   }, [isConnected]);
 
-  if (!isConnected || provider === null || provider === undefined) {
+  if (!isConnected || provider === null || provider === undefined || loading) {
     return (
       <>
         <NavigationContainer>
@@ -125,7 +125,6 @@ function App() {
           component={Rutas}
           initialParams={{ nft: nft, account: address, handleConnection: handleConnection }}
         />
-        {/* <Stack.Screen name="NFTDetail" component={NFTDetail} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
