@@ -15,7 +15,6 @@ import FiltersSection from "./components/FiltersSection";
 const subdomain = "https://ipfs.io";
 
 const Home = ({ navigation, route }) => {
-
   const [loading, setLoading] = useState(false);
   const [nfts, setNFTs] = useState([]);
 
@@ -29,37 +28,59 @@ const Home = ({ navigation, route }) => {
         let tickets = result.data;
         tickets.map(async (ticket) => {
           if (!ticket.tieneNFT) {
-            let foto = await uploadToIPFS(ticket);
-            axios
-              .get(
-                "http://192.168.0.12:912/api/Tickets/EventoxEntrada/" +
-                  ticket.idEntrada
-              )
-              .then((result) => {
-                let evento = result.data;
-                let fecha = new Date(evento.fecha);
-                fecha = fecha.toISOString().substring(0, 10);
-                evento.fecha = fecha;
-                let nftTicket = {
-                  id: ticket.idEntrada,
-                  address: route.params?.account,
-                  name: evento.nombre,
-                  date: fecha,
-                  image: foto,
-                  number: ticket.numAsiento,
-                  description:
-                    "EVENT: " +
-                    evento.nombre +
-                    " - NUMBER: " +
-                    ticket.numAsiento +
-                    " - DATE: " +
-                    evento.fecha,
+            if (
+              typeof ticket.imagen !== undefined &&
+              typeof ticket.imagen !== null
+            ) {
+              try {
+                let body = {
+                  file: ticket.imagen,
                 };
-                createNFT(nftTicket, evento);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+
+                axios
+                  .post("http://192.168.0.12:912/api/IPFS/", body)
+                  .then((result) => {
+
+                    let foto = `${subdomain}/ipfs/${result.data.path}`;
+                    axios
+                      .get(
+                        "http://192.168.0.12:912/api/Tickets/EventoxEntrada/" +
+                          ticket.idEntrada
+                      )
+                      .then((result) => {
+                        let evento = result.data;
+                        let fecha = new Date(evento.fecha);
+                        fecha = fecha.toISOString().substring(0, 10);
+                        evento.fecha = fecha;
+                        let nftTicket = {
+                          id: ticket.idEntrada,
+                          address: route.params?.account,
+                          name: evento.nombre,
+                          date: fecha,
+                          image: foto,
+                          number: ticket.numAsiento,
+                          description:
+                            "EVENT: " +
+                            evento.nombre +
+                            " - NUMBER: " +
+                            ticket.numAsiento +
+                            " - DATE: " +
+                            evento.fecha,
+                        };
+                        console.log("FOTO:", nftTicket.image);
+                        createNFT(nftTicket, evento);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              } catch (error) {
+                console.log("ipfs image upload error: ", error);
+              }
+            }
           }
         });
       })
@@ -71,27 +92,25 @@ const Home = ({ navigation, route }) => {
   };
 
   const uploadToIPFS = async (ticket) => {
-    //console.log("link del drive: " + ticket.imagen)
-    // let url = ticket.imagen;
+    console.log("link del drive: " + ticket.imagen);
+    let url = ticket.imagen;
 
-    let url = "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg";
+    // let url = "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg";
     if (typeof url !== undefined && typeof url !== null) {
-      try {        
-
+      try {
         let body = {
-          "file": url
-        }
+          file: url,
+        };
 
         axios
-        .post("http://192.168.0.12:912/api/IPFS/", body)
-        .then((result) => {
-          console.log(result.data.path);
-          return `${subdomain}/ipfs/${result.data.path}`;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        
+          .post("http://192.168.0.12:912/api/IPFS/", body)
+          .then((result) => {
+            console.log(result.data.path);
+            return result.data.path;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
         console.log("ipfs image upload error: ", error);
       }
@@ -101,8 +120,8 @@ const Home = ({ navigation, route }) => {
   const createNFT = async (nftTicket, evento) => {
     try {
       let body = {
-        "file": JSON.stringify(nftTicket)
-      }
+        file: JSON.stringify(nftTicket),
+      };
       axios
         .post("http://192.168.0.12:912/api/IPFS/", body)
         .then((result) => {
@@ -112,7 +131,6 @@ const Home = ({ navigation, route }) => {
         .catch((error) => {
           console.log(error);
         });
-
     } catch (error) {
       console.log("ipfs uri upload error: ", error);
     }
@@ -121,26 +139,26 @@ const Home = ({ navigation, route }) => {
   const mintThenList = async (result, nftTicket, evento) => {
     const uri = `${subdomain}/ipfs/${result.data.path}`;
     try {
-      console.log("Minteando")
-      await route.params?.nft.mint(
+      console.log("Minteando");
+      await route.params.nft.mint(
         route.params?.account,
         uri,
         nftTicket.description,
         evento
       );
 
-      console.log("Actualizando tieneNFT")
+      console.log("Actualizando tieneNFT");
       axios
-      .put("http://192.168.0.12:912/api/Tickets/" + nftTicket.id)
-      .then((result) => {
-        //console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    } catch (error){
-      console.log("Error man:")
-      console.log(error)
+        .put("http://192.168.0.12:912/api/Tickets/" + nftTicket.id)
+        .then((result) => {
+          //console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log("Error man:");
+      console.log(error);
     }
   };
 
@@ -155,7 +173,7 @@ const Home = ({ navigation, route }) => {
       const response = await fetch(uri);
       const metadata = await response.json();
 
-      console.log("ipfs: " + metadata.nftTicket.image);
+      console.log("ipfs: " + metadata);
 
       // let img = await ObtenerImagenNFT(metadata.nftTicket.image);
 

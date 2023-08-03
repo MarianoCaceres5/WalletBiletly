@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import {WALLET_CONNECT_PROJECT_ID} from "@env"
 import NFTAbi from "./src/contracts/NFT.json";
 import NFTAddress from "./src/contracts/NFT-address.json";
@@ -9,13 +9,17 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 import Onboarding from "./screens/Onboarding.js";
 import Connection from "./screens/Connection.js";
-import Rutas from "./screens/Rutas";
 // import NFTDetail from './screens/NFTDetail';
 import "./expo-crypto-shim";
 import {
   WalletConnectModal,
   useWalletConnectModal,
 } from "@walletconnect/modal-react-native";
+import Navbar from "./screens/components/Navbar";
+
+// LogBox.ignoreLogs([
+//   'Non-serializable values were found in the navigation state',
+// ]);
 
 const Stack = createNativeStackNavigator();
 
@@ -112,7 +116,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Rutas"
+        initialRouteName="Navbar"
         screenOptions={{
           orientation: 'portrait',
           headerShown: false,
@@ -121,8 +125,8 @@ function App() {
         }}
       >
         <Stack.Screen
-          name="Rutas"
-          component={Rutas}
+          name="Navbar"
+          component={Navbar}
           initialParams={{ nft: nft, account: address, handleConnection: handleConnection }}
         />
       </Stack.Navigator>

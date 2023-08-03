@@ -36,7 +36,7 @@ export default function Navbar({navigation, route}) {
       borderTopLeftRadius: 15,
       borderTopRightRadius: 15,
       borderTopWidth: 1,
-      borderTopColor: "#000000",
+      borderTopColor: "#4a4a4a",
       display: "flex",
       position: "absolute",
       justifyContent: "center"
