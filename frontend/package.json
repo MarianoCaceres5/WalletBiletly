@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "node server.mjs",
-    "start": "npx expo start --tunnel",
+    "start": "npx expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"
