@@ -5,7 +5,9 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  RefreshControl,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
@@ -17,6 +19,16 @@ const subdomain = "https://ipfs.io";
 const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [nfts, setNFTs] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setLoading(true)
+    loadHome();
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const loadContract = async () => {
     axios
@@ -163,6 +175,7 @@ const Home = ({ navigation, route }) => {
   };
 
   const loadHome = async () => {
+    console.log('Loading Home')
     const ticketCount = await route.params?.nft.tokenCount();
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
@@ -209,13 +222,16 @@ const Home = ({ navigation, route }) => {
     );
   return (
     <>
+    <SafeAreaView>
       <Encabezado />
       <FiltersSection />
-
       <View style={styles.container2}>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           vertical={true}
+          refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
         >
           {nfts.map((ticket, i) => (
             <TouchableOpacity
@@ -236,6 +252,7 @@ const Home = ({ navigation, route }) => {
           ))}
         </ScrollView>
       </View>
+      </SafeAreaView>
     </>
   );
 };
