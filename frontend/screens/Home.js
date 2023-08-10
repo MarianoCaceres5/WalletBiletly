@@ -6,17 +6,27 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
+  SafeAreaView
 } from "react-native";
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
-// import client, { subdomain } from "../src/config/Infura.js";
 
 const subdomain = "https://ipfs.io";
 
 const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [nfts, setNFTs] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    loadHome();
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const loadContract = async () => {
     axios
@@ -40,7 +50,6 @@ const Home = ({ navigation, route }) => {
                 axios
                   .post("http://192.168.0.12:912/api/IPFS/", body)
                   .then((result) => {
-
                     let foto = `${subdomain}/ipfs/${result.data.path}`;
                     axios
                       .get(
@@ -163,6 +172,7 @@ const Home = ({ navigation, route }) => {
   };
 
   const loadHome = async () => {
+    console.log("Loading Home");
     const ticketCount = await route.params?.nft.tokenCount();
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
@@ -209,33 +219,38 @@ const Home = ({ navigation, route }) => {
     );
   return (
     <>
-      <Encabezado />
-      <FiltersSection />
+      <SafeAreaView>
+        <Encabezado />
+        <FiltersSection />
 
-      <View style={styles.container2}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          vertical={true}
-        >
-          {nfts.map((ticket, i) => (
-            <TouchableOpacity
-              key={i}
-              style={styles.NFTContainer}
-              onPress={() =>
-                navigation.navigate("NFTDetail", {
-                  nft: { ticket },
-                  navigation: { navigation },
-                })
-              }
-            >
-              <View style={styles.NFTContainerGreen}></View>
-              <Image source={ticket.image} style={styles.ImageNFT}></Image>
-              <Text style={[styles.NFTName]}>{ticket.name}</Text>
-              <Text style={[styles.NFTDate]}>{ticket.date}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+        <View style={styles.container2}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            vertical={true}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {nfts.map((ticket, i) => (
+              <TouchableOpacity
+                key={i}
+                style={styles.NFTContainer}
+                onPress={() =>
+                  navigation.navigate("NFTDetail", {
+                    nft: { ticket },
+                    navigation: { navigation },
+                  })
+                }
+              >
+                <View style={styles.NFTContainerGreen}></View>
+                <Image source={ticket.image} style={styles.ImageNFT}></Image>
+                <Text style={[styles.NFTName]}>{ticket.name}</Text>
+                <Text style={[styles.NFTDate]}>{ticket.date}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     </>
   );
 };
