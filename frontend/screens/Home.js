@@ -5,8 +5,8 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableOpacity,
   RefreshControl,
+  TouchableOpacity,
   SafeAreaView
 } from "react-native";
 import axios from "axios";
