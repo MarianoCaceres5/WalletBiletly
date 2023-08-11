@@ -7,7 +7,8 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
@@ -220,6 +221,7 @@ const Home = ({ navigation, route }) => {
   return (
     <>
       <SafeAreaView>
+        <StatusBar style="dark" />
         <Encabezado />
         <FiltersSection />
 

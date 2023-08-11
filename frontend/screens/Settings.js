@@ -107,12 +107,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#282828",
   },
   flexContainer: {
-    backgroundColor: "yelllow",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
     marginBottom: 30,
+
   },
   flexColumnContainer: {
     alignSelf: "flex-start",
