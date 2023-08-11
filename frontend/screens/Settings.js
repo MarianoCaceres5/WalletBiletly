@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "semibold",
     color: "white",
-    alignSelf: "flex-start",
     paddingHorizontal: 15,
   },
   addressContainer: {
