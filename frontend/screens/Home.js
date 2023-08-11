@@ -13,12 +13,72 @@ import {
 import axios from "axios";
 import Encabezado from "./components/Encabezado";
 import FiltersSection from "./components/FiltersSection";
+import logo from "../public/logo.png";
 
 const subdomain = "https://ipfs.io";
 
 const Home = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
-  const [nfts, setNFTs] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
+  const [nfts, setNFTs] = useState([
+    {
+      id: 0,
+      name: "Emilia",
+      number: 1,
+      description: "NFT Event Description",
+      image: logo,
+      date: "21/12/2022",
+      event: {
+        idEvento: 0,
+        fecha: "21/12/2022",
+        nombre: "NFT Event Name",
+        descripcion: "NFT Event Description",
+      },
+    },
+    {
+      id: 1,
+      name: "Khea",
+      number: 1,
+      description: "NFT Event Description",
+      image: logo,
+      date: "21/12/2022",
+      event: {
+        idEvento: 0,
+        fecha: "21/12/2022",
+        nombre: "NFT Event Name",
+        descripcion: "NFT Event Description",
+      },
+    },
+    {
+      id: 2,
+      name: "Messi",
+      number: 1,
+      description: "NFT Event Description",
+      image: logo,
+      date: "21/12/2022",
+      event: {
+        idEvento: 0,
+        fecha: "21/12/2022",
+        nombre: "NFT Event Name",
+        descripcion: "NFT Event Description",
+      },
+    },
+    {
+      id: 3,
+      name: "Pacho",
+      number: 1,
+      description: "NFT Event Description",
+      image: logo,
+      date: "21/12/2022",
+      event: {
+        idEvento: 0,
+        fecha: "21/12/2022",
+        nombre: "NFT Event Name",
+        descripcion: "NFT Event Description",
+      },
+    },
+  ]);
+
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -28,6 +88,10 @@ const Home = ({ navigation, route }) => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  const handleInput = (text) => {
+    setBusqueda(text);
+  };
 
   const loadContract = async () => {
     axios
@@ -221,9 +285,8 @@ const Home = ({ navigation, route }) => {
   return (
     <>
       <SafeAreaView>
-        <StatusBar style="dark" />
         <Encabezado />
-        <FiltersSection />
+        <FiltersSection handleInput={handleInput} />
 
         <View style={styles.container2}>
           <ScrollView
@@ -233,23 +296,27 @@ const Home = ({ navigation, route }) => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           >
-            {nfts.map((ticket, i) => (
-              <TouchableOpacity
-                key={i}
-                style={styles.NFTContainer}
-                onPress={() =>
-                  navigation.navigate("NFTDetail", {
-                    nft: { ticket },
-                    navigation: { navigation },
-                  })
-                }
-              >
-                <View style={styles.NFTContainerGreen}></View>
-                <Image source={ticket.image} style={styles.ImageNFT}></Image>
-                <Text style={[styles.NFTName]}>{ticket.name}</Text>
-                <Text style={[styles.NFTDate]}>{ticket.date}</Text>
-              </TouchableOpacity>
-            ))}
+            {nfts.map((ticket, i) =>
+              ticket.name.toLowerCase().includes(busqueda) ? (
+                <TouchableOpacity
+                  key={i}
+                  style={styles.NFTContainer}
+                  onPress={() =>
+                    navigation.navigate("NFTDetail", {
+                      nft: { ticket },
+                      navigation: { navigation },
+                    })
+                  }
+                >
+                  <View style={styles.NFTContainerGreen}></View>
+                  <Image source={ticket.image} style={styles.ImageNFT}></Image>
+                  <Text style={[styles.NFTName]}>{ticket.name}</Text>
+                  <Text style={[styles.NFTDate]}>{ticket.date}</Text>
+                </TouchableOpacity>
+              ) : (
+                <View key={i}></View>
+              )
+            )}
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -316,6 +383,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "#181818",
+    paddingBottom: 520,
   },
   NFTContainer: {
     marginBottom: 20,

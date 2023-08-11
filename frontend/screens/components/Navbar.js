@@ -16,16 +16,6 @@ const Tab = createBottomTabNavigator();
 
 export default function Navbar({navigation, route}) {
   // console.log(route.params.address)
-  const [homeSeleccionada, setIconoHome] = useState(true);
-  const [settingsSeleccionada, setIconoSettings] = useState(false);
-
-  if (homeSeleccionada) {
-    var iconoW = walletverde;
-    var iconoSetting = settingsgris;
-  } else {
-    var iconoW = walletgris;
-    var iconoSetting = settingsverde;
-  }
 
   let options = {
     showLabel: false,
@@ -43,6 +33,7 @@ export default function Navbar({navigation, route}) {
     },
     tabBarInactiveTintColor: "#282828",
     tabBarActiveTintColor: "#282828",
+    tabBarHideOnKeyboard: true
   };
 
   return (

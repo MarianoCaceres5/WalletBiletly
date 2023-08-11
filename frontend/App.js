@@ -16,6 +16,7 @@ import {
   useWalletConnectModal,
 } from "@walletconnect/modal-react-native";
 import Navbar from "./screens/components/Navbar";
+import NFTDetail from "./screens/NFTDetail";
 
 // LogBox.ignoreLogs([
 //   'Non-serializable values were found in the navigation state',
@@ -83,6 +84,7 @@ function App() {
   }, [isConnected]);
 
   if (!isConnected || provider === null || provider === undefined || loading) {
+  // if(false){
     return (
       <>
         <NavigationContainer>
@@ -128,6 +130,11 @@ function App() {
           name="Navbar"
           component={Navbar}
           initialParams={{ nft: nft, account: address, handleConnection: handleConnection }}
+        />
+        <Stack.Screen
+          name="NFTDetail"
+          component={NFTDetail}
+          
         />
       </Stack.Navigator>
     </NavigationContainer>
