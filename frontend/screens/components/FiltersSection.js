@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 6,
+    borderRadius: 20,
     height: 40,
-    width: 250,
+    width: 300,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderWidth: 1,
     top: 8,
-    left: 210,
+    left: 250,
     zIndex: 1000
   },
   fuente: {

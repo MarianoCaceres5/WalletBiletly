@@ -284,10 +284,8 @@ const Home = ({ navigation, route }) => {
     );
   return (
     <>
-      <SafeAreaView>
-        <Encabezado navigation={navigation} />
-        <FiltersSection handleInput={handleInput} />
-
+      <View>
+        <Encabezado navigation={navigation} />        
         <View style={styles.container2}>
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
@@ -296,6 +294,7 @@ const Home = ({ navigation, route }) => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           >
+            <FiltersSection handleInput={handleInput} />
             {nfts.map((ticket, i) =>
               ticket.name.toLowerCase().includes(busqueda) ? (
                 <TouchableOpacity
@@ -319,7 +318,7 @@ const Home = ({ navigation, route }) => {
             )}
           </ScrollView>
         </View>
-      </SafeAreaView>
+      </View>
     </>
   );
 };
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "#181818",
-    paddingBottom: 520,
+    paddingBottom: 320,
   },
   NFTContainer: {
     marginBottom: 20,
