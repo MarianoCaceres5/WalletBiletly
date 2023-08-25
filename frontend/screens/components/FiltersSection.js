@@ -24,14 +24,15 @@ export default function FiltersSection(handleInput) {
   return (
     <>
       <View style={styles.container}>
-        <TouchableHighlight onPress={() => DisplayFilters()} activeOpacity={1}>
+        {/* <TouchableHighlight onPress={() => DisplayFilters()} activeOpacity={1}>
           <Image source={filterIcon} style={{ width: 50, height: 50 }} />
-        </TouchableHighlight>
+        </TouchableHighlight> */}
 
         <View>
-          <TextInput style={styles.searchBar} onChangeText={newText => handleInput.handleInput(newText)} placeholder="Search" />
+          <Image source={{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/768px-Search_Icon.svg.png'}} style={styles.searchIcon} />
+          <TextInput style={styles.searchBar} onChangeText={newText => handleInput.handleInput(newText)} placeholder="Search Tickets" clearButtonMode='always'/>
         </View>       
-
+{/* 
         <Modal
           animationType="slide"
           transparent={false}
@@ -46,7 +47,7 @@ export default function FiltersSection(handleInput) {
               onPress={() => setModalVisible(false)}
             />
           </View>
-        </Modal>
+        </Modal> */}
       </View>
     </>
   );
@@ -69,6 +70,8 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: "#FFFFFF",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 6,
     height: 40,
     width: 250,
@@ -76,9 +79,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchIcon: {
-    width: 28,
-    height: 28,
-    borderColor: 'red',
+    width: 25,
+    height: 25,
+    position: 'absolute',
+    borderWidth: 1,
+    top: 8,
+    left: 210,
+    zIndex: 1000
   },
   fuente: {
     fontFamily: "Inter",

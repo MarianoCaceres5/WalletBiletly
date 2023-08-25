@@ -1,13 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { Pressable } from "react-native";
 import logo from "../../public/logo.png";
 
-export default function Encabezado() {
+export default function Encabezado({navigation}) {
   return (
     <>
-      <View style={styles.container}>
+      <Pressable style={styles.container} onPress={() => navigation.navigate('Home')}>
         <Image source={logo} style={{ width: 60, height: 60 }} />
-      </View>
+      </Pressable>
     </>
   );
 }

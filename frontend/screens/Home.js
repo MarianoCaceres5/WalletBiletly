@@ -285,7 +285,7 @@ const Home = ({ navigation, route }) => {
   return (
     <>
       <SafeAreaView>
-        <Encabezado />
+        <Encabezado navigation={navigation} />
         <FiltersSection handleInput={handleInput} />
 
         <View style={styles.container2}>

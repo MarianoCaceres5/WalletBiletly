@@ -17,9 +17,8 @@ export default function NFTDetail({ route }) {
   console.log(nft)
 
   return (
-
     <>
-      <Encabezado />
+      <Encabezado navigation={navigation} />
       <View style={[styles.headerBack]}>          
         <Pressable
           onPress={() => navigation.goBack()}>

@@ -16,7 +16,7 @@ export default function Settings({ navigation, route }) {
 
   return (
     <>
-      <Encabezado />
+      <Encabezado navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.title}> Configuration </Text>
 
