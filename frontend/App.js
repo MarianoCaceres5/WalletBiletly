@@ -120,10 +120,11 @@ function App() {
       <Stack.Navigator
         initialRouteName="Navbar"
         screenOptions={{
-          orientation: 'portrait',
+          orientation: 'portrait',          
           headerShown: false,
           header: () => null,
           contentStyle: { backgroundColor: "black" },
+          animation: "none"
         }}
       >
         <Stack.Screen
