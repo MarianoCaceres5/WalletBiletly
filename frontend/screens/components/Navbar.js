@@ -22,14 +22,15 @@ export default function Navbar({navigation, route}) {
     headerShown: false,
     tabBarStyle: {
       backgroundColor: "#282828",
-      height: 75,
+      height: 73,
       borderTopLeftRadius: 15,
       borderTopRightRadius: 15,
       borderTopWidth: 1,
       borderTopColor: "#282828",
       display: "flex",
       position: "absolute",
-      justifyContent: "center"
+      justifyContent: "center",
+      alignItems: 'center'
     },
     tabBarInactiveTintColor: "#282828",
     tabBarActiveTintColor: "#282828",

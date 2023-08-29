@@ -1,5 +1,5 @@
 import React from "react";
-import Encabezado from "./components/Encabezado";
+import Header from "./components/Header";
 import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from "react-native";
 import * as Clipboard from 'expo-clipboard';
 import copy from "../public/icons/copy.png";
@@ -16,7 +16,7 @@ export default function Settings({ navigation, route }) {
 
   return (
     <>
-      <Encabezado navigation={navigation}/>
+      <Header navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.title}> Configuration </Text>
 

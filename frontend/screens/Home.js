@@ -11,7 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import axios from "axios";
-import Encabezado from "./components/Encabezado";
+import Header from "./components/Header";
 import FiltersSection from "./components/FiltersSection";
 import logo from "../public/logo.png";
 
@@ -285,7 +285,7 @@ const Home = ({ navigation, route }) => {
   return (
     <>
       <View>
-        <Encabezado navigation={navigation} />        
+        <Header navigation={navigation} />        
         <View style={styles.container2}>
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "#181818",
-    paddingBottom: 320,
+    paddingBottom: 310,
   },
   NFTContainer: {
     marginBottom: 20,

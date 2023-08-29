@@ -9,7 +9,7 @@ import {
   Pressable
 } from "react-native";
 import back from "../public/icons/arrow-back.png"
-import Encabezado from './components/Encabezado';
+import Header from './components/Header';
 
 export default function NFTDetail({ route }) {  
   let nft = route.params.nft.ticket;
@@ -18,7 +18,7 @@ export default function NFTDetail({ route }) {
 
   return (
     <>
-      <Encabezado navigation={navigation} />
+      <Header navigation={navigation} />
       <View style={[styles.headerBack]}>          
         <Pressable
           onPress={() => navigation.goBack()}>

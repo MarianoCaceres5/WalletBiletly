@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import { Pressable } from "react-native";
 import logo from "../../public/logo.png";
 
-export default function Encabezado({navigation}) {
+export default function header({navigation}) {
   return (
     <>
       <SafeAreaView>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   container: {
-    height: 100,
+    height: 120,
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
