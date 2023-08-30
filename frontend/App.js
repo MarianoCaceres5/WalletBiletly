@@ -18,10 +18,6 @@ import {
 import Navbar from "./screens/components/Navbar";
 import NFTDetail from "./screens/NFTDetail";
 
-// LogBox.ignoreLogs([
-//   'Non-serializable values were found in the navigation state',
-// ]);
-
 const Stack = createNativeStackNavigator();
 
 function App() {

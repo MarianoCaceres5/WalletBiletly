@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     border: 5,
-    borderColor: 'red'
+    borderColor: 'red',
+    marginLeft: 15
   },
   arrowBack: {
     width: 40,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -91,6 +91,12 @@ const Home = ({ navigation, route }) => {
 
   const handleInput = (text) => {
     setBusqueda(text);
+  };
+
+  const scrollViewRef = useRef(null);
+
+  const scrollToTop = () => {
+    scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
   };
 
   const loadContract = async () => {
@@ -287,7 +293,8 @@ const Home = ({ navigation, route }) => {
       <View>
         <Header navigation={navigation} />        
         <View style={styles.container2}>
-          <ScrollView
+          <ScrollView 
+            ref={scrollViewRef}
             contentContainerStyle={styles.scrollContainer}
             vertical={true}
             refreshControl={
