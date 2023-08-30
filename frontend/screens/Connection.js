@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Touchable, TouchableOpacity } from "react-native";
 import Logo from "../public/logo.png";
+import { ConnectionContext } from "../App";
 
-const Connection = ({ navigation, route }) => {
+const Connection = () => {
+  
+  const handleConnection = useContext(ConnectionContext);
+
   return (
     <View style={styles.container}>
       <View style={[styles.greenRectangle]}>
@@ -13,13 +17,13 @@ const Connection = ({ navigation, route }) => {
       <Text style={[styles.title]}>Connect your Wallet to access all your NFTs</Text>
       <TouchableOpacity
         style={[styles.button, styles.shadow]}
-        onPress={() => route.params.onWeb3Handler('WalletExplorer')}
+        onPress={() => handleConnection('WalletExplorer')}
       >
         <Text style={[styles.whiteConnect]}>Connect wallet</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[]}
-        onPress={() => route.params.onWeb3Handler('Qrcode')}
+        onPress={() => handleConnection('Qrcode')}
       >
         <Text style={[styles.greenConnect]}>Scan QR</Text>
       </TouchableOpacity>

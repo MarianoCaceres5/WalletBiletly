@@ -14,8 +14,7 @@ import walletverde from "../../public/icons/walletverde.png";
 
 const Tab = createBottomTabNavigator();
 
-export default function Navbar({navigation, route}) {
-  // console.log(route.params.address)
+export default function Navbar({navigation}) {
 
   let options = {
     showLabel: false,
@@ -41,7 +40,7 @@ export default function Navbar({navigation, route}) {
     <Tab.Navigator screenOptions={options}>
       <Tab.Screen
         name="Home"
-        children={()=><Home navigation={navigation} route={route}/>}
+        children={()=><Home navigation={navigation}/>}
         options={{
           tabBarIcon: ({focused}) => (
             <Image source={focused ? walletverde : walletgris} style={{ width: 50, height: 50, marginLeft: 30, marginTop: 10 }} />          
@@ -51,7 +50,7 @@ export default function Navbar({navigation, route}) {
 
       <Tab.Screen
         name="ScanQR"
-        children={()=><ScanQr route={route}/>}
+        children={()=><ScanQr/>}
         options={{
           tabBarIcon: () => (
             <TouchableOpacity style={[styles.scanQR]} onPress={() => navigation.navigate("ScanQR")}>                                        
@@ -66,7 +65,7 @@ export default function Navbar({navigation, route}) {
 
       <Tab.Screen
         name="Settings"
-        children={()=><Settings navigation={navigation} route={route}/>}
+        children={()=><Settings navigation={navigation}/>}
         style={styles.back}
         options={{
           tabBarIcon: ({focused}) => (

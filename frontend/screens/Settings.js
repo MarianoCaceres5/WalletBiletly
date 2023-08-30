@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import Header from "./components/Header";
 import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from "react-native";
 import * as Clipboard from 'expo-clipboard';
@@ -7,8 +7,14 @@ import home from "../public/icons/home.png";
 import help from "../public/icons/help.png";
 import about from "../public/icons/about.png";
 import signout from "../public/icons/signout.png";
+import { NFTContext } from "../App";
+import { AddressContext } from "../App";
+import { ConnectionContext } from "../App";
 
-export default function Settings({ navigation, route }) {
+export default function Settings({ navigation }) {
+
+  const account = useContext(AddressContext);
+  const handleConnection = useContext(ConnectionContext);
 
   const copyToClipboard = (text) => {
     Clipboard.setStringAsync(text);
@@ -26,9 +32,9 @@ export default function Settings({ navigation, route }) {
           <Text style={styles.subtitle}>Address</Text>
           <View style={styles.addressContainer}>
             <Text style={[styles.address, styles.w75]}>
-              {route.params.account}
+              {account}
             </Text>
-            <TouchableOpacity onPress={() => copyToClipboard(route.params.account)}>
+            <TouchableOpacity onPress={() => copyToClipboard(account)}>
               <Image
                 source={copy}
                 style={{ width: 29, height: 29, marginLeft: 20 }}
@@ -58,7 +64,7 @@ export default function Settings({ navigation, route }) {
 
         <View style={styles.line} />
 
-        <TouchableOpacity onPress={() => route.params.handleConnection()} style={styles.flexColumnContainer}>
+        <TouchableOpacity onPress={() => handleConnection()} style={styles.flexColumnContainer}>
           <View style={styles.flexContainer}>
             <Image
               source={signout}

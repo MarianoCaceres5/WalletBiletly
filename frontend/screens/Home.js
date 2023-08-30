@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -14,10 +14,16 @@ import axios from "axios";
 import Header from "./components/Header";
 import FiltersSection from "./components/FiltersSection";
 import logo from "../public/logo.png";
+import { NFTContext } from "../App";
+import { AddressContext } from "../App";
 
 const subdomain = "https://ipfs.io";
 
-const Home = ({ navigation, route }) => {
+const Home = ({ navigation }) => {
+  
+  const nft = useContext(NFTContext);
+  const account = useContext(AddressContext);
+
   const [loading, setLoading] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [nfts, setNFTs] = useState([
@@ -93,17 +99,11 @@ const Home = ({ navigation, route }) => {
     setBusqueda(text);
   };
 
-  const scrollViewRef = useRef(null);
-
-  const scrollToTop = () => {
-    scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
-  };
-
   const loadContract = async () => {
     axios
       .get(
         "http://192.168.0.12:912/api/Tickets/TicketxUsuario/" +
-          route.params?.account
+          account
       )
       .then((result) => {
         let tickets = result.data;
@@ -134,7 +134,7 @@ const Home = ({ navigation, route }) => {
                         evento.fecha = fecha;
                         let nftTicket = {
                           id: ticket.idEntrada,
-                          address: route.params?.account,
+                          address: account,
                           name: evento.nombre,
                           date: fecha,
                           image: foto,
@@ -220,8 +220,8 @@ const Home = ({ navigation, route }) => {
     const uri = `${subdomain}/ipfs/${result.data.path}`;
     try {
       console.log("Minteando");
-      await route.params.nft.mint(
-        route.params?.account,
+      await nft.mint(
+        account,
         uri,
         nftTicket.description,
         evento
@@ -244,13 +244,13 @@ const Home = ({ navigation, route }) => {
 
   const loadHome = async () => {
     console.log("Loading Home");
-    const ticketCount = await route.params?.nft.tokenCount();
+    const ticketCount = await nft.tokenCount();
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
-      const ticket = await route.params?.nft.entradas(i);
-      const evento = await route.params?.nft.entradasEventos(i);
+      const ticket = await nft.entradas(i);
+      const evento = await nft.entradasEventos(i);
       let fecha = evento.fecha;
-      const uri = await route.params?.nft.tokenURI(i);
+      const uri = await nft.tokenURI(i);
       const response = await fetch(uri);
       const metadata = await response.json();
 
@@ -294,7 +294,6 @@ const Home = ({ navigation, route }) => {
         <Header navigation={navigation} />        
         <View style={styles.container2}>
           <ScrollView 
-            ref={scrollViewRef}
             contentContainerStyle={styles.scrollContainer}
             vertical={true}
             refreshControl={

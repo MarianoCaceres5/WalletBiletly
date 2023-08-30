@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { StyleSheet } from "react-native";
-import {WALLET_CONNECT_PROJECT_ID} from "@env"
+import { WALLET_CONNECT_PROJECT_ID } from "@env";
 import NFTAbi from "./src/contracts/NFT.json";
 import NFTAddress from "./src/contracts/NFT-address.json";
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,6 +19,10 @@ import Navbar from "./screens/components/Navbar";
 import NFTDetail from "./screens/NFTDetail";
 
 const Stack = createNativeStackNavigator();
+
+export const NFTContext = createContext();
+export const AddressContext = createContext();
+export const ConnectionContext = createContext();
 
 function App() {
   const projectId = WALLET_CONNECT_PROJECT_ID;
@@ -53,15 +57,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [nft, setNFT] = useState({});
 
-  const handleConnection = async (route = 'ConnectWallet') => {
-    if(!isConnected){
+  const handleConnection = async (route = "ConnectWallet") => {
+    if (!isConnected) {
       let options = {
-        route: ''
-      }
+        route: "",
+      };
       options.route = route;
       return open(options);
-    }else{
-      return provider?.disconnect();    
+    } else {
+      return provider?.disconnect();
     }
   };
 
@@ -80,79 +84,64 @@ function App() {
   }, [isConnected]);
 
   if (!isConnected || provider === null || provider === undefined || loading) {
-  // if(false){
+    // if(false){
     return (
       <>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Onboarding"
-            screenOptions={{
-              orientation: 'portrait',
-              headerShown: false,
-              header: () => null,
-              contentStyle: { backgroundColor: "black" },
-            }}
-          >
-            <Stack.Screen name="Onboarding" component={Onboarding} />
-            <Stack.Screen
-              name="Connection"
-              component={Connection}
-              initialParams={{ onWeb3Handler: handleConnection }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <WalletConnectModal
-          projectId={projectId}
-          providerMetadata={providerMetadata}
-          sessionParams={sessionParams}
-          themeMode="dark"
-        />
+        <ConnectionContext.Provider value={handleConnection}>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="Onboarding"
+              screenOptions={{
+                orientation: "portrait",
+                headerShown: false,
+                header: () => null,
+                contentStyle: { backgroundColor: "black" },
+              }}
+            >
+              <Stack.Screen name="Onboarding" component={Onboarding} />
+              <Stack.Screen
+                name="Connection"
+                component={Connection}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <WalletConnectModal
+            projectId={projectId}
+            providerMetadata={providerMetadata}
+            sessionParams={sessionParams}
+            themeMode="dark"
+          />
+        </ConnectionContext.Provider>
       </>
     );
   }
-  
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Navbar"
-        screenOptions={{
-          orientation: 'portrait',          
-          headerShown: false,
-          header: () => null,
-          contentStyle: { backgroundColor: "black" },
-          animation: "none"
-        }}
-      >
-        <Stack.Screen
-          name="Navbar"
-          component={Navbar}
-          initialParams={{ nft: nft, account: address, handleConnection: handleConnection }}
-        />
-        <Stack.Screen
-          name="NFTDetail"
-          component={NFTDetail}
-          
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ConnectionContext.Provider value={handleConnection}>
+      <NFTContext.Provider value={nft}>
+        <AddressContext.Provider value={address}>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="Navbar"
+              screenOptions={{
+                orientation: "portrait",
+                headerShown: false,
+                header: () => null,
+                contentStyle: { backgroundColor: "black" },
+                animation: "none",
+              }}
+            >
+              <Stack.Screen
+                name="Navbar"
+                component={Navbar}
+              />
+              <Stack.Screen name="NFTDetail" component={NFTDetail} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </AddressContext.Provider>
+      </NFTContext.Provider>
+    </ConnectionContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    width: 200,
-    height: 100,
-    backgroundColor: "blue",
-    textAlign: "center",
-    marginTop: 500,
-    marginLeft: 200,
-  },
-  white: {
-    color: "white",
-  },
-  black: {
-    color: "black",
-  },
-});
 
 export default App;

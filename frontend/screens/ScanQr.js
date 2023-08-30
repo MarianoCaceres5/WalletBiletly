@@ -1,12 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../public/icons/arrow-back.png";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import SwipeUpDown from 'react-native-swipe-up-down';
 import qrScan from "../public/icons/qrScan.png";
+import { NFTContext } from "../App";
+import { AddressContext } from "../App";
 
-export default function ScanQr({route}) {
+export default function ScanQr() {
+
+  const nft = useContext(NFTContext);
+  const account = useContext(AddressContext);
 
   const [hasPermission, setHasPermission] = useState(false); 
   const [scanData, setScanData] = useState();

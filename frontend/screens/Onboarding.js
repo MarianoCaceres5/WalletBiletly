@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
+import React, { useState, useEffect} from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Logo from "../public/logo.png";
 import Ticket from "../public/ticket.png";
 import Arrow from "../public/arrow-icon.png";
