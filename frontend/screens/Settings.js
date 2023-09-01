@@ -23,6 +23,7 @@ export default function Settings({ navigation }) {
   return (
     <>
       <Header navigation={navigation}/>
+      
       <View style={styles.container}>
         <Text style={styles.title}> Configuration </Text>
 
