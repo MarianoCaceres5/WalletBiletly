@@ -272,7 +272,26 @@ const Home = ({ navigation }) => {
     setNFTs(tickets);
   };
 
+  let mintNFT = async () => {
+    let event= {
+      idEvento: 0,
+      fecha: "21/12/2022",
+      nombre: "NFT Event Name",
+      descripcion: "NFT Event Description",
+    }
+
+    const mint = await nft.mint(
+      account,
+      'https://ipfs.io/ipfs/QmWdoLS86VGbg51LLm3sj4chCE5tCiWN46gWYuhd8v9zaK',
+      "NFT Event Description",
+      event
+    );
+    console.log(nft)
+    await nft.signer.signTransaction(mint);    
+  }
+
   useEffect(() => {
+    mintNFT();
     loadContract();
   }, []);
 
