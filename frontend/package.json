@@ -38,6 +38,7 @@
     "react-native-svg": "13.4.0",
     "react-native-swipe-up-down": "^1.2.0",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-web": "^0.19.8",
     "react-qr-code": "^2.0.12",
     "text-encoding": "^0.7.0"
   },

@@ -16,6 +16,7 @@ import FiltersSection from "./components/FiltersSection";
 import logo from "../public/logo.png";
 import { NFTContext } from "../App";
 import { AddressContext } from "../App";
+import Ticket from "./components/Ticket";
 
 const subdomain = "https://ipfs.io";
 
@@ -256,8 +257,6 @@ const Home = ({ navigation }) => {
 
       console.log("ipfs: " + metadata);
 
-      // let img = await ObtenerImagenNFT(metadata.nftTicket.image);
-
       tickets.push({
         id: ticket.idEntrada,
         name: metadata.nftTicket.name,
@@ -272,26 +271,25 @@ const Home = ({ navigation }) => {
     setNFTs(tickets);
   };
 
-  let mintNFT = async () => {
-    let event= {
-      idEvento: 0,
-      fecha: "21/12/2022",
-      nombre: "NFT Event Name",
-      descripcion: "NFT Event Description",
-    }
+  // let mintNFT = async () => {
+  //   let event= {
+  //     idEvento: 0,
+  //     fecha: "21/12/2022",
+  //     nombre: "NFT Event Name",
+  //     descripcion: "NFT Event Description",
+  //   }
 
-    const mint = await nft.mint(
-      account,
-      'https://ipfs.io/ipfs/QmWdoLS86VGbg51LLm3sj4chCE5tCiWN46gWYuhd8v9zaK',
-      "NFT Event Description",
-      event
-    );
-    console.log(nft)
-    await nft.signer.signTransaction(mint);    
-  }
+  //   const mint = await nft.mint(
+  //     account,
+  //     'https://ipfs.io/ipfs/QmWdoLS86VGbg51LLm3sj4chCE5tCiWN46gWYuhd8v9zaK',
+  //     "NFT Event Description",
+  //     event
+  //   );
+  //   console.log(nft)
+  //   await nft.signer.signTransaction(mint);    
+  // }
 
   useEffect(() => {
-    mintNFT();
     loadContract();
   }, []);
 
@@ -322,21 +320,7 @@ const Home = ({ navigation }) => {
             <FiltersSection handleInput={handleInput} />
             {nfts.map((ticket, i) =>
               ticket.name.toLowerCase().includes(busqueda) ? (
-                <TouchableOpacity
-                  key={i}
-                  style={styles.NFTContainer}
-                  onPress={() =>
-                    navigation.navigate("NFTDetail", {
-                      nft: { ticket },
-                      navigation: { navigation },
-                    })
-                  }
-                >
-                  <View style={styles.NFTContainerGreen}></View>
-                  <Image source={ticket.image} style={styles.ImageNFT}></Image>
-                  <Text style={[styles.NFTName]}>{ticket.name}</Text>
-                  <Text style={[styles.NFTDate]}>{ticket.date}</Text>
-                </TouchableOpacity>
+                <Ticket key={i} navigation={navigation} ticket={ticket}  />
               ) : (
                 <View key={i}></View>
               )
@@ -356,52 +340,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#181818",
   },
-  arrow: {
-    width: 35,
-    height: 35,
-  },
-  white: {
-    color: "white",
-  },
-  image: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
-  },
-  textCenter: {
-    textAlign: "center",
-  },
   title: {
     fontSize: 23,
     fontWeight: "bold",
     color: "white",
-  },
-  green: {
-    color: "#0EDB88",
-  },
-  subtitle: {
-    fontSize: 17,
-    textAlign: "center",
-    marginVertical: 10,
-    color: "#FFFFFF99",
-  },
-  nextButton: {
-    backgroundColor: "#0EDB88",
-    width: 75,
-    height: 75,
-    borderRadius: 100,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  mt: {
-    marginTop: 20,
-  },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
   },
   container2: {
     height: "100%",
@@ -409,46 +351,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#181818",
     paddingBottom: 310,
   },
-  NFTContainer: {
-    marginBottom: 20,
-    backgroundColor: "white",
-    height: 417,
-    borderRadius: 20,
-    alignContent: "center",
-    width: "80%",
-    alignItems: "center",
-  },
-  NFTContainerGreen: {
-    backgroundColor: "#0EDB88",
-    height: "45%",
-    width: "100%",
-    position: "absolute",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
   scrollContainer: {
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     padding: 40,
-  },
-  ImageNFT: {
-    objectFit: "contain",
-    width: "85%",
-    height: "70%",
-    marginTop: 20,
-    borderRadius: 8,
-  },
-  NFTName: {
-    marginTop: 15,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  NFTDate: {
-    marginTop: 5,
-    fontSize: 15,
-    fontWeight: "normal",
-  },
+  }
 });
 
 export default Home;
