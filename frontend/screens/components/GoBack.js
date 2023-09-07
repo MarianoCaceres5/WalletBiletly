@@ -1,6 +1,7 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import back from "../../public/icons/arrow-back.png"
+import { StyleSheet } from "react-native";
 
 export default function GoBack({navigation}) {
   return (

@@ -1,5 +1,6 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
+import { StyleSheet } from "react-native";
 
 export default function TicketDetail({nft}) {
   return (
