@@ -7,6 +7,7 @@ import SwipeUpDown from 'react-native-swipe-up-down';
 import qrScan from "../public/icons/qrScan.png";
 import { NFTContext } from "../App";
 import { AddressContext } from "../App";
+import QrModal from "./components/QrModal";
 
 export default function ScanQr() {
 
@@ -14,7 +15,7 @@ export default function ScanQr() {
   const account = useContext(AddressContext);
 
   const [hasPermission, setHasPermission] = useState(false); 
-  const [scanData, setScanData] = useState();
+  const [scanData, setScanData] = useState('');
   const [modalTop, setModalTop] = useState('0%');
   const navigation = useNavigation();
 
@@ -42,9 +43,20 @@ export default function ScanQr() {
     )
   }
 
-  const handleBarCodeScanned = ({type, data}) => {
-    setScanData(data)
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  const handleBarCodeScanned = async ({type, data}) => {
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`)
+    setScanData(data);
+    // const ticketCount = await nft.tokenCount();
+    // for (let i = 1; i <= ticketCount; i++) {
+    //   const ticket = await nft.entradas(i);
+    //   const evento = await nft.entradasEventos(i);
+    //   console.log('TICKET:', ticket, 'EVENTO:', evento)      
+    // }
+    
+  }
+
+  const handleCloseScan = async () => {
+    setScanData();
   }
 
   useEffect(() => {    
@@ -91,6 +103,12 @@ export default function ScanQr() {
           style={{ backgroundColor: 'white', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
         />        
       </View>    
+
+      {((scanData !== undefined && scanData !== null && scanData !== '') ? (
+        <QrModal handleCloseScan={handleCloseScan}/>        
+      ): (
+        <></>
+      ))}      
     </>
   );
 }

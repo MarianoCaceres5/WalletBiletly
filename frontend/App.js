@@ -17,6 +17,7 @@ import {
 } from "@walletconnect/modal-react-native";
 import Navbar from "./screens/components/Navbar";
 import NFTDetail from "./screens/NFTDetail";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
@@ -99,10 +100,7 @@ function App() {
               }}
             >
               <Stack.Screen name="Onboarding" component={Onboarding} />
-              <Stack.Screen
-                name="Connection"
-                component={Connection}
-              />
+              <Stack.Screen name="Connection" component={Connection} />
             </Stack.Navigator>
           </NavigationContainer>
           <WalletConnectModal
@@ -131,10 +129,7 @@ function App() {
                 animation: "none",
               }}
             >
-              <Stack.Screen
-                name="Navbar"
-                component={Navbar}
-              />
+              <Stack.Screen name="Navbar" component={Navbar} />
               <Stack.Screen name="NFTDetail" component={NFTDetail} />
             </Stack.Navigator>
           </NavigationContainer>

@@ -289,8 +289,22 @@ const Home = ({ navigation }) => {
   //   await nft.signer.signTransaction(mint);    
   // }
 
+  let checkApi = async () => {
+    axios
+      .get(
+        'https://10.152.2.100:3000/tickets/Mensaje'
+      )
+      .then((result) => {        
+        console.log('API:',result.data)
+      })
+      .catch((error) => {
+        console.log("HUBO UN ERROR API:" , error);
+      });
+  }
+
   useEffect(() => {
     loadContract();
+    checkApi();
   }, []);
 
   useEffect(() => {
