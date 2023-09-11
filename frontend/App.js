@@ -97,6 +97,7 @@ function App() {
                 headerShown: false,
                 header: () => null,
                 contentStyle: { backgroundColor: "black" },
+                animation: "none",
               }}
             >
               <Stack.Screen name="Onboarding" component={Onboarding} />

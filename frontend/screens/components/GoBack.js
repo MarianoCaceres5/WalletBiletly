@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
       fontWeight: 'semibold',
       fontSize: 20,
       color: 'white',
-      border: 5,
-      borderColor: 'red',
       marginLeft: 15
     },
     arrowBack: {

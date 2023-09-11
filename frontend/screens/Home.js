@@ -21,70 +21,12 @@ import Ticket from "./components/Ticket";
 const subdomain = "https://ipfs.io";
 
 const Home = ({ navigation }) => {
-  
   const nft = useContext(NFTContext);
   const account = useContext(AddressContext);
 
   const [loading, setLoading] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  const [nfts, setNFTs] = useState([
-    {
-      id: 0,
-      name: "Emilia",
-      number: 1,
-      description: "NFT Event Description",
-      image: logo,
-      date: "21/12/2022",
-      event: {
-        idEvento: 0,
-        fecha: "21/12/2022",
-        nombre: "NFT Event Name",
-        descripcion: "NFT Event Description",
-      },
-    },
-    {
-      id: 1,
-      name: "Khea",
-      number: 1,
-      description: "NFT Event Description",
-      image: logo,
-      date: "21/12/2022",
-      event: {
-        idEvento: 0,
-        fecha: "21/12/2022",
-        nombre: "NFT Event Name",
-        descripcion: "NFT Event Description",
-      },
-    },
-    {
-      id: 2,
-      name: "Messi",
-      number: 1,
-      description: "NFT Event Description",
-      image: logo,
-      date: "21/12/2022",
-      event: {
-        idEvento: 0,
-        fecha: "21/12/2022",
-        nombre: "NFT Event Name",
-        descripcion: "NFT Event Description",
-      },
-    },
-    {
-      id: 3,
-      name: "Pacho",
-      number: 1,
-      description: "NFT Event Description",
-      image: logo,
-      date: "21/12/2022",
-      event: {
-        idEvento: 0,
-        fecha: "21/12/2022",
-        nombre: "NFT Event Name",
-        descripcion: "NFT Event Description",
-      },
-    },
-  ]);
+  const [nfts, setNFTs] = useState([]);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -103,7 +45,7 @@ const Home = ({ navigation }) => {
   const loadContract = async () => {
     axios
       .get(
-        "http://192.168.0.12:912/api/Tickets/TicketxUsuario/" +
+        "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/TicketxUsuario/" +
           account
       )
       .then((result) => {
@@ -120,12 +62,12 @@ const Home = ({ navigation }) => {
                 };
 
                 axios
-                  .post("http://192.168.0.12:912/api/IPFS/", body)
+                  .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
                   .then((result) => {
                     let foto = `${subdomain}/ipfs/${result.data.path}`;
                     axios
                       .get(
-                        "http://192.168.0.12:912/api/Tickets/EventoxEntrada/" +
+                        "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/EventoxEntrada/" +
                           ticket.idEntrada
                       )
                       .then((result) => {
@@ -172,6 +114,7 @@ const Home = ({ navigation }) => {
     loadHome();
   };
 
+
   const uploadToIPFS = async (ticket) => {
     console.log("link del drive: " + ticket.imagen);
     let url = ticket.imagen;
@@ -183,11 +126,11 @@ const Home = ({ navigation }) => {
           file: url,
         };
 
-        axios
-          .post("http://192.168.0.12:912/api/IPFS/", body)
+        await axios
+          .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
           .then((result) => {
             console.log(result.data.path);
-            return result.data.path;
+            return `${subdomain}/ipfs/${result.data.path}`;
           })
           .catch((error) => {
             console.log(error);
@@ -204,7 +147,7 @@ const Home = ({ navigation }) => {
         file: JSON.stringify(nftTicket),
       };
       axios
-        .post("http://192.168.0.12:912/api/IPFS/", body)
+        .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
         .then((result) => {
           console.log(result.data.path);
           mintThenList(result, nftTicket, evento);
@@ -219,96 +162,60 @@ const Home = ({ navigation }) => {
 
   const mintThenList = async (result, nftTicket, evento) => {
     const uri = `${subdomain}/ipfs/${result.data.path}`;
-    try {
-      console.log("Minteando");
-      await nft.mint(
-        account,
-        uri,
-        nftTicket.description,
-        evento
-      );
+    console.log("Minteando");
+    const mint = await nft.mint(account, uri, nftTicket.description, evento);
+    await nft.signer.signTransaction(mint);
 
-      console.log("Actualizando tieneNFT");
-      axios
-        .put("http://192.168.0.12:912/api/Tickets/" + nftTicket.id)
-        .then((result) => {
-          //console.log(result);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log("Error man:");
-      console.log(error);
-    }
+    console.log("Actualizando tieneNFT");
+    axios
+      .put("https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/" + nftTicket.id)
+      .then((result) => {
+        //console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const loadHome = async () => {
     console.log("Loading Home");
     const ticketCount = await nft.tokenCount();
+    console.log("TicketCount:", ticketCount.toString());
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
       const ticket = await nft.entradas(i);
       const evento = await nft.entradasEventos(i);
       let fecha = evento.fecha;
       const uri = await nft.tokenURI(i);
-      const response = await fetch(uri);
-      const metadata = await response.json();
-
-      console.log("ipfs: " + metadata);
-
-      tickets.push({
-        id: ticket.idEntrada,
-        name: metadata.nftTicket.name,
-        number: metadata.nftTicket.number,
-        description: metadata.nftTicket.description,
-        image: metadata.nftTicket.image,
-        date: fecha,
-        event: evento,
-      });
+      await axios
+        .get(uri)
+        .then((result) => {
+          let metadata = result.data;
+          console.log("Metadata: ", metadata);
+          tickets.push({
+            id: ticket.idEntrada,
+            name: metadata.name,
+            number: metadata.number,
+            description: metadata.description,
+            image: metadata.image,
+            date: fecha,
+            event: evento,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-
+    console.log("Tickets:", tickets);
     setNFTs(tickets);
   };
 
-  // let mintNFT = async () => {
-  //   let event= {
-  //     idEvento: 0,
-  //     fecha: "21/12/2022",
-  //     nombre: "NFT Event Name",
-  //     descripcion: "NFT Event Description",
-  //   }
-
-  //   const mint = await nft.mint(
-  //     account,
-  //     'https://ipfs.io/ipfs/QmWdoLS86VGbg51LLm3sj4chCE5tCiWN46gWYuhd8v9zaK',
-  //     "NFT Event Description",
-  //     event
-  //   );
-  //   console.log(nft)
-  //   await nft.signer.signTransaction(mint);    
-  // }
-
-  let checkApi = async () => {
-    axios
-      .get(
-        'https://10.152.2.100:3000/tickets/Mensaje'
-      )
-      .then((result) => {        
-        console.log('API:',result.data)
-      })
-      .catch((error) => {
-        console.log("HUBO UN ERROR API:" , error);
-      });
-  }
-
   useEffect(() => {
     loadContract();
-    checkApi();
   }, []);
 
   useEffect(() => {
-    if (nfts !== []) {
+    if (!nfts) {
       setLoading(false);
     }
   }, [nfts]);
@@ -322,9 +229,9 @@ const Home = ({ navigation }) => {
   return (
     <>
       <View>
-        <Header navigation={navigation} />        
+        <Header navigation={navigation} />
         <View style={styles.container2}>
-          <ScrollView 
+          <ScrollView
             contentContainerStyle={styles.scrollContainer}
             vertical={true}
             refreshControl={
@@ -334,7 +241,7 @@ const Home = ({ navigation }) => {
             <FiltersSection handleInput={handleInput} />
             {nfts.map((ticket, i) =>
               ticket.name.toLowerCase().includes(busqueda) ? (
-                <Ticket key={i} navigation={navigation} ticket={ticket}  />
+                <Ticket key={i} navigation={navigation} ticket={ticket} />
               ) : (
                 <View key={i}></View>
               )
@@ -370,7 +277,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     padding: 40,
-  }
+  },
 });
 
 export default Home;
