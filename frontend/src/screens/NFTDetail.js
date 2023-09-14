@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet } from "react-native";
-import GoBack from './components/GoBack';
-import Header from './components/Header';
-import TicketDetail from './components/TicketDetail';
+import GoBack from '../components/GoBack';
+import Header from '../components/Header';
+import TicketDetail from '../components/TicketDetail';
 
 export default function NFTDetail({ route }) {  
   let nft = route.params.nft.ticket;

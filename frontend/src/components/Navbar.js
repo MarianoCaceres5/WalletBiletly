@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import Home from "../Home.js";
-import Settings from "../Settings.js";
-import ScanQr from "../ScanQr.js";
+import Home from "../screens/Home.js";
+import Settings from "../screens/Settings.js";
+import ScanQr from "../screens/ScanQr.js";
 
 import qrIcon from "../../public/icons/qrIcon.png";
 import settingsgris from "../../public/icons/settingsgris.png";

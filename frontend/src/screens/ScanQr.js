@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useContext} from "react";
 import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import arrowBack from "../public/icons/arrow-back.png";
+import arrowBack from "../../public/icons/arrow-back.png";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import SwipeUpDown from 'react-native-swipe-up-down';
-import qrScan from "../public/icons/qrScan.png";
-import { NFTContext } from "../App";
-import { AddressContext } from "../App";
-import QrModal from "./components/QrModal";
+import qrScan from "../../public/icons/qrScan.png";
+import { NFTContext } from "../../App";
+import { AddressContext } from "../../App";
+import QrModal from "../components/QrModal";
 
 export default function ScanQr() {
 

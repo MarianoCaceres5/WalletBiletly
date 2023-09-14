@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Touchable, TouchableOpacity } from "react-native";
-import Logo from "../public/logo.png";
-import { ConnectionContext } from "../App";
+import Logo from "../../public/logo.png";
+import { ConnectionContext } from "../../App";
 
 const Connection = () => {
   

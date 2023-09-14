@@ -7,16 +7,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import "@ethersproject/shims";
 import { ethers } from "ethers";
-import Onboarding from "./screens/Onboarding.js";
-import Connection from "./screens/Connection.js";
-// import NFTDetail from './screens/NFTDetail';
+import Onboarding from "./src/screens/Onboarding.js";
+import Connection from "./src/screens/Connection.js";
 import "./expo-crypto-shim";
 import {
   WalletConnectModal,
   useWalletConnectModal,
 } from "@walletconnect/modal-react-native";
-import Navbar from "./screens/components/Navbar";
-import NFTDetail from "./screens/NFTDetail";
+import Navbar from "./src/components/Navbar";
+import NFTDetail from "./src/screens/NFTDetail";
 import axios from "axios";
 
 const Stack = createNativeStackNavigator();

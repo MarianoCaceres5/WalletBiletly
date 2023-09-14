@@ -11,12 +11,11 @@ import {
   StatusBar,
 } from "react-native";
 import axios from "axios";
-import Header from "./components/Header";
-import FiltersSection from "./components/FiltersSection";
-import logo from "../public/logo.png";
-import { NFTContext } from "../App";
-import { AddressContext } from "../App";
-import Ticket from "./components/Ticket";
+import Header from "../components/Header";
+import FiltersSection from "../components/FiltersSection";
+import { NFTContext } from "../../App";
+import { AddressContext } from "../../App";
+import Ticket from "../components/Ticket";
 
 const subdomain = "https://ipfs.io";
 
@@ -57,8 +56,14 @@ const Home = ({ navigation }) => {
               typeof ticket.imagen !== null
             ) {
               try {
+                const file = await Axios.get(ticket.imagen, {
+                  responseType: "blob",
+                }).then((response) => {
+                  return response.data;
+                });
+
                 let body = {
-                  file: ticket.imagen,
+                  file: file,
                 };
 
                 axios
@@ -114,7 +119,6 @@ const Home = ({ navigation }) => {
     loadHome();
   };
 
-
   const uploadToIPFS = async (ticket) => {
     console.log("link del drive: " + ticket.imagen);
     let url = ticket.imagen;
@@ -164,7 +168,8 @@ const Home = ({ navigation }) => {
     const uri = `${subdomain}/ipfs/${result.data.path}`;
     console.log("Minteando");
     const mint = await nft.mint(account, uri, nftTicket.description, evento);
-    await nft.signer.signTransaction(mint);
+    let resultadoTransaccion = await nft.signer.signTransaction(mint);
+    console.log(resultadoTransaccion);
 
     console.log("Actualizando tieneNFT");
     axios
@@ -184,27 +189,29 @@ const Home = ({ navigation }) => {
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
       const ticket = await nft.entradas(i);
-      const evento = await nft.entradasEventos(i);
-      let fecha = evento.fecha;
-      const uri = await nft.tokenURI(i);
-      await axios
-        .get(uri)
-        .then((result) => {
-          let metadata = result.data;
-          console.log("Metadata: ", metadata);
-          tickets.push({
-            id: ticket.idEntrada,
-            name: metadata.name,
-            number: metadata.number,
-            description: metadata.description,
-            image: metadata.image,
-            date: fecha,
-            event: evento,
+      if ((await nft.getOwner(ticket.idEntrada)) === account) {
+        const evento = await nft.entradasEventos(i);
+        let fecha = evento.fecha;
+        const uri = await nft.tokenURI(i);
+        await axios
+          .get(uri)
+          .then((result) => {
+            let metadata = result.data;
+            console.log("Metadata: ", metadata);
+            tickets.push({
+              id: ticket.idEntrada,
+              name: metadata.name,
+              number: metadata.number,
+              description: metadata.description,
+              image: metadata.image,
+              date: fecha,
+              event: evento,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }
     }
     console.log("Tickets:", tickets);
     setNFTs(tickets);

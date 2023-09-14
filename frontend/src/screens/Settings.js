@@ -1,15 +1,15 @@
 import React, {useContext} from "react";
-import Header from "./components/Header";
+import Header from "../components/Header";
 import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from "react-native";
 import * as Clipboard from 'expo-clipboard';
-import copy from "../public/icons/copy.png";
-import home from "../public/icons/home.png";
-import help from "../public/icons/help.png";
-import about from "../public/icons/about.png";
-import signout from "../public/icons/signout.png";
-import { NFTContext } from "../App";
-import { AddressContext } from "../App";
-import { ConnectionContext } from "../App";
+import copy from "../../public/icons/copy.png";
+import home from "../../public/icons/home.png";
+import help from "../../public/icons/help.png";
+import about from "../../public/icons/about.png";
+import signout from "../../public/icons/signout.png";
+import { NFTContext } from "../../App";
+import { AddressContext } from "../../App";
+import { ConnectionContext } from "../../App";
 
 export default function Settings({ navigation }) {
 
