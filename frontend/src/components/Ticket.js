@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, Image, Text  } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
+import logo from '../../public/logo.png'
 
-export default function Ticket({navigation, ticket }) {
+export default function Ticket({ navigation, ticket }) {
   return (
     <>
       <TouchableOpacity
@@ -9,12 +10,17 @@ export default function Ticket({navigation, ticket }) {
         onPress={() =>
           navigation.navigate("NFTDetail", {
             nft: { ticket },
-            navigation: { navigation },
+            navigation: { navigation }
           })
         }
       >
-        <View style={styles.NFTContainerGreen}></View>
-        <Image source={ticket.image} style={styles.ImageNFT}></Image>
+        {!ticket.ticketUsed ? (
+          <View style={styles.NFTContainerGreen}></View>
+        ) : (
+          <View style={styles.NFTContainerGrey}></View>
+        )}
+        {/* <Image source={ticket.image} style={styles.ImageNFT}></Image> */}
+        <Image source={logo} style={styles.ImageNFT}></Image>
         <Text style={[styles.NFTName]}>{ticket.name}</Text>
         <Text style={[styles.NFTDate]}>{ticket.date}</Text>
       </TouchableOpacity>
@@ -39,6 +45,14 @@ const styles = StyleSheet.create({
   },
   NFTContainerGreen: {
     backgroundColor: "#0EDB88",
+    height: "45%",
+    width: "100%",
+    position: "absolute",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  NFTContainerGrey: {
+    backgroundColor: "grey",
     height: "45%",
     width: "100%",
     position: "absolute",

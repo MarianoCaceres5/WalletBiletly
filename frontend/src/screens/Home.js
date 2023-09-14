@@ -119,32 +119,6 @@ const Home = ({ navigation }) => {
     loadHome();
   };
 
-  const uploadToIPFS = async (ticket) => {
-    console.log("link del drive: " + ticket.imagen);
-    let url = ticket.imagen;
-
-    // let url = "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg";
-    if (typeof url !== undefined && typeof url !== null) {
-      try {
-        let body = {
-          file: url,
-        };
-
-        await axios
-          .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
-          .then((result) => {
-            console.log(result.data.path);
-            return `${subdomain}/ipfs/${result.data.path}`;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch (error) {
-        console.log("ipfs image upload error: ", error);
-      }
-    }
-  };
-
   const createNFT = async (nftTicket, evento) => {
     try {
       let body = {
@@ -189,9 +163,10 @@ const Home = ({ navigation }) => {
     let tickets = [];
     for (let i = 1; i <= ticketCount; i++) {
       const ticket = await nft.entradas(i);
-      if ((await nft.getOwner(ticket.idEntrada)) === account) {
+      if (((await nft.getOwner(ticket.idEntrada))).toLowerCase() === account.toLowerCase()) {
         const evento = await nft.entradasEventos(i);
         let fecha = evento.fecha;
+        let ticketUsed = await nft.ticketUsed(i);
         const uri = await nft.tokenURI(i);
         await axios
           .get(uri)
@@ -205,6 +180,7 @@ const Home = ({ navigation }) => {
               description: metadata.description,
               image: metadata.image,
               date: fecha,
+              ticketUsed: ticketUsed,
               event: evento,
             });
           })
@@ -213,7 +189,6 @@ const Home = ({ navigation }) => {
           });
       }
     }
-    console.log("Tickets:", tickets);
     setNFTs(tickets);
   };
 
@@ -227,7 +202,7 @@ const Home = ({ navigation }) => {
     }
   }, [nfts]);
 
-  if (loading)
+  if (loading || nfts === null || nfts === undefined)
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Loading...</Text>
