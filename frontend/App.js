@@ -84,7 +84,7 @@ function App() {
   }, [isConnected]);
 
   if (!isConnected || provider === null || provider === undefined || loading) {
-    // if(false){
+  // if(false){
     return (
       <>
         <ConnectionContext.Provider value={handleConnection}>

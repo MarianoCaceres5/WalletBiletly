@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator
 } from "react-native";
 import axios from "axios";
 import Header from "../components/Header";
@@ -31,6 +32,7 @@ const Home = ({ navigation }) => {
 
   const onRefresh = React.useCallback(() => {
     loadHome();
+    setLoading(true)
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
@@ -190,23 +192,31 @@ const Home = ({ navigation }) => {
       }
     }
     setNFTs(tickets);
+    setLoading(false);
   };
 
   useEffect(() => {
     loadContract();
   }, []);
 
-  useEffect(() => {
-    if (!nfts) {
-      setLoading(false);
-    }
-  }, [nfts]);
 
-  if (loading || nfts === null || nfts === undefined)
+  if (loading)
+  // if(true)
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Loading...</Text>
-      </View>
+      <>
+        <View>          
+          <View style={styles.container2}>
+            <Header navigation={navigation} />
+            <ScrollView
+              contentContainerStyle={styles.scrollContainer}
+              vertical={true}
+            >
+              <FiltersSection handleInput={handleInput} />    
+              <ActivityIndicator style={styles.loading} size="large" color="#0EDB88"/>       
+            </ScrollView>
+          </View>
+        </View>
+      </>
     );
   return (
     <>
@@ -260,6 +270,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 40,
   },
+  loading: {
+    marginTop: 50
+  }
 });
 
 export default Home;
