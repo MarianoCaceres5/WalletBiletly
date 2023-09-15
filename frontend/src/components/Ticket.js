@@ -19,7 +19,7 @@ export default function Ticket({ navigation, ticket }) {
         ) : (
           <View style={styles.NFTContainerGrey}></View>
         )}
-        <Image source={ticket.image} style={styles.ImageNFT}></Image>
+        <Image source={{uri: ticket.image}} style={styles.ImageNFT}></Image>
         {/* <Image source={logo} style={styles.ImageNFT}></Image> */}
         <Text style={[styles.NFTName]}>{ticket.name}</Text>
         <Text style={[styles.NFTDate]}>{ticket.date}</Text>

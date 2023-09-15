@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import GoBack from '../components/GoBack';
 import Header from '../components/Header';
 import TicketDetail from '../components/TicketDetail';
+import TicketSlider from '../components/TicketSlider';
 
 export default function NFTDetail({ route }) {  
   let nft = route.params.nft.ticket;
@@ -10,9 +11,13 @@ export default function NFTDetail({ route }) {
 
   return (
     <>
-      <Header navigation={navigation} />
-      <GoBack navigation={navigation}/>
-      <TicketDetail nft={nft}/>
+        <Header navigation={navigation} />
+        <ScrollView vertical={true}>
+          <GoBack navigation={navigation}/>
+          <TicketDetail nft={nft}/>
+          <TicketSlider/>
+        </ScrollView>
     </>
   )
 }
+

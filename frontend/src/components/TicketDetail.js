@@ -1,21 +1,22 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet } from "react-native";
 
 export default function TicketDetail({ nft }) {
   return (
-    <View style={[styles.ticketContainer]}>
-      <Text style={[styles.date]}>{nft.date}</Text>
-      <Image
-        source={{
-          uri: "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg",
-        }}
-        style={styles.ImageNFT}
-      ></Image>
-      <Text style={[styles.NFTName]}>{nft.name}</Text>
-      <Text style={[styles.description]}>{nft.event.descripcion}</Text>
-      <Text style={[styles.numero]}>Entrada N°: {nft.number}</Text>
-    </View>
+      <View style={[styles.ticketContainer]}>
+        <Text style={[styles.date]}>{nft.date}</Text>
+        <Image
+          source={{
+            uri: "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg",
+          }}
+          style={styles.ImageNFT}
+        ></Image>
+        <Text style={[styles.NFTName]}>{nft.name}</Text>
+        <Text style={[styles.description]}>{nft.event.descripcion}</Text>
+        <Text style={[styles.numero]}>Entrada N°: {nft.number}</Text>
+      </View>
+      
   );
 }
 
@@ -28,6 +29,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   scrollContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
@@ -75,4 +78,7 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
   },
+  nftButton: {
+    marginHorizontal: 10
+  }
 });
