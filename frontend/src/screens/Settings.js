@@ -1,6 +1,6 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import Header from "../components/Header";
-import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableHighlight, TouchableOpacity, Pressable } from "react-native";
 import * as Clipboard from 'expo-clipboard';
 import copy from "../../public/icons/copy.png";
 import home from "../../public/icons/home.png";
@@ -10,11 +10,13 @@ import signout from "../../public/icons/signout.png";
 import { NFTContext } from "../../App";
 import { AddressContext } from "../../App";
 import { ConnectionContext } from "../../App";
+import SignOutModal from "../components/SignOutModal";
 
 export default function Settings({ navigation }) {
 
   const account = useContext(AddressContext);
   const handleConnection = useContext(ConnectionContext);
+  const [showModal, setShowModal] = useState(false);
 
   const copyToClipboard = (text) => {
     Clipboard.setStringAsync(text);
@@ -65,7 +67,7 @@ export default function Settings({ navigation }) {
 
         <View style={styles.line} />
 
-        <TouchableOpacity onPress={() => handleConnection()} style={styles.flexColumnContainer}>
+        <Pressable onPress={() => setShowModal(true)} style={styles.flexColumnContainer}>
           <View style={styles.flexContainer}>
             <Image
               source={signout}
@@ -73,7 +75,13 @@ export default function Settings({ navigation }) {
             />
             <Text style={styles.text}> Sign Out </Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
+
+        {((showModal) ? (
+          <SignOutModal handleConnection={handleConnection} setShowModal={setShowModal}/>
+        ) : (
+          <></>
+        ))}
       </View>
     </>
   );
@@ -127,6 +135,7 @@ const styles = StyleSheet.create({
     display: "flex",
     marginTop: 30,
     marginBottom: 15,
+    width: '80%',
     flexDirection: "column",
   },
   text: {
