@@ -33,7 +33,7 @@ export default function Navbar({navigation}) {
     },
     tabBarInactiveTintColor: "#282828",
     tabBarActiveTintColor: "#282828",
-    tabBarHideOnKeyboard: true
+    tabBarHideOnKeyboard: false
   };
 
   return (

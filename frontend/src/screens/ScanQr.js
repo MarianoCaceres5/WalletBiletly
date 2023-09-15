@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import arrowBack from "../../public/icons/arrow-back.png";
@@ -8,74 +8,100 @@ import qrScan from "../../public/icons/qrScan.png";
 import { NFTContext } from "../../App";
 import { AddressContext } from "../../App";
 import QrModal from "../components/QrModal";
+import axios from "axios";
 
 export default function ScanQr() {
 
   const nft = useContext(NFTContext);
   const account = useContext(AddressContext);
 
-  const [hasPermission, setHasPermission] = useState(false); 
+  const [hasPermission, setHasPermission] = useState(false);
   const [scanData, setScanData] = useState('');
   const [modalTop, setModalTop] = useState('0%');
+  const [ticketScanned, setTicketScanned] = useState({});
   const navigation = useNavigation();
 
   const mini = () => {
     return (
-      <>  
+      <>
         <View style={styles.bottomRectangle}>
           <View style={styles.dragRectangleGreen}></View>
           <Text style={styles.text}> Scan the QR </Text>
-        </View>        
+        </View>
       </>
     )
   }
 
   const full = () => {
     return (
-      <>  
+      <>
         <View style={styles.bottomRectangle}>
           <View style={styles.dragRectangleGrey}></View>
           <Text style={styles.text}> Scan the QR </Text>
           <Image source={qrScan} style={[styles.qr]} />
           <Text style={styles.textDetail}> Bring your camera closer and scan the code to access event </Text>
-        </View>          
+        </View>
       </>
     )
   }
 
-  const handleBarCodeScanned = async ({type, data}) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     console.log(`Bar code with type ${type} and data ${data} has been scanned!`)
     setScanData(data);
-    // const ticketCount = await nft.tokenCount();
-    // for (let i = 1; i <= ticketCount; i++) {
-    //   const ticket = await nft.entradas(i);
-    //   const evento = await nft.entradasEventos(i);
-    //   console.log('TICKET:', ticket, 'EVENTO:', evento)      
-    // }
-    
+    const ticketCount = await nft.tokenCount();
+    let ticketUsed = false;
+    let i = 1;
+    while (!ticketUsed && i <= ticketCount) {
+      const ticket = await nft.entradas(i);
+      if (((await nft.getOwner(ticket.idEntrada))).toLowerCase() === account.toLowerCase()) {
+        const evento = await nft.entradasEventos(i);
+        if (evento.idEvento.toString() == 3) {
+          const uri = await nft.tokenURI(i);
+          await axios
+            .get(uri)
+            .then((result) => {
+              let metadata = result.data;
+              setTicketScanned({
+                id: ticket.idEntrada,
+                name: metadata.name,
+                number: metadata.number,
+                description: metadata.description,
+                image: metadata.image,
+                ticketUsed: ticketUsed,
+                event: evento,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          ticketUsed = true;
+        }
+      }
+      i++;
+    }
   }
 
   const handleCloseScan = async () => {
     setScanData();
   }
 
-  useEffect(() => {    
-    (async() => {
-      const {status} = await BarCodeScanner.requestPermissionsAsync();
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted")
     })();
   }, []);
 
-  useEffect(() => {    
+  useEffect(() => {
     console.log(scanData)
   }, [scanData]);
 
-  if(!hasPermission){
+  if (!hasPermission) {
     return (
       <>
         <View style={styles.container}>
           <Text>Please grant camera access</Text>
-        </View>       
+        </View>
       </>
     );
   }
@@ -88,11 +114,11 @@ export default function ScanQr() {
         </Pressable>
         {/* {scanData && <Button title="Scan Again" style={{position: 'absolute', top: 300}} onPress={() => setScanData(undefined)} />} */}
         <BarCodeScanner
-          style={[styles.camera]} 
-          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}                
-        />        
+          style={[styles.camera]}
+          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}
+        />
 
-        <SwipeUpDown        
+        <SwipeUpDown
           itemMini={mini} // Pass props component when collapsed
           itemFull={full} // Pass props component when show full
           onShowMini={() => setModalTop('0%')}
@@ -100,15 +126,15 @@ export default function ScanQr() {
           onMoveDown={() => setModalTop('0%')}
           onMoveUp={() => setModalTop('100%')}
           disablePressToShow={false} // Press item mini to show full
-          style={{ backgroundColor: 'white', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop:modalTop }} // style for swipe
-        />        
-      </View>    
+          style={{ backgroundColor: 'white', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop: modalTop }} // style for swipe
+        />
+      </View>
 
       {((scanData !== undefined && scanData !== null && scanData !== '') ? (
-        <QrModal handleCloseScan={handleCloseScan}/>        
-      ): (
+        <QrModal handleCloseScan={handleCloseScan} ticket={ticketScanned} />
+      ) : (
         <></>
-      ))}      
+      ))}
     </>
   );
 }
@@ -123,8 +149,8 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   qr: {
-    width:220,
-    height:220
+    width: 220,
+    height: 220
   },
   camera: {
     height: '100%',
@@ -150,12 +176,12 @@ const styles = StyleSheet.create({
     height: 56,
   },
   bottomRectangle: {
-    width: "100%",    
+    width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
   },
-  text:{
+  text: {
     fontSize: 20,
     textAlign: "center",
     color: "black",

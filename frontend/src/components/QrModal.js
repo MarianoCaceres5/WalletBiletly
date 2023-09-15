@@ -1,11 +1,20 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image} from "react-native";
 import React from "react";
+import logo from '../../public/logo.png'
 
-export default function QrModal({handleCloseScan}) {
+export default function QrModal({handleCloseScan, ticket}) {
   return (
       <View style={styles.container}>
         <View style={styles.modal}>
-          <Pressable style={styles.button} onPress={() => handleCloseScan()}><Text>Oki</Text></Pressable>
+          {ticket.name != undefined ? (
+            <>                     
+              <Image source={logo} style={styles.ImageNFT}></Image>
+              <Text>Ticket: {ticket.name}</Text>
+              <Pressable style={styles.button} onPress={() => handleCloseScan()}><Text>Oki</Text></Pressable>   
+            </>
+          ):(
+            <Text>Loading...</Text>
+          )}          
         </View>
       </View>
   );
@@ -19,6 +28,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+  },
+  ImageNFT: {
+    objectFit: "contain",
+    width: "85%",
+    height: "70%",
+    marginTop: 20,
+    borderRadius: 8,
   },
   modal: {
     backgroundColor: 'white',
