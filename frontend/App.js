@@ -25,6 +25,7 @@ export const AddressContext = createContext();
 export const ConnectionContext = createContext();
 
 function App() {
+
   const projectId = WALLET_CONNECT_PROJECT_ID;
   const providerMetadata = {
     name: "test",
@@ -69,7 +70,7 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  const almacenarDatos = async (route = "ConnectWallet") => {
     if (address !== null && address !== undefined && provider !== undefined) {
       const newProvider = new ethers.providers.Web3Provider(provider);
       const signer = newProvider.getSigner();
@@ -81,6 +82,10 @@ function App() {
       setNFT(nftContract);
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    almacenarDatos();
   }, [isConnected]);
 
   if (!isConnected || provider === null || provider === undefined || loading) {

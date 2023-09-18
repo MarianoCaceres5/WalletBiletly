@@ -31,12 +31,8 @@ const Home = ({ navigation }) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
+    setLoading(true);
     loadHome();
-    setLoading(true)
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
   }, []);
 
   const handleInput = (text) => {
@@ -200,7 +196,7 @@ const Home = ({ navigation }) => {
   }, []);
 
 
-  if (loading)
+  if (loading || nfts == []){
   // if(true)
     return (
       <>
@@ -218,31 +214,33 @@ const Home = ({ navigation }) => {
         </View>
       </>
     );
-  return (
-    <>
-      <View>
-        <Header navigation={navigation} />
-        <View style={styles.container2}>
-          <ScrollView
-            contentContainerStyle={styles.scrollContainer}
-            vertical={true}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            <FiltersSection handleInput={handleInput} />
-            {nfts.map((ticket, i) =>
-              ticket.name.toLowerCase().includes(busqueda) ? (
-                <Ticket key={i} navigation={navigation} ticket={ticket} />
-              ) : (
-                <View key={i}></View>
-              )
-            )}
-          </ScrollView>
+  }else{
+    return (
+      <>
+        <View>
+          <Header navigation={navigation} />
+          <View style={styles.container2}>
+            <ScrollView
+              contentContainerStyle={styles.scrollContainer}
+              vertical={true}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <FiltersSection handleInput={handleInput} />
+              {nfts.map((ticket, i) =>
+                ticket.name.toLowerCase().includes(busqueda) ? (
+                  <Ticket key={i} navigation={navigation} ticket={ticket} />
+                ) : (
+                  <View key={i}></View>
+                )
+              )}
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
