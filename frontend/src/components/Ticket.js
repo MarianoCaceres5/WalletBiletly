@@ -2,15 +2,17 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import logo from '../../public/logo.png'
 
-export default function Ticket({ navigation, ticket }) {
+export default function Ticket({ navigation, ticket, tickets }) {
   return (
     <>
       <TouchableOpacity
         style={styles.NFTContainer}
+        activeOpacity={0.6}
         onPress={() =>
           navigation.navigate("NFTDetail", {
             nft: { ticket },
-            navigation: { navigation }
+            navigation: { navigation },
+            tickets: {tickets}
           })
         }
       >

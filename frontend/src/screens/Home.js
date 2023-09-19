@@ -43,7 +43,7 @@ const Home = ({ navigation }) => {
     axios
       .get(
         "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/TicketxUsuario/" +
-          account
+        account
       )
       .then((result) => {
         let tickets = result.data;
@@ -71,7 +71,7 @@ const Home = ({ navigation }) => {
                     axios
                       .get(
                         "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/EventoxEntrada/" +
-                          ticket.idEntrada
+                        ticket.idEntrada
                       )
                       .then((result) => {
                         let evento = result.data;
@@ -196,25 +196,25 @@ const Home = ({ navigation }) => {
   }, []);
 
 
-  if (loading || nfts == []){
-  // if(true)
+  if (loading || nfts.length == 0) {
+    // if(true)
     return (
       <>
-        <View>          
+        <View>
           <View style={styles.container2}>
             <Header navigation={navigation} />
             <ScrollView
               contentContainerStyle={styles.scrollContainer}
               vertical={true}
             >
-              <FiltersSection handleInput={handleInput} />    
-              <ActivityIndicator style={styles.loading} size="large" color="#0EDB88"/>       
+              <FiltersSection handleInput={handleInput} />
+              <ActivityIndicator style={styles.loading} size="large" color="#0EDB88" />
             </ScrollView>
           </View>
         </View>
       </>
     );
-  }else{
+  } else {
     return (
       <>
         <View>
@@ -230,7 +230,7 @@ const Home = ({ navigation }) => {
               <FiltersSection handleInput={handleInput} />
               {nfts.map((ticket, i) =>
                 ticket.name.toLowerCase().includes(busqueda) ? (
-                  <Ticket key={i} navigation={navigation} ticket={ticket} />
+                  <Ticket key={i} navigation={navigation} ticket={ticket} tickets={nfts} />
                 ) : (
                   <View key={i}></View>
                 )

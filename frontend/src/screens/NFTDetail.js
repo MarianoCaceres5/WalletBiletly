@@ -8,6 +8,7 @@ import TicketSlider from '../components/TicketSlider';
 export default function NFTDetail({ route }) {  
   let nft = route.params.nft.ticket;
   let navigation = route.params.navigation.navigation;
+  let tickets = route.params.tickets.tickets;
 
   return (
     <>
@@ -15,7 +16,7 @@ export default function NFTDetail({ route }) {
         <ScrollView vertical={true}>
           <GoBack navigation={navigation}/>
           <TicketDetail nft={nft}/>
-          <TicketSlider/>
+          <TicketSlider navigation={navigation} tickets={tickets}/>
         </ScrollView>
     </>
   )

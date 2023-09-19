@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   ticketContainer: {
-    marginTop: 20,
+    marginTop: 30,
     width: "100%",
     paddingHorizontal: 40,
     display: "flex",
