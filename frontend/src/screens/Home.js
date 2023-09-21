@@ -53,21 +53,16 @@ const Home = ({ navigation }) => {
               typeof ticket.imagen !== undefined &&
               typeof ticket.imagen !== null
             ) {
-              try {
-                const file = await Axios.get(ticket.imagen, {
-                  responseType: "blob",
-                }).then((response) => {
-                  return response.data;
-                });
+              try {                
 
                 let body = {
-                  file: file,
+                  "file": "https://drive.google.com/file/d/1WjeCtP_mJpEk9OjH76ZaW2SeHPh0li7f/view",
                 };
-
+            
                 axios
                   .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
                   .then((result) => {
-                    let foto = `${subdomain}/ipfs/${result.data.path}`;
+                    let foto = `${subdomain}/ipfs/${result.data.cid["/"]}`;
                     axios
                       .get(
                         "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/EventoxEntrada/" +
