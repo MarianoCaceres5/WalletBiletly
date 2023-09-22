@@ -17,6 +17,7 @@ import FiltersSection from "../components/FiltersSection";
 import { NFTContext } from "../../App";
 import { AddressContext } from "../../App";
 import Ticket from "../components/Ticket";
+import MintNftModal from "../components/MintNftModal";
 
 const subdomain = "https://ipfs.io";
 
@@ -25,8 +26,10 @@ const Home = ({ navigation }) => {
   const account = useContext(AddressContext);
 
   const [loading, setLoading] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [nfts, setNFTs] = useState([]);
+  const [mintObj, setMintObj] = useState({});
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -122,8 +125,13 @@ const Home = ({ navigation }) => {
       axios
         .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
         .then((result) => {
-          console.log(result.data.path);
-          mintThenList(result, nftTicket, evento);
+          setMintObj({
+            result: result,
+            nftTicket: nftTicket,
+            evento: evento
+          });
+          setShowMintModal(true);
+          // mintThenList(result, nftTicket, evento);
         })
         .catch((error) => {
           console.log(error);
@@ -134,12 +142,6 @@ const Home = ({ navigation }) => {
   };
 
   const mintThenList = async (result, nftTicket, evento) => {
-    const uri = `${subdomain}/ipfs/${result.data.path}`;
-    console.log("Minteando");
-    const mint = await nft.mint(account, uri, nftTicket.description, evento);
-    let resultadoTransaccion = await nft.signer.signTransaction(mint);
-    console.log(resultadoTransaccion);
-
     console.log("Actualizando tieneNFT");
     axios
       .put("https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/" + nftTicket.id)
@@ -149,6 +151,13 @@ const Home = ({ navigation }) => {
       .catch((error) => {
         console.log(error);
       });
+
+    const uri = `${subdomain}/ipfs/${result.data.path}`;
+    console.log("Minteando");
+    const mint = await nft.mint(account, uri, nftTicket.description, evento);
+    let resultadoTransaccion = await nft.signer.signTransaction(mint);
+    console.log(resultadoTransaccion);
+
   };
 
   const loadHome = async () => {
@@ -214,7 +223,7 @@ const Home = ({ navigation }) => {
     return (
       <>
         <View>
-          <Header navigation={navigation} />
+          <Header navigation={navigation} />          
           <View style={styles.container2}>
             <ScrollView
               contentContainerStyle={styles.scrollContainer}
@@ -233,6 +242,12 @@ const Home = ({ navigation }) => {
               )}
             </ScrollView>
           </View>
+          {showMintModal? (
+            <MintNftModal setShowMintModal={setShowMintModal} mintThenList={mintThenList} mintObj={mintObj}/>
+          ): (
+            <></>
+          )}
+          
         </View>
       </>
     );
