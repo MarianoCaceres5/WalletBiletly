@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet } from "react-native";
 
 export default function TicketSlider({ navigation, tickets }) {
-  console.log('TICKETS,:', tickets)
   return (
     <>
       <ScrollView
@@ -20,7 +19,8 @@ export default function TicketSlider({ navigation, tickets }) {
           } style={styles.nftButton}>
             <Image
               source={{
-                uri: "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg",
+                uri:ticket.image
+                // uri: "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg",
               }}
               style={styles.ImageNFT}
             ></Image>

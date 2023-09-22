@@ -32,7 +32,7 @@ const Home = ({ navigation }) => {
 
   const onRefresh = React.useCallback(() => {
     setLoading(true);
-    loadHome();
+    loadContract();
   }, []);
 
   const handleInput = (text) => {
@@ -56,7 +56,8 @@ const Home = ({ navigation }) => {
               try {                
 
                 let body = {
-                  "file": "https://drive.google.com/file/d/1WjeCtP_mJpEk9OjH76ZaW2SeHPh0li7f/view",
+                  "file": ticket.imagen,
+                  "type": "image"
                 };
             
                 axios
@@ -115,7 +116,8 @@ const Home = ({ navigation }) => {
   const createNFT = async (nftTicket, evento) => {
     try {
       let body = {
-        file: JSON.stringify(nftTicket),
+        "file": JSON.stringify(nftTicket),
+        "type": "metadata"
       };
       axios
         .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
@@ -189,7 +191,6 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     loadContract();
   }, []);
-
 
   if (loading || nfts.length == 0) {
     // if(true)

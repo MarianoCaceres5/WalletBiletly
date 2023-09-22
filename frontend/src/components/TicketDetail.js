@@ -8,7 +8,7 @@ export default function TicketDetail({ nft }) {
         <Text style={[styles.date]}>{nft.date}</Text>
         <Image
           source={{
-            uri: "https://ipfs.io/ipfs/QmUCBFYxh7uHZWeNReQiUT3cdRdqe3s5gBCNMcyDhFeZin",
+            uri: nft.image,
           }}
           style={styles.ImageNFT}
         ></Image>
