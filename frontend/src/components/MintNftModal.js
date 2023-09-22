@@ -8,8 +8,8 @@ export default function MintNftModal({setShowMintModal, mintThenList, mintObj}) 
         return (
             <Pressable style={styles.container}>
                 <Pressable style={styles.modal}>
-                    <Image style={styles.image} source={{uri: "https://viapais.com.ar/resizer/CevULQoo00q2BuB3chl1ttm9_ss=/1023x1023/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/W6XYZSM2QVBIVKNYXPRI6AYGRI.jpg"}} />
-                    <Text style={styles.nftName}>NFT Name</Text>
+                    <Image style={styles.image} source={{uri: nftTicket.image}} />
+                    <Text style={styles.nftName}>{nftTicket.name}</Text>
                     <View style={styles.buttonsContainer}>
                         <Pressable onPress={() => setShowMintModal(false)} style={styles.cancelButton}><Text style={styles.textGrey}>Cancel</Text></Pressable>
                         <TouchableOpacity onPress={() => mintThenList(result, nftTicket, evento)} style={styles.mintButton}><Text style={styles.textWhite}>Mint NFT</Text></TouchableOpacity>

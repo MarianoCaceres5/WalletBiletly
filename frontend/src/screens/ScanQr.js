@@ -46,8 +46,7 @@ export default function ScanQr() {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`)
-    setScanData(data);
+    setScanData(data);  
     const ticketCount = await nft.tokenCount();
     let ticketUsed = false;
     let i = 1;
@@ -55,7 +54,7 @@ export default function ScanQr() {
       const ticket = await nft.entradas(i);
       if (((await nft.getOwner(ticket.idEntrada))).toLowerCase() === account.toLowerCase()) {
         const evento = await nft.entradasEventos(i);
-        if (evento.idEvento.toString() == 3) {
+        if (evento.idEvento.toString() == 3 && !(await nft.ticketUsed(ticket.idEntrada))) {
           const uri = await nft.tokenURI(i);
           await axios
             .get(uri)
@@ -67,7 +66,6 @@ export default function ScanQr() {
                 number: metadata.number,
                 description: metadata.description,
                 image: metadata.image,
-                ticketUsed: ticketUsed,
                 event: evento,
               });
             })

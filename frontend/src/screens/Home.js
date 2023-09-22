@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
   const account = useContext(AddressContext);
 
   const [loading, setLoading] = useState(false);
-  const [showMintModal, setShowMintModal] = useState(true);
+  const [showMintModal, setShowMintModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [nfts, setNFTs] = useState([]);
   const [mintObj, setMintObj] = useState({});
