@@ -34,8 +34,8 @@ export default function TicketSlider({ navigation, tickets }) {
 const styles = StyleSheet.create({
   ImageNFT: {
     objectFit: "contain",
-    width: 120,
-    height: 160,
+    width: 150,
+    height: 200,
     marginTop: 20,
     borderRadius: 8,
     borderWidth:1,

@@ -11,7 +11,7 @@ export default function MintNftModal({setShowMintModal, mintThenList, mintObj}) 
                     <Image style={styles.image} source={{uri: nftTicket.image}} />
                     <Text style={styles.nftName}>{nftTicket.name}</Text>
                     <View style={styles.buttonsContainer}>
-                        <Pressable onPress={() => setShowMintModal(false)} style={styles.cancelButton}><Text style={styles.textGrey}>Cancel</Text></Pressable>
+                        <Pressable onPress={() => setShowMintModal(false)} style={styles.cancelButton}><Text style={styles.textGrey}>Dismiss</Text></Pressable>
                         <TouchableOpacity onPress={() => mintThenList(result, nftTicket, evento)} style={styles.mintButton}><Text style={styles.textWhite}>Mint NFT</Text></TouchableOpacity>
                     </View>
                 </Pressable>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     textGrey: {
-        color: 'rgba(255,255,255, 0.6)',
+        color: 'red',
         fontWeight: 'normal',
     },
     cancelButton: {

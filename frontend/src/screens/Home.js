@@ -151,12 +151,13 @@ const Home = ({ navigation }) => {
       .catch((error) => {
         console.log(error);
       });
-
-    const uri = `${subdomain}/ipfs/${result.data.path}`;
+    
+    setShowMintModal(false);
+    const uri = `${subdomain}/ipfs/${result.data.path}`;    
     console.log("Minteando");
     const mint = await nft.mint(account, uri, nftTicket.description, evento);
     let resultadoTransaccion = await nft.signer.signTransaction(mint);
-    console.log(resultadoTransaccion);
+    // console.log(resultadoTransaccion);
 
   };
 
