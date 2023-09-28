@@ -157,7 +157,7 @@ const Home = ({ navigation }) => {
     console.log("Minteando");
     const mint = await nft.mint(account, uri, nftTicket.description, evento);
     let resultadoTransaccion = await nft.signer.signTransaction(mint);
-    // console.log(resultadoTransaccion);
+    console.log(resultadoTransaccion);
 
   };
 
@@ -202,7 +202,7 @@ const Home = ({ navigation }) => {
     loadContract();
   }, []);
 
-  if (loading || nfts.length == 0) {
+  if (loading) {
     // if(true)
     return (
       <>
@@ -216,7 +216,7 @@ const Home = ({ navigation }) => {
               <FiltersSection handleInput={handleInput} />
               <ActivityIndicator style={styles.loading} size="large" color="#0EDB88" />
             </ScrollView>
-          </View>
+          </View>  
         </View>
       </>
     );
@@ -247,8 +247,7 @@ const Home = ({ navigation }) => {
             <MintNftModal setShowMintModal={setShowMintModal} mintThenList={mintThenList} mintObj={mintObj}/>
           ): (
             <></>
-          )}
-          
+          )}          
         </View>
       </>
     );

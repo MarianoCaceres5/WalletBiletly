@@ -70,7 +70,7 @@ contract NFT is ERC721URIStorage, Ownable, ReentrancyGuard, RoyaltiesV2Impl{
         return tokenCount;
     }
 
-    function _setRoyalties(uint _tokenId, address payable _royaltiesReceipientAddress, uint96 _percentageBasisPoints) internal onlyOwner {
+    function _setRoyalties(uint _tokenId, address payable _royaltiesReceipientAddress, uint96 _percentageBasisPoints) internal {
         LibPart.Part[] memory _royalties = new LibPart.Part[](1);
         _royalties[0].value = _percentageBasisPoints;
         _royalties[0].account = _royaltiesReceipientAddress;
