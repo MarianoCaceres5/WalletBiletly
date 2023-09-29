@@ -18,7 +18,6 @@ export default function ScanQr() {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanData, setScanData] = useState('');
   const [modalTop, setModalTop] = useState('0%');
-  const [ticketScanned, setTicketScanned] = useState({});
   const navigation = useNavigation();
 
   const mini = () => {
@@ -46,37 +45,7 @@ export default function ScanQr() {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    setScanData(data);  
-    const ticketCount = await nft.tokenCount();
-    let ticketUsed = false;
-    let i = 1;
-    while (!ticketUsed && i <= ticketCount) {
-      const ticket = await nft.entradas(i);
-      if (((await nft.getOwner(ticket.idEntrada))).toLowerCase() === account.toLowerCase()) {
-        const evento = await nft.entradasEventos(i);
-        if (evento.idEvento.toString() == 3 && !(await nft.ticketUsed(ticket.idEntrada))) {
-          const uri = await nft.tokenURI(i);
-          await axios
-            .get(uri)
-            .then((result) => {
-              let metadata = result.data;
-              setTicketScanned({
-                id: ticket.idEntrada,
-                name: metadata.name,
-                number: metadata.number,
-                description: metadata.description,
-                image: metadata.image,
-                event: evento,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          ticketUsed = true;
-        }
-      }
-      i++;
-    }
+    setScanData(data); 
   }
 
   const handleCloseScan = async () => {
@@ -89,10 +58,6 @@ export default function ScanQr() {
       setHasPermission(status === "granted")
     })();
   }, []);
-
-  useEffect(() => {
-    console.log(scanData)
-  }, [scanData]);
 
   if (!hasPermission) {
     return (
@@ -129,7 +94,7 @@ export default function ScanQr() {
       </View>
 
       {((scanData !== undefined && scanData !== null && scanData !== '') ? (
-        <QrModal handleCloseScan={handleCloseScan} ticket={ticketScanned} />
+        <QrModal handleCloseScan={handleCloseScan} data={scanData}/>
       ) : (
         <></>
       ))}
