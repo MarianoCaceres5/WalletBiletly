@@ -1,19 +1,18 @@
-import { View, Text, Pressable, StyleSheet, Image, ActivityIndicator, SafeAreaView, Button} from "react-native";
-import React, {useEffect, useState, useContext} from "react";
+import { View, Text, Pressable, StyleSheet, Image, ActivityIndicator, SafeAreaView, Button } from "react-native";
+import React, { useEffect, useState, useContext } from "react";
 import logo from '../../public/logo.png'
+import successIcon from '../../public/icons/successIcon.png';
 import { NFTContext, AddressContext } from "../../App";
 import axios from "axios";
-import e from "cors";
 
-export default function QrModal({handleCloseScan, data}) {
-  
+export default function QrModal({ handleCloseScan, data }) {
+
   const nft = useContext(NFTContext);
   const account = useContext(AddressContext);
 
   const [loading, setLoading] = useState(true);
   const [canAccess, setCanAccess] = useState(false);
   const [ticketScanned, setTicketScanned] = useState({});
-  const [modalColor, setModalColor] = useState('white');
 
   const checkData = async () => {
     console.log('DATA:', data);
@@ -28,7 +27,7 @@ export default function QrModal({handleCloseScan, data}) {
           const uri = await nft.tokenURI(i);
           await axios
             .get(uri)
-            .then((result) => {              
+            .then((result) => {
               ticketExist = true;
               let metadata = result.data;
               setTicketScanned({
@@ -51,31 +50,19 @@ export default function QrModal({handleCloseScan, data}) {
   }
 
   const checkTicket = async (evento, ticketExist) => {
-    if(ticketExist){
-      try{
+    if (ticketExist) {
+      try {
         // await nft.useTicket(ticket.id, evento.idEvento);
-        setModalColor('#0EDB88');
         setCanAccess(true);
         setLoading(false);
 
-      }catch(e){
+      } catch (e) {
         console.log(e);
       }
-    }else{
+    } else {
       setLoading(false);
-      setModalColor('red');
       setCanAccess(false);
-    }    
-  }
-
-  let modal = {
-    backgroundColor: modalColor,
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    }
   }
 
   useEffect(() => {
@@ -83,39 +70,50 @@ export default function QrModal({handleCloseScan, data}) {
   }, [data]);
 
   return (
-      <SafeAreaView style={styles.container}>
-        <View style={modal}>      
-          {(!loading) ? (
-            canAccess? (
-              <>
-                <Image source={{uri: ticketScanned.image}} style={styles.ImageNFT}/>  
-                <Text style={{fontSize:25}}>Ticket succesfully used!</Text>
-                <Text>You can access the event</Text>
-                <Button title="SetData" onPress={() => handleCloseScan()}></Button>
-              </>
-            ): (
-              <>
-                <Image source={logo} style={styles.ImageNFT}/>  
-                <Button title="SetData" onPress={() => handleCloseScan()}></Button>
-              </>
-            )
-            
-          ):(
-              <ActivityIndicator size="large" color="#0EDB88" />            
-          )}
-        </View>
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.modal}>
+        {(!loading) ? (
+          canAccess ? (
+            <>
+              <View style={styles.boxGreen}>
+                <Image source={successIcon} style={{ objectFit: "contain", width: "60%", borderColor: 'red', borderWidth: 1 }} />
+                <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>Ticket succesfully scanned</Text>
+              </View>              
+              <Button title="SetData" onPress={() => handleCloseScan()}></Button>
+
+            </>
+          ) : (
+            <>
+              <Image source={logo} style={styles.ImageNFT} />
+              <Button title="SetData" onPress={() => handleCloseScan()}></Button>
+            </>
+          )
+
+        ) : (
+          <ActivityIndicator size="large" color="#0EDB88" />
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {    
+  container: {
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: '100%',
+  },
+  modal: {
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   ImageNFT: {
     objectFit: "contain",
@@ -132,5 +130,17 @@ const styles = StyleSheet.create({
   closeIcon: {
     width: 25,
     height: 25,
+  },
+  boxGreen: {
+    width: '100%',
+    height: '20%',
+    backgroundColor: '#0EDB88',
+    position: 'absolute',
+    top: 0,
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
