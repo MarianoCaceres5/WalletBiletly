@@ -36,6 +36,7 @@ export default function QrModal({ handleCloseScan, data }) {
                 number: metadata.number,
                 description: metadata.description,
                 image: metadata.image,
+                date: evento.fecha,
                 event: evento,
               });
             })
@@ -76,15 +77,16 @@ export default function QrModal({ handleCloseScan, data }) {
           canAccess ? (
             <>
               <View style={styles.boxGreen}>
-                <Image source={successIcon} style={{ objectFit: "contain", width: "60%", borderColor: 'red', borderWidth: 1 }} />
+                <Image source={successIcon} style={styles.successIcon} />
                 <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>Ticket succesfully scanned</Text>
-              </View>              
+              </View>
+              <Text style={{ fontSize: 20, color: 'black', fontWeight: 'normal' }}>{ticketScanned.date}</Text>
               <Button title="SetData" onPress={() => handleCloseScan()}></Button>
 
             </>
           ) : (
             <>
-              <Image source={logo} style={styles.ImageNFT} />
+              <Image source={{uri: ticketScanned.image}} style={styles.ImageNFT} />
               <Button title="SetData" onPress={() => handleCloseScan()}></Button>
             </>
           )
@@ -112,8 +114,6 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 20,
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   ImageNFT: {
     objectFit: "contain",
@@ -142,5 +142,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 50
+  },
+  successIcon: {
+    objectFit: "contain", 
+    height: '50%',
+    width: '100%',
   }
 });
