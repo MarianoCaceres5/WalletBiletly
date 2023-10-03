@@ -52,6 +52,11 @@ export default function ScanQr() {
     setScanData();
   }
 
+  const handleReturnHome = async () => {
+    setScanData();
+    navigation.navigate('Home');
+  }
+
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -94,7 +99,7 @@ export default function ScanQr() {
       </View>
 
       {((scanData !== undefined && scanData !== null && scanData !== '') ? (
-        <QrModal handleCloseScan={handleCloseScan} data={scanData}/>
+        <QrModal handleCloseScan={handleCloseScan} data={scanData} handleReturnHome={handleReturnHome}/>
       ) : (
         <></>
       ))}

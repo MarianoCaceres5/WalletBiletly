@@ -1,11 +1,12 @@
-import { View, Text, Pressable, StyleSheet, Image, ActivityIndicator, SafeAreaView, Button } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image, ActivityIndicator, SafeAreaView, Button, TouchableOpacity } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import logo from '../../public/logo.png'
 import successIcon from '../../public/icons/successIcon.png';
 import { NFTContext, AddressContext } from "../../App";
 import axios from "axios";
+import { VirtualizedList } from "react-native-web";
 
-export default function QrModal({ handleCloseScan, data }) {
+export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
 
   const nft = useContext(NFTContext);
   const account = useContext(AddressContext);
@@ -78,15 +79,30 @@ export default function QrModal({ handleCloseScan, data }) {
             <>
               <View style={styles.boxGreen}>
                 <Image source={successIcon} style={styles.successIcon} />
-                <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>Ticket succesfully scanned</Text>
+                <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 10 }}>Ticket succesfully scanned</Text>
               </View>
-              <Text style={{ fontSize: 20, color: 'black', fontWeight: 'normal' }}>{ticketScanned.date}</Text>
-              <Button title="SetData" onPress={() => handleCloseScan()}></Button>
-
+              <View style={styles.boxWhite}>
+                <View style={styles.dateContainer}>
+                  <Text style={{ fontSize: 19, color: 'black', fontWeight: 'normal' }}>{ticketScanned.date}</Text>
+                </View>
+                <View style={styles.ticketContainer}>
+                  <Image source={{ uri: ticketScanned.image }} style={[styles.ImageNFT, styles.shadow]} />
+                  <Text style={{ fontSize: 19, color: 'black', fontWeight: 'normal', width: '100%', textAlign: 'center', marginTop: 10 }}>Event</Text>
+                  <Text style={{ fontSize: 19, color: 'black', fontWeight: 900, width: '100%', textAlign: 'center' }}>{ticketScanned.name}</Text>
+                </View>
+                <View style={[styles.buttonsContainer]}>
+                  <TouchableOpacity style={[styles.buttonGreen, styles.shadow]} onPress={() => handleReturnHome()}>
+                    <Text style={[styles.whiteConnect]}>Return home</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.buttonWhite, styles.shadow]} onPress={() => handleCloseScan()}>
+                    <Text style={[styles.textGreen]}>Close</Text>
+                  </TouchableOpacity>
+                </View>                
+              </View>
             </>
           ) : (
             <>
-              <Image source={{uri: ticketScanned.image}} style={styles.ImageNFT} />
+              <Image source={{ uri: ticketScanned.image }} style={styles.ImageNFT} />
               <Button title="SetData" onPress={() => handleCloseScan()}></Button>
             </>
           )
@@ -114,13 +130,21 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 20,
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   ImageNFT: {
     objectFit: "contain",
-    width: "70%",
-    height: "50%",
-    marginTop: 20,
+    width: "60%",
+    height: "70%",
     borderRadius: 8,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.21,
+    shadowRadius: 7.68,
   },
   closeButton: {
     position: 'absolute',
@@ -144,9 +168,76 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 50
   },
-  successIcon: {
-    objectFit: "contain", 
-    height: '50%',
+  boxWhite: {
+    position: 'absolute',
+    top: '20%',
     width: '100%',
-  }
+  },
+  successIcon: {
+    objectFit: "contain",
+    height: '45%',
+    width: '100%',
+  },
+  dateContainer: {
+    height: 75,
+    borderBottomColor: '#DEDEDE',
+    borderBottomWidth: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 30
+  },
+  ticketContainer: {
+    height: 475,
+    borderBottomColor: '#DEDEDE',
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  },
+  buttonsContainer: {
+    width: '100%'
+  },
+  whiteConnect: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "white",
+  },
+  buttonGreen: {
+    backgroundColor: "#0EDB88",
+    width: 160,
+    height: 50,
+    borderRadius: 5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
+    position: 'absolute',
+    right: 30
+  },
+  shadow: {
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  buttonWhite: {
+    backgroundColor: "white",
+    width: 100,
+    height: 50,
+    borderRadius: 5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
+    position: 'absolute',
+    right: 190
+  },
+  textGreen: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#0EDB88",
+  },
 });
