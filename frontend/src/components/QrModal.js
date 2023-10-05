@@ -5,6 +5,7 @@ import successIcon from '../../public/icons/successIcon.png';
 import { NFTContext, AddressContext } from "../../App";
 import axios from "axios";
 import { VirtualizedList } from "react-native-web";
+import erroIcon from "../../public/icons/error.png"
 
 export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
 
@@ -17,14 +18,14 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
 
   const checkData = async () => {
     console.log('DATA:', data);
-    let ticketExist = false, ticket = {}, evento = {};
+    let ticketExist = false, evento = {};
     const ticketCount = await nft.tokenCount();
     let i = 1;
-    while (!ticketExist || i <= ticketCount) {
+    for (let i = 1; i <= ticketCount; i++) {
       const ticket = await nft.entradas(i);
       if (((await nft.getOwner(ticket.idEntrada))).toLowerCase() === account.toLowerCase()) {
         evento = await nft.entradasEventos(i);
-        if (evento.idEvento.toString() == 3 && !(await nft.ticketUsed(ticket.idEntrada))) {
+        if (evento.idEvento.toString() == 2 && !(await nft.ticketUsed(ticket.idEntrada))) {
           const uri = await nft.tokenURI(i);
           await axios
             .get(uri)
@@ -45,8 +46,7 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
               console.log(error);
             });
         }
-      }
-      i++;
+      }      
     }
     checkTicket(evento, ticketExist);
   }
@@ -102,8 +102,25 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
             </>
           ) : (
             <>
-              <Image source={{ uri: ticketScanned.image }} style={styles.ImageNFT} />
-              <Button title="SetData" onPress={() => handleCloseScan()}></Button>
+              <View style={styles.boxRed}>
+                <View style={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <Image source={erroIcon} style={styles.qrRed} />
+                </View>
+                <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 10 }}>Ticket succesfully scanned</Text>
+              </View>
+              <View style={styles.boxWhite}>
+                <View style={styles.ticketContainer}>
+                  <Image source={logo} style={[styles.ImageNFT, styles.shadow]} />
+                </View>
+                <View style={[styles.buttonsContainer]}>
+                  <TouchableOpacity style={[styles.buttonGreen, styles.shadow]} onPress={() => handleReturnHome()}>
+                    <Text style={[styles.whiteConnect]}>Return home</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.buttonWhite, styles.shadow]} onPress={() => handleCloseScan()}>
+                    <Text style={[styles.textGreen]}>Close</Text>
+                  </TouchableOpacity>
+                </View>                
+              </View>
             </>
           )
 
@@ -239,5 +256,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
     color: "#0EDB88",
+  },
+  qrRed: {
+    objectFit: "contain",
+    height: 60,
+    width: 60,
+    borderWidth:3,
+    borderColor: 'white',
+    borderRadius: 200,
+  },
+  boxRed: {
+    width: '100%',
+    height: '50%',
+    backgroundColor: '#F33E52',
+    position: 'absolute',
+    top: 0,
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50
   },
 });
