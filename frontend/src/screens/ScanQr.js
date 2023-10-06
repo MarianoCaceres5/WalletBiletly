@@ -16,7 +16,8 @@ export default function ScanQr() {
   const account = useContext(AddressContext);
 
   const [hasPermission, setHasPermission] = useState(false);
-  const [scanData, setScanData] = useState('');
+  const [scanData, setScanData] = useState();
+  const [scanned, setScanned] = useState(false);
   const [modalTop, setModalTop] = useState('0%');
   const navigation = useNavigation();
 
@@ -45,16 +46,21 @@ export default function ScanQr() {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
+    setScanned(true);
     setScanData(data); 
   }
 
   const handleCloseScan = async () => {
+    setScanned(false);
     setScanData();
   }
 
   const handleReturnHome = async () => {
+    setScanned(false);
     setScanData();
-    navigation.navigate('Home');
+    setTimeout(() => {
+      navigation.navigate('Home');     
+    }, 0);
   }
 
   useEffect(() => {
@@ -80,10 +86,9 @@ export default function ScanQr() {
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image source={arrowBack} style={styles.arrowBackIcon} />
         </Pressable>
-        {/* {scanData && <Button title="Scan Again" style={{position: 'absolute', top: 300}} onPress={() => setScanData(undefined)} />} */}
         <BarCodeScanner
           style={[styles.camera]}
-          onBarCodeScanned={scanData ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         />
 
         <SwipeUpDown
