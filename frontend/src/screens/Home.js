@@ -202,7 +202,7 @@ const Home = ({ navigation }) => {
     loadContract();
   }, []);
 
-  if (loading) {
+  if (loading || !nfts) {
     // if(true)
     return (
       <>

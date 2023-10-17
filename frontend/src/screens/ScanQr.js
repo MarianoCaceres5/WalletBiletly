@@ -16,7 +16,7 @@ export default function ScanQr() {
   const account = useContext(AddressContext);
 
   const [hasPermission, setHasPermission] = useState(false);
-  const [scanData, setScanData] = useState('');
+  const [scanData, setScanData] = useState();
   const [scanned, setScanned] = useState(false);
   const [modalTop, setModalTop] = useState('0%');
   const navigation = useNavigation();
@@ -56,14 +56,10 @@ export default function ScanQr() {
   }
 
   const handleReturnHome = async () => {
-    await handleCloseScan();
-    returnHome()
+    setScanned(false);
+    setScanData('');
+    navigation.navigate('Home');
   }
-
-  const returnHome = () =>{
-    navigation.navigate('Home');   
-  }
-
 
   useEffect(() => {
     (async () => {
