@@ -4,19 +4,25 @@ import { StyleSheet } from "react-native";
 
 export default function TicketDetail({ nft }) {
   return (
-      <View style={[styles.ticketContainer]}>
+    <View style={[styles.ticketContainer]}>
+      {!nft.ticketUsed ? (
         <Text style={[styles.date]}>{nft.date}</Text>
-        <Image
-          source={{
-            uri: nft.image,
-          }}
-          style={styles.ImageNFT}
-        ></Image>
-        <Text style={[styles.NFTName]}>{nft.name}</Text>
-        <Text style={[styles.description]}>{nft.event.descripcion}</Text>
-        <Text style={[styles.numero]}>Entrada N°: {nft.number}</Text>
-      </View>
-      
+      ) : (
+        <Text style={[styles.ticketUsed]}>Ticket Used</Text>
+      )
+      }
+
+      <Image
+        source={{
+          uri: nft.image,
+        }}
+        style={styles.ImageNFT}
+      ></Image>
+      <Text style={[styles.NFTName]}>{nft.name}</Text>
+      <Text style={[styles.description]}>{nft.event.descripcion}</Text>
+      <Text style={[styles.numero]}>Entrada N°: {nft.number}</Text>
+    </View>
+
   );
 }
 
@@ -80,5 +86,13 @@ const styles = StyleSheet.create({
   },
   nftButton: {
     marginHorizontal: 10
+  },
+  ticketUsed: {
+    width: "100%",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "red",
+    textAlign: "center",
+    marginBottom: 0,
   }
 });

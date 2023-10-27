@@ -46,6 +46,7 @@ export default function ScanQr() {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
+    console.log('ESCANEO')
     setScanned(true);
     setScanData(data); 
   }
@@ -58,7 +59,7 @@ export default function ScanQr() {
   const handleReturnHome = async () => {
     setScanned(false);
     setScanData('');
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   }
 
   useEffect(() => {

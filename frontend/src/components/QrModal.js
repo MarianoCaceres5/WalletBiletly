@@ -32,30 +32,32 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
         account.toLowerCase()
       ) {
         let eventoTemporal = await nft.entradasEventos(i);
-        if (
-          (eventoTemporal.idEvento.toString()) == 3 &&
-          !(await nft.ticketUsed(ticket.idEntrada))
-        ) {
-          evento = eventoTemporal
-          const uri = await nft.tokenURI(i);
-          await axios
-            .get(uri)
-            .then((result) => {
-              ticketExist = true;
-              let metadata = result.data;
-              setTicketScanned({
-                id: ticket.idEntrada,
-                name: metadata.name,
-                number: metadata.number,
-                description: metadata.description,
-                image: metadata.image,
-                date: evento.fecha,
-                event: evento,
+        if (data.idEvento) {
+          if (
+            (eventoTemporal.idEvento.toString()) == data.idEvento &&
+            !(await nft.ticketUsed(ticket.idEntrada))
+          ) {
+            evento = eventoTemporal
+            const uri = await nft.tokenURI(i);
+            await axios
+              .get(uri)
+              .then((result) => {
+                ticketExist = true;
+                let metadata = result.data;
+                setTicketScanned({
+                  id: ticket.idEntrada,
+                  name: metadata.name,
+                  number: metadata.number,
+                  description: metadata.description,
+                  image: metadata.image,
+                  date: evento.fecha,
+                  event: evento,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
               });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          }
         }
       }
     }

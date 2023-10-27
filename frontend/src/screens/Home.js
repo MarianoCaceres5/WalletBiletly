@@ -45,7 +45,7 @@ const Home = ({ navigation }) => {
   const loadContract = async () => {
     axios
       .get(
-        "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/TicketxUsuario/" +
+        "https://api-biletly.onrender.com/tickets/TicketxUsuario/" +
         account
       )
       .then((result) => {
@@ -64,12 +64,12 @@ const Home = ({ navigation }) => {
                 };
             
                 axios
-                  .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
+                  .post("https://api-biletly.onrender.com/ipfs/", body)
                   .then((result) => {
                     let foto = `${subdomain}/ipfs/${result.data.cid["/"]}`;
                     axios
                       .get(
-                        "https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/EventoxEntrada/" +
+                        "https://api-biletly.onrender.com/tickets/EventoxEntrada/" +
                         ticket.idEntrada
                       )
                       .then((result) => {
@@ -123,7 +123,7 @@ const Home = ({ navigation }) => {
         "type": "metadata"
       };
       axios
-        .post("https://bl6tkxcz-3000.brs.devtunnels.ms/ipfs/", body)
+        .post("https://api-biletly.onrender.com/ipfs/", body)
         .then((result) => {
           setMintObj({
             result: result,
@@ -144,7 +144,7 @@ const Home = ({ navigation }) => {
   const mintThenList = async (result, nftTicket, evento) => {
     console.log("Actualizando tieneNFT");
     axios
-      .put("https://bl6tkxcz-3000.brs.devtunnels.ms/tickets/" + nftTicket.id)
+      .put("https://api-biletly.onrender.com/tickets/" + nftTicket.id)
       .then((result) => {
         //console.log(result);
       })
