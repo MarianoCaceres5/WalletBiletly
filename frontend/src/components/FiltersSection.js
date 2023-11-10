@@ -9,8 +9,6 @@ import {
   Modal,
   Button,
 } from "react-native";
-import filterIcon from "../../public/icons/filter.png";
-import search from "../../public/icons/search.png";
 
 export default function FiltersSection(handleInput) {
 
@@ -24,30 +22,10 @@ export default function FiltersSection(handleInput) {
   return (
     <>
       <View style={styles.container}>
-        {/* <TouchableHighlight onPress={() => DisplayFilters()} activeOpacity={1}>
-          <Image source={filterIcon} style={{ width: 50, height: 50 }} />
-        </TouchableHighlight> */}
-
         <View>
           <Image source={{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/768px-Search_Icon.svg.png'}} style={styles.searchIcon} />
           <TextInput style={styles.searchBar} onChangeText={newText => handleInput.handleInput(newText)} placeholder="Search Tickets" clearButtonMode='always'/>
-        </View>       
-{/* 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-          style={styles.modalContainer}
-        >
-          <View style={styles.modalContainer}>
-            <Text style={styles.titulo}>Este es el contenido del modal.</Text>
-            <Button
-              title="Cerrar Modal"
-              onPress={() => setModalVisible(false)}
-            />
-          </View>
-        </Modal> */}
+        </View> 
       </View>
     </>
   );
