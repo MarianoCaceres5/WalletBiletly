@@ -50,14 +50,15 @@ const Home = ({ navigation }) => {
       )
       .then((result) => {
         let tickets = result.data;
+        console.log('tickets:',tickets)
         tickets.map(async (ticket) => {
-          if (!ticket.tieneNFT) {
+          if (!ticket.tieneNFT) {            
             if (
-              typeof ticket.imagen !== undefined &&
-              typeof ticket.imagen !== null
+              typeof ticket.imagen
             ) {
               try {                
-
+                console.log('Ticket sin NFT:', ticket)
+                
                 let body = {
                   "file": ticket.imagen,
                   "type": "image"
@@ -93,14 +94,14 @@ const Home = ({ navigation }) => {
                             evento.fecha,
                         };
                         console.log("FOTO:", nftTicket.image);
-                        createNFT(nftTicket, evento);
+                        createNFT(nftTicket, evento); 
                       })
                       .catch((error) => {
-                        console.log(error);
+                        console.log('error tomando eventoxentrada:',error);
                       });
                   })
                   .catch((error) => {
-                    console.log(error);
+                    console.log('error creando imagen:', error);
                   });
               } catch (error) {
                 console.log("ipfs image upload error: ", error);
@@ -110,13 +111,14 @@ const Home = ({ navigation }) => {
         });
       })
       .catch((error) => {
-        console.log("HUBO UN ERROR" + error);
+        console.log("error buscando tickets bdd" + error);
       });
 
     loadHome();
   };
 
   const createNFT = async (nftTicket, evento) => {
+    console.log('Creando datos de NFT')
     try {
       let body = {
         "file": JSON.stringify(nftTicket),
@@ -154,7 +156,7 @@ const Home = ({ navigation }) => {
     
     setShowMintModal(false);
     const uri = `${subdomain}/ipfs/${result.data.path}`;    
-    console.log("Minteando");
+    console.log("Minteando NFT");
     const mint = await nft.mint(account, uri, nftTicket.description, evento);
     let resultadoTransaccion = await nft.signer.signTransaction(mint);
     console.log(resultadoTransaccion);
@@ -177,7 +179,6 @@ const Home = ({ navigation }) => {
           .get(uri)
           .then((result) => {
             let metadata = result.data;
-            console.log("Metadata: ", metadata);
             tickets.push({
               id: ticket.idEntrada,
               name: metadata.name,
