@@ -4,28 +4,16 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Text,
-  TouchableHighlight,
-  Modal,
-  Button,
 } from "react-native";
 
 export default function FiltersSection(handleInput) {
-
-  // console.log("Setbuttonopacity ", setButtonOpacity)
-
-  const [modalVisible, setModalVisible] = useState(false);
-
-  function DisplayFilters() {
-    setModalVisible(true);
-  }
   return (
     <>
       <View style={styles.container}>
         <View>
           <Image source={{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/768px-Search_Icon.svg.png'}} style={styles.searchIcon} />
           <TextInput style={styles.searchBar} onChangeText={newText => handleInput.handleInput(newText)} placeholder="Search Tickets" clearButtonMode='always'/>
-        </View> 
+        </View>       
       </View>
     </>
   );

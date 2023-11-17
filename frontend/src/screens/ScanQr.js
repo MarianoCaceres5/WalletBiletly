@@ -53,21 +53,30 @@ export default function ScanQr() {
 
   const handleCloseScan = async () => {
     setScanned(false);
-    setScanData('');
+    setScanData(undefined);
   }
 
   const handleReturnHome = async () => {
     setScanned(false);
-    setScanData('');
-    // navigation.navigate('Home');
+    setScanData(undefined);
+    navigation.navigate('Home');
   }
 
   useEffect(() => {
-    (async () => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // do something - for example: reset states, ask for camera permission
+      setScanned(false);
+      setScanData();
+      setHasPermission(false);
+      (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted")
-    })();
-  }, []);
+      setHasPermission(status === "granted"); 
+      })();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   if (!hasPermission) {
     return (

@@ -22,7 +22,7 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
 
   const checkData = async () => {
     let ticketExist = false,
-      evento = {};
+    evento = {};
     const ticketCount = await nft.tokenCount();
     let i = 1;
     for (let i = 1; i <= ticketCount; i++) {
@@ -129,7 +129,7 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[styles.buttonGreen, styles.shadow]}
-                    onPress={() => handleCloseScan()}
+                    onPress={() => handleReturnHome()}
                   >
                     <Text style={[styles.whiteText]}>Return Home</Text>
                   </TouchableOpacity>
@@ -183,7 +183,7 @@ export default function QrModal({ handleCloseScan, data, handleReturnHome }) {
                       styles.shadow,
                       { width: "100%", marginTop: 20 },
                     ]}
-                    onPress={() => handleCloseScan()}
+                    onPress={() => handleReturnHome()}
                   >
                     <Text style={[styles.whiteText]}>Return home</Text>
                   </TouchableOpacity>
