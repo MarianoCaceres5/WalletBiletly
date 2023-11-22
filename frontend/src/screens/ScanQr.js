@@ -46,7 +46,6 @@ export default function ScanQr() {
   }
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    console.log('ESCANEO')
     setScanned(true);
     setScanData(data); 
   }

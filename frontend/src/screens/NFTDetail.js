@@ -16,7 +16,7 @@ export default function NFTDetail({ route }) {
         <ScrollView vertical={true}>
           <GoBack navigation={navigation}/>
           <TicketDetail nft={nft}/>
-          <TicketSlider navigation={navigation} tickets={tickets}/>
+          <TicketSlider nft={nft} navigation={navigation} tickets={tickets}/>
         </ScrollView>
     </>
   )

@@ -50,62 +50,57 @@ const Home = ({ navigation }) => {
       )
       .then((result) => {
         let tickets = result.data;
-        console.log('tickets:',tickets)
         tickets.map(async (ticket) => {
-          if (!ticket.tieneNFT) {            
+          if (!ticket.tieneNFT) {
             if (
               typeof ticket.imagen
             ) {
-              try {                
-                console.log('Ticket sin NFT:', ticket)
-                
-                let body = {
-                  "file": ticket.imagen,
-                  "type": "image"
-                };
-            
-                axios
-                  .post("https://api-biletly.onrender.com/ipfs/", body)
-                  .then((result) => {
-                    let foto = `${subdomain}/ipfs/${result.data.cid["/"]}`;
-                    axios
-                      .get(
-                        "https://api-biletly.onrender.com/tickets/EventoxEntrada/" +
-                        ticket.idEntrada
-                      )
-                      .then((result) => {
-                        let evento = result.data;
-                        let fecha = new Date(evento.fecha);
-                        fecha = fecha.toISOString().substring(0, 10);
-                        evento.fecha = fecha;
-                        let nftTicket = {
-                          id: ticket.idEntrada,
-                          address: account,
-                          name: evento.nombre,
-                          date: fecha,
-                          image: foto,
-                          number: ticket.numAsiento,
-                          description:
-                            "EVENT: " +
-                            evento.nombre +
-                            " - NUMBER: " +
-                            ticket.numAsiento +
-                            " - DATE: " +
-                            evento.fecha,
-                        };
-                        console.log("FOTO:", nftTicket.image);
-                        createNFT(nftTicket, evento); 
-                      })
-                      .catch((error) => {
-                        console.log('error tomando eventoxentrada:',error);
-                      });
-                  })
-                  .catch((error) => {
-                    console.log('error creando imagen:', error);
-                  });
-              } catch (error) {
-                console.log("ipfs image upload error: ", error);
-              }
+              console.log('Ticket sin NFT:', ticket)
+
+              let body = {
+                "file": ticket.imagen,
+                "type": "image"
+              };
+
+              axios
+                .post("https://api-biletly.onrender.com/ipfs/", body)
+                .then((result) => {
+                  let foto = `${subdomain}/ipfs/${result.data.cid["/"]}`;
+                  axios
+                    .get(
+                      "https://api-biletly.onrender.com/tickets/EventoxEntrada/" +
+                      ticket.idEntrada
+                    )
+                    .then((result) => {
+                      let evento = result.data;
+                      let fecha = new Date(evento.fecha);
+                      fecha = fecha.toISOString().substring(0, 10);
+                      evento.fecha = fecha;
+                      let nftTicket = {
+                        id: ticket.idEntrada,
+                        address: account,
+                        name: evento.nombre,
+                        date: fecha,
+                        image: foto,
+                        number: ticket.numAsiento,
+                        description:
+                          "EVENT: " +
+                          evento.nombre +
+                          " - NUMBER: " +
+                          ticket.numAsiento +
+                          " - DATE: " +
+                          evento.fecha,
+                      };
+                      console.log("FOTO:", nftTicket.image);
+                      createNFT(nftTicket, evento);
+                    })
+                    .catch((error) => {
+                      console.log('error tomando eventoxentrada:', error);
+                    });
+                })
+                .catch((error) => {
+                  console.log('error creando imagen:', error);
+                });
             }
           }
         });
@@ -153,9 +148,9 @@ const Home = ({ navigation }) => {
       .catch((error) => {
         console.log(error);
       });
-    
+
     setShowMintModal(false);
-    const uri = `${subdomain}/ipfs/${result.data.path}`;    
+    const uri = `${subdomain}/ipfs/${result.data.path}`;
     console.log("Minteando NFT");
     const mint = await nft.mint(account, uri, nftTicket.description, evento);
     let resultadoTransaccion = await nft.signer.signTransaction(mint);
@@ -217,7 +212,7 @@ const Home = ({ navigation }) => {
               <FiltersSection handleInput={handleInput} />
               <ActivityIndicator style={styles.loading} size="large" color="#0EDB88" />
             </ScrollView>
-          </View>  
+          </View>
         </View>
       </>
     );
@@ -225,7 +220,7 @@ const Home = ({ navigation }) => {
     return (
       <>
         <View>
-          <Header navigation={navigation} />          
+          <Header navigation={navigation} />
           <View style={styles.container2}>
             <ScrollView
               contentContainerStyle={styles.scrollContainer}
@@ -244,11 +239,11 @@ const Home = ({ navigation }) => {
               )}
             </ScrollView>
           </View>
-          {showMintModal? (
-            <MintNftModal setShowMintModal={setShowMintModal} mintThenList={mintThenList} mintObj={mintObj}/>
-          ): (
+          {showMintModal ? (
+            <MintNftModal setShowMintModal={setShowMintModal} mintThenList={mintThenList} mintObj={mintObj} />
+          ) : (
             <></>
-          )}          
+          )}
         </View>
       </>
     );
